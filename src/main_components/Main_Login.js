@@ -6,7 +6,6 @@ const Login_form = styled.form`
     display: flex;
     justify-content: center;
     align-items: center;
-    // border: 1px solid white;
     margin-bottom: 20px;
     position: relative;
 `
