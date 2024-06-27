@@ -15,6 +15,7 @@ const Main = styled.div`
     border-radius: 500px;
     gap: 10px;
     margin-bottom: 10px;
+    user-select: none;
 
     @media (max-width: 1000px) {
         font-size: 70px;
