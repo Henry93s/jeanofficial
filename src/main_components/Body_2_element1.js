@@ -4,14 +4,17 @@ import styled from "styled-components";
 const Main_flex_div = styled.div`
     width: 100%;
     height: 1000px;
-    margin-top: 200px;
     font-family: "Noto Sans KR", sans-serif;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     gap: 20px;
     user-select: none;
+    text-align: center;
+    flex-grow: 0;
+    border-bottom: 1px solid white;
+    border-top: 1px solid white;
 
     @media (max-width: 1000px) {
         height: 2000px;
@@ -34,7 +37,7 @@ const Flex_div_main1_div1 = styled.div`
     width: 100%;
     height: 70%;
     background: url('/images/supernatural_main1.png') no-repeat;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     opacity: 0;
     transition: all 2s;

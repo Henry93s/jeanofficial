@@ -2,6 +2,8 @@ import React,{useState, useCallback, useMemo} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+const screenMode = styled
+
 const Login_form = styled.form`
     display: flex;
     justify-content: center;
@@ -73,7 +75,7 @@ const Home_a = styled.a`
     }
 
     @media (max-width: 1000px) {
-        font-size: 20px;
+        font-size: 13px;
     }
 `
 
@@ -88,7 +90,6 @@ const Mypage_a = styled(Home_a)`
 
 const Logout_a = styled(Home_a)`
 `
-
 //
 const Main_Login = () => {
     const [user, setUser] = useState({});
@@ -125,10 +126,10 @@ const Main_Login = () => {
         <>
             {is_logined 
             && <Logined_div>
-                    <Home_a clicked={clickedMenu.Home_a} onClick={handleMenuClick}>Home</Home_a>
-                    <Board_a clicked={clickedMenu.Board_a} onClick={handleMenuClick}>Board</Board_a>
-                    <Store_a clicked={clickedMenu.Store_a} onClick={handleMenuClick}>Store</Store_a>
-                    <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick}>Mypage</Mypage_a>
+                    <Home_a clicked={clickedMenu.Home_a} onClick={handleMenuClick} name="Home">Home</Home_a>
+                    <Board_a clicked={clickedMenu.Board_a} onClick={handleMenuClick} name="Board">Board</Board_a>
+                    <Store_a clicked={clickedMenu.Store_a} onClick={handleMenuClick} name="Store">Store</Store_a>
+                    <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick} name="Mypage">Mypage</Mypage_a>
                     <Logout_a>Logout</Logout_a>
                 </Logined_div>
             ||  <Login_form>
