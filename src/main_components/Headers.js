@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Main = styled.div`
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: baseline;
@@ -52,14 +51,14 @@ const Headers = () => {
     return (
         <>
             <Main>
-            <N_color>N</N_color>
-            <E_color>E</E_color>
-            <W_color>W</W_color>
-            <J_color>J</J_color>
-            <E2_color>E</E2_color>
-            <A_color>A</A_color>
-            <N2_color>N</N2_color>
-            <S_color>S</S_color>
+                <N_color>N</N_color>
+                <E_color>E</E_color>
+                <W_color>W</W_color>
+                <J_color>J</J_color>
+                <E2_color>E</E2_color>
+                <A_color>A</A_color>
+                <N2_color>N</N2_color>
+                <S_color>S</S_color>
             </Main>
         </>
     );

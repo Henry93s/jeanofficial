@@ -4,19 +4,18 @@ import styled from "styled-components";
 const Main_flex_div = styled.div`
     width: 100%;
     height: 1000px;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    user-select: none;
     text-align: center;
     flex-grow: 0;
-    margin-top: 10px;
+    margin-top: 600px;
     @media (max-width: 1000px) {
         height: 1700px;
         flex-direction: column;
-
+        margin-top: 150px;
     }
 `
 const Flex_div_main = styled.div`
@@ -37,7 +36,7 @@ const Flex_div_main1_div1 = styled.div`
     background-size: contain;
     background-position: center;
     opacity: 0;
-    transition: all 2s;
+    transition: all 3s;
 
     @media (max-width: 1000px) {
         height: 50%;
@@ -48,7 +47,7 @@ const Flex_div_main1_div2 = styled.div`
     width: 100%;
     height: 30%;
     opacity: 0;
-    transition: all 3s;
+    transition: all 4s;
     @media (max-width: 1000px) {
         height: 50%;
         padding-top: 30%;
@@ -63,7 +62,7 @@ const Flex_div_sub_div = styled.div`
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: all 3s;
+    transition: all 6s;
 `
 
 const Flex_div_sub_element1 = styled.div`
