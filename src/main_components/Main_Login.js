@@ -2,8 +2,6 @@ import React,{useState, useCallback, useMemo} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const screenMode = styled
-
 const Login_form = styled.form`
     display: flex;
     justify-content: center;

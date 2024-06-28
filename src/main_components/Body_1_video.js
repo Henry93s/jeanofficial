@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // video div
 const Main = styled.div`
     width: 100%;
-    height: 850px;
+    height: 750px;
     position: relative;
     overflow: hidden;
     @media (max-width: 1000px) {
@@ -24,6 +24,7 @@ const Video = styled.iframe`
         top: -3.5%;
         border-radius: 350px;
         transform: scale(1.35, 1.5);
+        pointer-events: all;
     }
 `
 
@@ -43,6 +44,11 @@ const Icon_youtube = styled.a`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (max-width: 1000px) {
+        width: 30px;
+        height: 30px;
+    }
 `
 const Icon_x = styled(Icon_youtube)`
 `
@@ -50,8 +56,6 @@ const Icon_insta = styled(Icon_youtube)`
 `
 const Icon_facebook = styled(Icon_youtube)`
 `
-
-
 
 const Body_1_video = () => {
     return (
@@ -62,10 +66,10 @@ const Body_1_video = () => {
                 </Video>
             </Main>
             <Icon_div>
-                <Icon_youtube href='https://www.youtube.com/c/NewJeans_official' target='_blank'><img src="/images/youtube.png" alt="youtube" style={{width: "45px", height: "45px"}}/></Icon_youtube>
-                <Icon_x href='https://twitter.com/NewJeans_ADOR' target='_blank'><img src="/images/x.png" alt="x" style={{width: "45px", height: "45px"}}/></Icon_x>
-                <Icon_insta href='https://www.instagram.com/newjeans_official/' target='_blank'><img src="/images/insta.png" alt="insta" style={{width: "45px", height: "45px"}}/></Icon_insta>
-                <Icon_facebook href='https://www.facebook.com/official.newjeans' target='_blank'><img src="/images/facebook.png" alt="facebook" style={{width: "45px", height: "45px"}}/></Icon_facebook>
+                <Icon_youtube href='https://www.youtube.com/c/NewJeans_official' target='_blank'><img src="/images/youtube.png" alt="youtube" style={{width: "100%", height: "100%"}}/></Icon_youtube>
+                <Icon_x href='https://twitter.com/NewJeans_ADOR' target='_blank'><img src="/images/x.png" alt="x" style={{width: "100%", height: "100%"}}/></Icon_x>
+                <Icon_insta href='https://www.instagram.com/newjeans_official/' target='_blank'><img src="/images/insta.png" alt="insta" style={{width: "100%", height: "100%"}}/></Icon_insta>
+                <Icon_facebook href='https://www.facebook.com/official.newjeans' target='_blank'><img src="/images/facebook.png" alt="facebook" style={{width: "100%", height: "100%"}}/></Icon_facebook>
             </Icon_div>
         </>
 
