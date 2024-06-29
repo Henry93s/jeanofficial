@@ -47,7 +47,7 @@ const S_color = styled.p`
     color: #98D045;
 `
 
-const Headers = () => {
+const Title_Header = () => {
     return (
         <>
             <Main>
@@ -64,4 +64,4 @@ const Headers = () => {
     );
 };
 
-export default Headers;
+export default Title_Header;

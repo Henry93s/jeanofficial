@@ -2,7 +2,93 @@ import React,{useState, useCallback, useMemo} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+
+// hamberger NEW youtube & twitter (1 x 10 grid x 2 라인)
+const Hamburger_div = styled.div.attrs(props => ({
+    style: {
+        transform: props.clickburger === "true" ? "translateX(0%)" : "translateX(-100%)"
+        }
+}))`
+    position: fixed;
+    top: 0;
+    width: 70%;
+    height: 100%;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease-in-out;
+    // maximum
+    z-index: 102;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+    }
+`
+// hamburger 내용물 부분
+const Hamburger_head = styled.div`
+    width: 100%;
+    height: 65px;
+    background-color: black;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+`
+const Hamburger_head_p = styled.p`
+    font-size: 48px;
+    margin-right: 10px;
+    cursor: pointer;
+`
+const Hamburger_main_div = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+`
+// youtube burger
+const Hamburger_youtube_div = styled.div`
+    width: 50%;
+    height: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: red;
+    // 자식 태그 스크롤할 때 부모 태그 스크롤 막기
+    overscroll-behavior: contain;
+`
+// twitter(x) burger
+const Hamburger_x_div = styled(Hamburger_youtube_div)`
+    background-color: blue;
+`
+
+// hamburger 버튼 부분
+const Hamburger_a = styled.a`
+    width: 150px;
+    height: 40px;
+    // 혼자 어느정도 왼쪽에 놓기 위한 flex-grow 설정
+    flex-grow: 0.5;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: default;
+    background-color: transparent;
+    border: none;
+`
+const Hamburger_Button_img = styled.img`
+    cursor: pointer;
+`
+
+
 const Login_form = styled.form`
+    // sticky header
+    position: sticky;
+    width: 100%;
+    top: 0px;
+    height: 65px;
+    background-color: black;
+    z-index: 101;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,7 +133,15 @@ const Login_button = styled.button`
 
 //
 const Logined_div = styled.div`
+    // sticky header
+    position: sticky;
     width: 100%;
+    top: 0px;
+    height: 65px;
+    background-color: black;
+    z-index: 101;
+
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -126,7 +220,7 @@ const Logout_img = styled(Home_img)`
 
 //
 
-const Main_Login = () => {
+const Main_Header = () => {
     const [user, setUser] = useState({});
     const [clickedMenu, setClickedMenu] = useState({
         Home_a: "true",
@@ -134,6 +228,8 @@ const Main_Login = () => {
         Store_a: "false",
         Mypage_a: "false"
     });
+    // hamberger clicked state
+    const [clickBurger, setClickBurger] = useState("false");
  
     const is_logined = useMemo(() => {
         if(!user.email){
@@ -157,10 +253,34 @@ const Main_Login = () => {
         })
     });
 
+    // hamberger control handler
+    const handleHamburgerClick = useCallback(() => {
+        setClickBurger(() => {
+            if(clickBurger === "true"){
+                return "false";
+            } else {
+                return "true";
+            }
+        });
+    });
+
+
     return (
         <>
+            <Hamburger_div clickburger={clickBurger}>
+                <Hamburger_head>
+                    <Hamburger_head_p onClick={handleHamburgerClick}>X</Hamburger_head_p>
+                </Hamburger_head>
+                <Hamburger_main_div>
+                    <Hamburger_youtube_div></Hamburger_youtube_div>
+                    <Hamburger_x_div></Hamburger_x_div>
+                </Hamburger_main_div>
+            </Hamburger_div>
             {is_logined 
             && <Logined_div>
+                    <Hamburger_a>
+                        <Hamburger_Button_img src='/images/hamburger.png' alt='hamburger_button' onClick={handleHamburgerClick} title='최신 소식 보기'/>
+                    </Hamburger_a>
                     <Home_a clicked={clickedMenu.Home_a} onClick={handleMenuClick} name="Home" title='홈'>
                         <Home_img src="/images/home.svg" name="Home"/></Home_a>
                     <Board_a clicked={clickedMenu.Board_a} onClick={handleMenuClick} name="Board" title='게시판'>
@@ -177,6 +297,9 @@ const Main_Login = () => {
                     </Logout_a>
                 </Logined_div>
             ||  <Login_form>
+                    <Hamburger_a>
+                    <Hamburger_Button_img src='/images/hamburger.png' alt='hamburger_button' onClick={handleHamburgerClick} title='최신 소식 보기'/>
+                    </Hamburger_a>
                     <Login_email placeholder="이메일"/>
                     <Login_pw placeholder="패스워드" type='password'/>
                     <Login_button>LOGIN</Login_button>
@@ -186,4 +309,4 @@ const Main_Login = () => {
     );
 }
 
-export default Main_Login;
+export default Main_Header;

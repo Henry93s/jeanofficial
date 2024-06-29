@@ -184,7 +184,7 @@ const Modal_Contents = styled.img`
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 20px;
-    width: 850px;
+    width: 1000px;
     height: 100%;
     z-index: 101;
     scrollbar-width: none;
