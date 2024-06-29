@@ -41,6 +41,8 @@ const Card_Carousel_div = styled.div`
 	scroll-snap-type: x mandatory;
     opacity: 0;
     transition: opacity 3s;
+    // 하단 swipe 드래그 공간을 위한 relative
+    position: relative;
 
     @media (max-width: 1000px) {
         height: 500px;
@@ -129,6 +131,30 @@ const Card_Carousel_right = styled.div`
 
 const Card_Carousel_left = styled(Card_Carousel_right)`
     left: 2px;
+`
+
+// 하단 swipe 드래그 공간
+const Carousel_Swipe_Guide = styled.div`
+    // 하단 swipe 드래그 공간을 위한 absolute - Card_Carousel_div(relative 설정)
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+
+    @media (max-width: 1000px) {
+        display: none;
+    }
+`
+const Carousel_Swipe_Guide_img = styled.img`
+    width: 50px;
+    height: 50px;
+`
+const Carousel_Swipe_Guide_p = styled.p`
+    font-size: bold;
 `
 
 // 모달 오버레이
@@ -346,6 +372,11 @@ const Body_3_element2 = () => {
                             </Card_Carousel_item>
                         );
                     })}
+                    <Carousel_Swipe_Guide>
+                        <Carousel_Swipe_Guide_img src="/images/move-left.png" alt="move-left" />
+                        <Carousel_Swipe_Guide_p>이곳에서 좌우로 SWIPE 하세요.</Carousel_Swipe_Guide_p>
+                        <Carousel_Swipe_Guide_img src="/images/move-right.png" alt="move-right" />
+                    </Carousel_Swipe_Guide>
                 </Card_Carousel_div>
                 
             </Main_flex_div>
