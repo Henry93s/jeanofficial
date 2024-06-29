@@ -17,7 +17,9 @@ const Hamburger_div = styled.div.attrs(props => ({
     transition: transform 0.5s ease-in-out;
     // maximum
     z-index: 102;
-
+    // 자식 태그 스크롤할 때 부모 태그 스크롤 막기?
+    overscroll-behavior: contain;
+    
     @media (max-width: 1000px) {
         width: 100%;
     }
@@ -34,6 +36,7 @@ const Hamburger_head = styled.div`
 const Hamburger_head_p = styled.p`
     font-size: 48px;
     margin-right: 10px;
+    pointer-events: all;
     cursor: pointer;
 `
 const Hamburger_main_div = styled.div`
@@ -45,19 +48,45 @@ const Hamburger_main_div = styled.div`
 `
 // youtube burger
 const Hamburger_youtube_div = styled.div`
-    width: 50%;
+    width: 48%;
     height: 100%;
-    overflow-x: hidden;
+    padding-left: 2%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: red;
-    // 자식 태그 스크롤할 때 부모 태그 스크롤 막기
+    gap: 20px;
+    // y축 보이는 scroll 작업 // modal open 시 외부 스크롤 막았으므로 모달에서는 허용 셋팅
+    overflow-y: auto;
+    // flex oneline!
+    flex-wrap: nowrap;
+    // modal scroll setting : 자식 태그 스크롤 할 때, 부모 태그에다가는 스크롤 막기 !
     overscroll-behavior: contain;
+    // 스크롤 시 하나씩 넘기기	
+	scroll-snap-type: y mandatory;
+    background-color: red;
 `
+const Hamburger_youtube_item = styled.div`
+    // y축 scroll 작업 flex item 크기 고정 시키기
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 350px;
+    // 스크롤 시 하나씩 넘기기(아이템)
+    scroll-snap-align: start;
+
+    width: 96%;
+    height: 100%;
+    background-color: white;
+
+    @media (max-width: 1000px) {
+        flex-basis: 300px;
+    }
+`
+
 // twitter(x) burger
 const Hamburger_x_div = styled(Hamburger_youtube_div)`
     background-color: blue;
+`
+const Hamburger_x_item = styled(Hamburger_youtube_item)`
 `
 
 // hamburger 버튼 부분
@@ -68,7 +97,7 @@ const Hamburger_a = styled.a`
     flex-grow: 0.5;
     
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     cursor: default;
@@ -76,6 +105,8 @@ const Hamburger_a = styled.a`
     border: none;
 `
 const Hamburger_Button_img = styled.img`
+    width: 50px;
+    height: 50px;
     cursor: pointer;
 `
 
@@ -220,7 +251,7 @@ const Logout_img = styled(Home_img)`
 
 //
 
-const Main_Header = () => {
+const Main_Header = (props) => {
     const [user, setUser] = useState({});
     const [clickedMenu, setClickedMenu] = useState({
         Home_a: "true",
@@ -228,9 +259,11 @@ const Main_Header = () => {
         Store_a: "false",
         Mypage_a: "false"
     });
-    // hamberger clicked state
-    const [clickBurger, setClickBurger] = useState("false");
- 
+    // hamberger clicked state (app.js props(before using redux))
+    // const [clickBurger, setClickBurger] = useState("false");
+    // arrived STATE ! (before using redux, 상태 전달 연습해보기 !)
+    const {clickBurger, handleHamburgerClick} = props;
+
     const is_logined = useMemo(() => {
         if(!user.email){
             return true;
@@ -253,7 +286,8 @@ const Main_Header = () => {
         })
     });
 
-    // hamberger control handler
+    // hamberger control handler (app.js props(before using redux))
+    /*
     const handleHamburgerClick = useCallback(() => {
         setClickBurger(() => {
             if(clickBurger === "true"){
@@ -263,7 +297,7 @@ const Main_Header = () => {
             }
         });
     });
-
+    */
 
     return (
         <>
@@ -272,8 +306,21 @@ const Main_Header = () => {
                     <Hamburger_head_p onClick={handleHamburgerClick}>X</Hamburger_head_p>
                 </Hamburger_head>
                 <Hamburger_main_div>
-                    <Hamburger_youtube_div></Hamburger_youtube_div>
-                    <Hamburger_x_div></Hamburger_x_div>
+                    <Hamburger_youtube_div>
+                        <Hamburger_youtube_item/>
+                        <Hamburger_youtube_item/>
+                        <Hamburger_youtube_item/>
+                        <Hamburger_youtube_item/>
+                        <Hamburger_youtube_item/>
+                    </Hamburger_youtube_div>
+                    <Hamburger_x_div>
+                        <Hamburger_x_item/>
+                        <Hamburger_x_item/>
+                        <Hamburger_x_item/>
+                        <Hamburger_x_item/>
+                        <Hamburger_x_item/>
+                        <Hamburger_x_item/>
+                    </Hamburger_x_div>
                 </Hamburger_main_div>
             </Hamburger_div>
             {is_logined 

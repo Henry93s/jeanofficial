@@ -36,6 +36,7 @@ const Card_Carousel_div = styled.div`
     gap: 20px;
     // x축 scroll 작업
     overflow-x: hidden;
+    // oneline
     flex-wrap: nowrap;
     // 스크롤 시 하나씩 넘기기	
 	scroll-snap-type: x mandatory;
@@ -43,12 +44,12 @@ const Card_Carousel_div = styled.div`
     transition: opacity 3s;
     // 하단 swipe 드래그 공간을 위한 relative
     position: relative;
+    /* 끝에서 바운스 되도록 */
+    -webkit-overflow-scrolling: touch;
 
     @media (max-width: 1000px) {
         height: 500px;
-        /* mobile 끝에서 바운스 되도록 */
-        -webkit-overflow-scrolling: touch;
-        overflow-x: scroll;
+        overflow-x: auto;
     }
 `
 const Card_Carousel_item = styled.div.attrs(props => ({
@@ -307,7 +308,6 @@ const Body_3_element2 = () => {
     const handleModalClick = useCallback(() => {
         setIsModal("false");
     });
-    console.log(isModal, cardSrc)
 
     // 좌우 버튼 시 캐러셀 내부 x 스크롤 이동 동작 명령 (css props - move(translate value 값) 전달)
     const handleCarouselClick = useCallback((e) => {
@@ -348,7 +348,7 @@ const Body_3_element2 = () => {
             });
         }
     });
-    console.log(cardSrc)
+
     return (
         <>
             <Modal_Overlay onClick={handleModalClick} ismodal={isModal}>

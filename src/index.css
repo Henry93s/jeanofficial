@@ -3,6 +3,7 @@ body {
   height: 100vh;
   margin: 0 auto;
   padding: 0;
+  /* pc x scroll OFF(body overflow-x: hidden) */
   overflow-x: hidden;
 
   user-select: none;
@@ -23,11 +24,10 @@ body {
 }
 
 
-/* mobile x scroll X */
+/* mobile x scroll X (html, body : overflow-x: hidden) */
 /* 해당 설정 후 relative - absolute 연결 잘 되었는지 체크 필수 */
 @media (max-width: 1000px) {
-  html {
+  html, body {
     overflow-x: hidden;
-    height: 100%;
   }
 }
