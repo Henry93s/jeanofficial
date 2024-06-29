@@ -6,13 +6,11 @@ import Body_2_element1 from './Body_2_element1';
 import Body_3_element2 from './Body_3_element2';
 
 const Main = (props) => {
-    // goto Main_Header STATE (before using redux, 상태 전달 연습해보기 !)
-    const {clickBurger, handleHamburgerClick} = props;
 
     return (
         <>
             <Title_Header />
-            <Main_Header clickBurger={clickBurger} handleHamburgerClick={handleHamburgerClick} />
+            <Main_Header />
             <Body_1_video />
             <Body_2_element1 />
             <Body_3_element2 />

@@ -1,6 +1,5 @@
 import React,{useState, useCallback, useMemo} from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
 
 // hamberger NEW youtube & twitter (1 x 10 grid x 2 라인)
@@ -17,8 +16,6 @@ const Hamburger_div = styled.div.attrs(props => ({
     transition: transform 0.5s ease-in-out;
     // maximum
     z-index: 102;
-    // 자식 태그 스크롤할 때 부모 태그 스크롤 막기?
-    overscroll-behavior: contain;
     
     @media (max-width: 1000px) {
         width: 100%;
@@ -248,9 +245,6 @@ const Mypage_img = styled(Home_img)`
 const Logout_img = styled(Home_img)`
 `
 
-
-//
-
 const Main_Header = (props) => {
     const [user, setUser] = useState({});
     const [clickedMenu, setClickedMenu] = useState({
@@ -260,9 +254,16 @@ const Main_Header = (props) => {
         Mypage_a: "false"
     });
     // hamberger clicked state (app.js props(before using redux))
-    // const [clickBurger, setClickBurger] = useState("false");
-    // arrived STATE ! (before using redux, 상태 전달 연습해보기 !)
-    const {clickBurger, handleHamburgerClick} = props;
+    const [clickBurger, setClickBurger] = useState("false");
+    const handleHamburgerClick = useCallback(() => {
+        setClickBurger(() => {
+          if(clickBurger === "true"){
+            return "false";
+          } else {
+            return "true";
+          }
+        });
+    });
 
     const is_logined = useMemo(() => {
         if(!user.email){
@@ -285,19 +286,6 @@ const Main_Header = (props) => {
             return newClickedMenu;
         })
     });
-
-    // hamberger control handler (app.js props(before using redux))
-    /*
-    const handleHamburgerClick = useCallback(() => {
-        setClickBurger(() => {
-            if(clickBurger === "true"){
-                return "false";
-            } else {
-                return "true";
-            }
-        });
-    });
-    */
 
     return (
         <>
