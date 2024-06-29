@@ -26,8 +26,10 @@ body {
 
 /* mobile x scroll X (html, body : overflow-x: hidden) */
 /* 해당 설정 후 relative - absolute 연결 잘 되었는지 체크 필수 */
+/*
 @media (max-width: 1000px) {
   html, body {
     overflow-x: hidden;
   }
 }
+*/
