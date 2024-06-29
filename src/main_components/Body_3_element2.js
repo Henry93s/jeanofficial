@@ -152,6 +152,7 @@ const Body_3_element2 = () => {
     // x 스크롤 위치 state
     const [scrollLeft, setScrollLeft] = useState(0);
     // 마우스 클릭 handler
+    // 모든 마우스 이벤트마다 e.preventDefault() 적용 처리
     const handleIsMouseDown = useCallback((e) =>{
         e.preventDefault();
         setIsMouseDown(true);
@@ -181,7 +182,8 @@ const Body_3_element2 = () => {
                     newCarouselIndex.direction = "right";
                     // const move 로 실제 translate value 를 계산해버리므로 index 까지 고려하지 않아도 문제 없음
                     // gap(20px) + width(flex-basis (550px)) = 570 px
-                    const move = newCarouselIndex.translateValue - (570);
+                    // 570 / n 으로 드래그에 따른 translateX 값 조절
+                    const move = newCarouselIndex.translateValue - (570 / 5);
                     // 드래그 다음 제한 설정 추가
                     if(Math.abs(move) > 570 * (Body_3_supernatural.length - 1)){
                         newCarouselIndex.translateValue = (570 * (Body_3_supernatural.length - 1)) * (-1);
@@ -198,7 +200,8 @@ const Body_3_element2 = () => {
                     newCarouselIndex.direction = "left";
                     // const move 로 실제 translate value 를 계산해버리므로 index 까지 고려하지 않아도 문제 없음
                     // gap(20px) + width(flex-basis (550px)) = 570 px
-                    const move = newCarouselIndex.translateValue + (570);
+                    // 570 / n 으로 드래그에 따른 translateX 값 조절
+                    const move = newCarouselIndex.translateValue + (570 / 5);
                     // 드래그 이전 제한 설정 추가
                     if(move > 0){
                         newCarouselIndex.translateValue = 0;
