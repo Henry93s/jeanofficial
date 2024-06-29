@@ -24,7 +24,7 @@ const Main_flex_div_p = styled.p`
     font-size: 48px;
     font-weight: 600;
     opacity: 0;
-    transition: all 3s;
+    transition: opacity 3s;
 `
 const Card_Carousel_div = styled.div`
     width: 96%;
@@ -40,7 +40,7 @@ const Card_Carousel_div = styled.div`
     // 스크롤 시 하나씩 넘기기	
 	scroll-snap-type: x mandatory;
     opacity: 0;
-    transition: all 3s;
+    transition: opacity 3s;
 
     @media (max-width: 1000px) {
         height: 500px;
@@ -73,7 +73,6 @@ const Card_Carousel_item = styled.div.attrs(props => ({
     // 모바일 캐러셀에는 드래그 기본 동작 사용으로 트랜스폼 transition 제거 처리
     @media (max-width: 1000px) {
         transition: none;
-        width: 40%;
         flex-basis: 300px;
     }
 `
@@ -111,7 +110,7 @@ const Card_Carousel_right = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.5s;
+    transition: opacity 0.5s;
     transform: translate(0px, 600px);
     z-index: 2;
 
@@ -132,6 +131,43 @@ const Card_Carousel_left = styled(Card_Carousel_right)`
     left: 2px;
 `
 
+// 모달 오버레이
+const Modal_Overlay = styled.div.attrs(props => ({
+    style: {
+        display: props.ismodal === "true" ? "block" : "none"
+    }
+}))`
+    position: fixed;
+    background-image: url('/images/modal_overlay.png');
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+
+    animation: opacityAni 0.5s;
+
+    @keyframes opacityAni {
+        from{opacity: 0};
+        to{opacity: 1};
+    }
+`
+// 모달 컨텐츠
+const Modal_Contents = styled.img`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    width: 850px;
+    height: 100%;
+    z-index: 101;
+    scrollbar-width: none;
+    @media (max-width: 1000px) {
+        width: 100%;
+        max-width: 1000px;
+        height: 100%;
+    }
+`
 
 const Body_3_element2 = () => {
     // 캐러셀 인덱스 state (좌우버튼 클릭)
@@ -183,14 +219,14 @@ const Body_3_element2 = () => {
                     // const move 로 실제 translate value 를 계산해버리므로 index 까지 고려하지 않아도 문제 없음
                     // gap(20px) + width(flex-basis (550px)) = 570 px
                     // 570 / n 으로 드래그에 따른 translateX 값 조절
-                    const move = newCarouselIndex.translateValue - (570 / 5);
+                    const move = newCarouselIndex.translateValue - (570 / 4.5);
                     // 드래그 다음 제한 설정 추가
-                    if(Math.abs(move) > 570 * (Body_3_supernatural.length - 1)){
-                        newCarouselIndex.translateValue = (570 * (Body_3_supernatural.length - 1)) * (-1);
+                    if(Math.abs(move) > 570 * (supernatural.length - 1)){
+                        newCarouselIndex.translateValue = (570 * (supernatural.length - 1)) * (-1);
                     } else {
                         newCarouselIndex.translateValue = move;
                     }
-                    console.log("pc drag " + newCarouselIndex.translateValue)
+                    // console.log("pc drag " + newCarouselIndex.translateValue)
                     return newCarouselIndex;
                 });
             } else { // 좌측에서 우측으로 쓸어넘긴 경우 -> prev
@@ -201,14 +237,14 @@ const Body_3_element2 = () => {
                     // const move 로 실제 translate value 를 계산해버리므로 index 까지 고려하지 않아도 문제 없음
                     // gap(20px) + width(flex-basis (550px)) = 570 px
                     // 570 / n 으로 드래그에 따른 translateX 값 조절
-                    const move = newCarouselIndex.translateValue + (570 / 5);
+                    const move = newCarouselIndex.translateValue + (570 / 4.5);
                     // 드래그 이전 제한 설정 추가
                     if(move > 0){
                         newCarouselIndex.translateValue = 0;
                     } else {
                         newCarouselIndex.translateValue = move;
                     }
-                    console.log("pc drag " + newCarouselIndex.translateValue)
+                    // console.log("pc drag " + newCarouselIndex.translateValue)
                     return newCarouselIndex;
                 });
             }
@@ -234,11 +270,18 @@ const Body_3_element2 = () => {
             osv.observe(v);
         })
     },[]);
-    
-    // 사진 전체 화면으로 모달 창 띄울 예정
-    const handleCardClick = useCallback((i) => {
-        // console.log(i);
+     
+    // 캐러셀 사진 전체 화면 모달 창 호출 이벤트 핸들러
+    const [isModal, setIsModal] = useState("false");
+    const [cardSrc, setCardSrc] = useState('');
+    const handleCardClick = useCallback((value) => {
+        setIsModal("true");
+        setCardSrc(value);
     });
+    const handleModalClick = useCallback(() => {
+        setIsModal("false");
+    });
+    console.log(isModal, cardSrc)
 
     // 좌우 버튼 시 캐러셀 내부 x 스크롤 이동 동작 명령 (css props - move(translate value 값) 전달)
     const handleCarouselClick = useCallback((e) => {
@@ -257,7 +300,7 @@ const Body_3_element2 = () => {
                 } else {
                     newCarouselIndex.translateValue = move;
                 }
-                console.log("pc click " + newCarouselIndex.translateValue)
+                // console.log("pc click " + newCarouselIndex.translateValue)
                 return newCarouselIndex;
             });
         } else { // next
@@ -269,40 +312,44 @@ const Body_3_element2 = () => {
                 // gap(20px) + width(flex-basis (550px)) = 570 px
                 const move = newCarouselIndex.translateValue - (570);
                 // 최대 다음 클릭 제한 설정 추가
-                if(Math.abs(move) > 570 * (Body_3_supernatural.length - 1)){
-                    newCarouselIndex.translateValue = (570 * (Body_3_supernatural.length - 1)) * (-1);
+                if(Math.abs(move) > 570 * (supernatural.length - 1)){
+                    newCarouselIndex.translateValue = (570 * (supernatural.length - 1)) * (-1);
                 } else {
                     newCarouselIndex.translateValue = move;
                 }
-                console.log("pc click " + newCarouselIndex.translateValue)
+                // console.log("pc click " + newCarouselIndex.translateValue)
                 return newCarouselIndex;
             });
         }
     });
-
+    console.log(cardSrc)
     return (
-        <Main_flex_div>
-            <Main_flex_div_p ref={element => targetRef.current[0] = element}>Supernatural<br/>Photo</Main_flex_div_p>
-            <Card_Carousel_left><img src="/images/left.png" alt="left" onClick={handleCarouselClick} name="leftClick"/></Card_Carousel_left>
-            <Card_Carousel_right><img src="/images/right.png" alt="right" onClick={handleCarouselClick} name="rightClick"/></Card_Carousel_right>
-            <Card_Carousel_div ref={element => targetRef.current[1] = element}
-                    onMouseDown={handleIsMouseDown}
-                    onMouseLeave={handleIsMouseLeave}
-                    onMouseUp={handleIsMouseUp}
-                    onMouseMove={handleIsMouseMove}
-                >
-                {supernatural.map((v,i) => {
-                    return (
-                        <Card_Carousel_item carouselindex={carouselIndex} ref={v => cardRef.current[i] = v} key={v.key} className={v.is_focused}>
-                            {/* 매개변수가 있는 이벤트 핸들러 함수 등은 익명함수로 넣어야 함!!! (아니면 렌더링될 때마다 바로 호출해버림) */}
-                            <Card_Carousel_item_img src={v.value} alt={v.value} onClick={() => handleCardClick(i)}/>
-                        </Card_Carousel_item>
-                    );
-                })}
-            </Card_Carousel_div>
-            
-        </Main_flex_div>
-
+        <>
+            <Modal_Overlay onClick={handleModalClick} ismodal={isModal}>
+                        <Modal_Contents src={cardSrc} alt={cardSrc} />
+            </Modal_Overlay>
+            <Main_flex_div>
+                <Main_flex_div_p ref={element => targetRef.current[0] = element}>Supernatural<br/>Photo</Main_flex_div_p>
+                <Card_Carousel_left><img src="/images/left.png" alt="left" onClick={handleCarouselClick} name="leftClick"/></Card_Carousel_left>
+                <Card_Carousel_right><img src="/images/right.png" alt="right" onClick={handleCarouselClick} name="rightClick"/></Card_Carousel_right>
+                <Card_Carousel_div ref={element => targetRef.current[1] = element}
+                        onMouseDown={handleIsMouseDown}
+                        onMouseLeave={handleIsMouseLeave}
+                        onMouseUp={handleIsMouseUp}
+                        onMouseMove={handleIsMouseMove}
+                    >
+                    {supernatural.map((v,i) => {
+                        return (
+                            <Card_Carousel_item carouselindex={carouselIndex} ref={v => cardRef.current[i] = v} key={v.key} className={v.is_focused}>
+                                {/* 매개변수가 있는 이벤트 핸들러 함수 등은 익명함수로 넣어야 함!!! (아니면 렌더링될 때마다 바로 호출해버림) */}
+                                <Card_Carousel_item_img src={v.value} alt={v.value} onClick={() => handleCardClick(v.value)}/>
+                            </Card_Carousel_item>
+                        );
+                    })}
+                </Card_Carousel_div>
+                
+            </Main_flex_div>
+        </>
     )
 }
 

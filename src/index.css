@@ -22,6 +22,7 @@ body {
   color: white;
 }
 
+
 /* mobile x scroll X */
 /* 해당 설정 후 relative - absolute 연결 잘 되었는지 체크 필수 */
 @media (max-width: 1000px) {

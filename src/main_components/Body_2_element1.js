@@ -36,7 +36,7 @@ const Flex_div_main1_div1 = styled.div`
     background-size: contain;
     background-position: center;
     opacity: 0;
-    transition: all 3s;
+    transition: opacity 3s;
 
     @media (max-width: 1000px) {
         height: 50%;
@@ -47,7 +47,7 @@ const Flex_div_main1_div2 = styled.div`
     width: 100%;
     height: 30%;
     opacity: 0;
-    transition: all 4s;
+    transition: opacity 4s;
     @media (max-width: 1000px) {
         height: 50%;
         padding-top: 30%;
@@ -62,7 +62,7 @@ const Flex_div_sub_div = styled.div`
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: all 5s;
+    transition: opacity 5s;
 `
 
 const Flex_div_sub_element1 = styled.div`

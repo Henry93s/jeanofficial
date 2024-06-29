@@ -156,7 +156,6 @@ const Main_Login = () => {
             return newClickedMenu;
         })
     });
-    console.log(clickedMenu)
 
     return (
         <>
