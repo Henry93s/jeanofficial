@@ -54,7 +54,23 @@ const Logined_div = styled.div`
     margin-bottom: 20px;
 `
 
-const Home_a = styled.a`
+// props 로 스타일에 지속적으로 변화가 필요할 때는 styled.attrs 프로퍼티를 이용한다!
+// 그렇지 않을 경우 계속 초기화되나, attrs 적용 시 props 부분만 지속적으로 업데이트가 가능해짐
+/* styled.attrs 문법 참고
+const Card_Carousel_item = styled.div.attrs(props => ({
+    // 좌우 버튼 시 캐러셀 내부 x 스크롤 이동 동작 명령 (css props 받음 -> carouselIndex {index, direction})
+    style: {
+        transform: `translateX(${props.carouselindex.translateValue}px)`
+    },
+}))`
+~ 정의
+`
+*/
+const Home_a = styled.a.attrs(props => ({
+    style: {
+        backgroundColor: props.clicked === "true" ? "#0071E3" : "black"
+    },
+}))`
     width: 150px;
     height: 40px;
     display: flex;
@@ -64,7 +80,7 @@ const Home_a = styled.a`
     font-size: 24px;
     font-weight: 600;
     cursor: pointer;
-    background-color: ${(props) => props.clicked === "true" ? "#0071E3" : "black"};
+    
     border-radius: 300px;
     transition: background-color 1s;
 
@@ -127,7 +143,7 @@ const Main_Login = () => {
         }
     });
 
-    const handleMenuClick = (e) => {
+    const handleMenuClick = useCallback((e) => {
         setClickedMenu((current) => {
             const newClickedMenu = {
                 Home_a: "false",
@@ -139,7 +155,8 @@ const Main_Login = () => {
             newClickedMenu[target] = "true";
             return newClickedMenu;
         })
-    }
+    });
+    console.log(clickedMenu)
 
     return (
         <>

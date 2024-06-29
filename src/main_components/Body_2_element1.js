@@ -62,7 +62,7 @@ const Flex_div_sub_div = styled.div`
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: all 6s;
+    transition: all 5s;
 `
 
 const Flex_div_sub_element1 = styled.div`
