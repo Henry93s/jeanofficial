@@ -9,8 +9,8 @@ const Main = (props) => {
 
     return (
         <>
-            <Title_Header />
             <Main_Header />
+            <Title_Header />
             <Body_1_video />
             <Body_2_element1 />
             <Body_3_element2 />

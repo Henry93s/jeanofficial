@@ -16,7 +16,7 @@ const Hamburger_div = styled.div.attrs(props => ({
     transition: transform 0.5s ease-in-out;
     // maximum
     z-index: 102;
-    
+
     @media (max-width: 1000px) {
         width: 100%;
     }
@@ -100,6 +100,11 @@ const Hamburger_a = styled.a`
     cursor: default;
     background-color: transparent;
     border: none;
+
+    @media (max-width: 1000px) {
+        flex-grow: 0.2;
+        width: 50px;
+    }
 `
 const Hamburger_Button_img = styled.img`
     width: 50px;
@@ -120,42 +125,55 @@ const Login_form = styled.form`
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
 `
 const Login_email = styled.input`
     width: 300px;
     height: 40px;
     border-radius: 20px;
-    font-family: "Gamja Flower";
-    font-size: 24px;
+    font-size: 15px;
     text-align: center;
+    // placeholder icon setting
+    background-image: url('/images/id.png');
+    background-repeat: no-repeat;
+    background-position: left;
+    background-position-x: 15px;
 
     @media (max-width: 1000px) {
-        width: 150px;
-        font-size: large;
+        width: 110px;
+        background-size: 20px;
+        font-size: 12px;
+        height: 25px;
+        background-position-x: 3px;
     }
 `
+
 const Login_pw = styled(Login_email)`
     width: 200px;
+    background-image: url('/images/password.png');
 
     @media (max-width: 1000px) {
-        width: 100px;
+        width: 90px;
     }
 `
-const Login_button = styled.button`
-    width: 200px;
-    height: 40px;
-    border-radius: 20px;
-    font-size: large;
-    font-weight: bold;
-    cursor: pointer;
-    background-color: white;
-    color: black;
-    transition: background-color 1s;
 
-    &:hover {
-        background-color: #0071E3;
-        color: white;
+const Login_button = styled.button`
+    width: 60px;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+`
+const Login_button_img = styled.img`
+    width: 100%;
+    height: 100%;
+
+    @media (max-width: 1000px) {
+        height: 80%;
     }
 `
 
@@ -266,7 +284,7 @@ const Main_Header = (props) => {
     });
 
     const is_logined = useMemo(() => {
-        if(!user.email){
+        if(user.email){
             return true;
         } else {
             return false;
@@ -335,9 +353,11 @@ const Main_Header = (props) => {
                     <Hamburger_a>
                     <Hamburger_Button_img src='/images/hamburger.png' alt='hamburger_button' onClick={handleHamburgerClick} title='최신 소식 보기'/>
                     </Hamburger_a>
-                    <Login_email placeholder="이메일"/>
-                    <Login_pw placeholder="패스워드" type='password'/>
-                    <Login_button>LOGIN</Login_button>
+                    <Login_email placeholder="이메일" />
+                    <Login_pw placeholder="패스워드" type='password' />
+                    <Login_button>
+                        <Login_button_img src='/images/login.png' />
+                    </Login_button>
                 </Login_form>
             }
         </>

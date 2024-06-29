@@ -7,7 +7,9 @@ const Main = styled.div`
     height: 750px;
     position: relative;
     overflow: hidden;
+    margin-top: -200px;
     @media (max-width: 1000px) {
+        margin-top: -70px;
         height: 330px;
     }
 `
@@ -37,6 +39,11 @@ const Icon_div = styled.div`
     width: 400px;
     height: 100px;
     gap: 20px;
+    margin-top: 5rem;
+
+    @media (max-width: 1000px) {
+        margin-top: 3rem;
+    }
 `
 const Icon_youtube = styled.a`
     width: 50px;

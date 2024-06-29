@@ -8,17 +8,16 @@ const Main = styled.div`
     font-family: "Lilita One", sans-serif;
     font-size: 200px;
     font-weight: 700;
-    margin-top: -220px;
-    background: url('/images/main_bar.png') no-repeat;
-    background-size: cover;
-    border-radius: 500px;
+    margin-top: -200px;
+
     gap: 10px;
     margin-bottom: 10px;
 
 
     @media (max-width: 1000px) {
+        background-position-y: 0px;
         font-size: 60px;
-        margin-top: -50px;
+        margin-top: -80px;
         gap: 1px;
     }
 `
