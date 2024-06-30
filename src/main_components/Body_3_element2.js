@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useState, useCallback} from "react";
 import styled from "styled-components";
-import Body_3_supernatural from "./Body_3_supernatural";
+import Body_3_supernatural from "../datas/Body_3_supernatural";
 
 const Main_flex_div = styled.div`
     width: 100%;
@@ -20,11 +20,12 @@ const Main_flex_div = styled.div`
     }
 `
 const Main_flex_div_p = styled.p`
-    margin-left: 20px;
+    padding-left: 20px;
     font-size: 48px;
     font-weight: 600;
     opacity: 0;
     transition: opacity 3s;
+    text-shadow: 2px 2px 2px gray;
 `
 const Card_Carousel_div = styled.div`
     width: 96%;
@@ -106,7 +107,7 @@ const Card_Carousel_right = styled.div`
     background-color: transparent;
     border-radius: 50px;
     font-size: 50px;
-    right: 2px;
+    right: 20px;
     cursor: pointer;
     background-color: gray;
     opacity: 0.65;
@@ -122,16 +123,13 @@ const Card_Carousel_right = styled.div`
     }
 
     @media (max-width: 1000px) {
-        width: 60px;
-        height: 60px;
-        transform: translate(0px, 400px);
         // 모바일 캐러셀에는 x 축 드래그 기본 동작 사용이 가능하므로 좌우 버튼 제거 처리
         display: none;
     }
 `
 
 const Card_Carousel_left = styled(Card_Carousel_right)`
-    left: 2px;
+    left: 20px;
 `
 
 // 하단 swipe 드래그 공간

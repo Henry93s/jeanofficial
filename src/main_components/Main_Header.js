@@ -1,6 +1,6 @@
 import React,{useState, useCallback, useMemo} from 'react';
 import styled from 'styled-components';
-
+import youtube_data from '../datas/Header_sideBar_youtube';
 
 // hamberger NEW youtube & twitter (1 x 10 grid x 2 라인)
 const Hamburger_div = styled.div.attrs(props => ({

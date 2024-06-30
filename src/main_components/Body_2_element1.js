@@ -110,6 +110,7 @@ const Flex_div_sub_element2_a_p1 = styled.p`
 const Flex_div_sub_element2_a_p2 = styled.p`
     font-weight: bold;
     font-size: 43px;
+    text-shadow: 3px 2px 2px gray;
 
     @media (max-width: 1000px) {
         font-size: 22px;
