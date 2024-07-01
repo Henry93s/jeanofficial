@@ -2,7 +2,9 @@ body {
   /* CSS 단위를 vw, vh 등으로 조정하여 모바일 기기에서도 일관된 스크롤 동작을 유지(이후 나머지 css 에서도 vw, vh 필요할 수 있음...!)
   */
   width: 100vw;
+  width: 100dvw;
   height: 100vh;
+  height: 100dvh;
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;

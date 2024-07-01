@@ -10,7 +10,7 @@ const Hamburger_div = styled.div.attrs(props => ({
 }))`
     position: fixed;
     top: 0;
-    width: 70%;
+    width: 50%;
     height: 100%;
     transform: translateX(-100%);
     transition: transform 0.5s ease-in-out;
@@ -43,42 +43,33 @@ const Hamburger_main_div = styled.div`
     align-items: flex-start;
     width: 100%;
     height: 96%;
-
 `
 // youtube burger
 const Hamburger_youtube_div = styled.div`
-    width: 48%;
+    width: 100%;
     height: 100%;
     padding: 0 2% 0 2%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 20px;
-    // y축 보이는 scroll 작업 // modal open 시 외부 스크롤 막았으므로 모달에서는 허용 셋팅
+    // y축 보이는 scroll 작업
     overflow-x: hidden;
     overflow-y: auto;
-    // flex oneline!
-    flex-wrap: nowrap;
-    // modal scroll setting : 자식 태그 스크롤 할 때, 부모 태그에다가는 스크롤 막기 !
+    // modal scroll setting : 자식 태그 스크롤 할 때, 부모 태그에다가는 스크롤 막기
     overscroll-behavior: contain;
     // 스크롤 시 하나씩 넘기기	
 	scroll-snap-type: y mandatory;
     background-color: white;
-
-
-
-    @media (max-width: 1000px) {
-        padding-right: 20px;
-    }
 `
 const Hamburger_youtube_guide = styled.div`
     width: 100%;
     height: 80px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     gap: 20px;
-
+    border-bottom: 2px solid black;
     font-weight: bold;
     color: black;
     font-size: 33px;
@@ -112,6 +103,14 @@ const Hamburger_youtube_guide_reload = styled(Hamburger_youtube_guide_img)`
         height: 30px;
     }
 `
+const Hamburger_youtube_item_container = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+`
 
 const Hamburger_youtube_item = styled.div`
     // y축 scroll 작업 flex item 크기 고정 시키기
@@ -121,8 +120,8 @@ const Hamburger_youtube_item = styled.div`
     // 스크롤 시 하나씩 넘기기(아이템)
     scroll-snap-align: start;
 
-    width: 96%;
-    height: 100%;
+    width: 33%;
+    height: 40%;
     background-color: #121219;
     border-radius: 20px;
     color: white;
@@ -133,6 +132,7 @@ const Hamburger_youtube_item = styled.div`
     justify-content: flex-start;
 
     @media (max-width: 1000px) {
+        height: 60%;
         flex-basis: 300px;
     }
 `
@@ -154,18 +154,6 @@ const Hamburger_youtube_item_p = styled.p`
     @media (max-width: 1000px) {
         font-size: 15px;
     }
-`
-
-// twitter(x) burger
-const Hamburger_x_div = styled(Hamburger_youtube_div)`
-`
-const Hamburger_x_item = styled(Hamburger_youtube_item)`
-`
-const Hamburger_x_guide = styled(Hamburger_youtube_guide)`
-`
-const Hamburger_x_guide_img = styled(Hamburger_youtube_guide_img)`
-`
-const Hamburger_x_guide_reload = styled(Hamburger_youtube_guide_reload)`
 `
 
 // hamburger 버튼 부분
@@ -399,19 +387,6 @@ const Main_Header = (props) => {
         }, 3000);
     });
 
-    // x reload data state
-    const [x, setX] = useState([]);
-    const xRef = useRef(null);
-    const handleXReload = useCallback(() => {
-        
-        // 3바퀴
-        xRef.current.style.animation = "spin 1s 3 linear";
-        setTimeout(() => {
-            xRef.current.style.animation = "none";
-        }, 3000);
-    });
-
-
     const is_logined = useMemo(() => {
         if(user.email){
             return true;
@@ -447,7 +422,8 @@ const Main_Header = (props) => {
                             <Hamburger_youtube_guide_img src='/images/ham_youtube.png'/>
                             <Hamburger_youtube_guide_reload ref={youtubeRef} onClick={handleYoutubeReload} src='/images/reload.png'/>
                         </Hamburger_youtube_guide>
-                        {youtube.map((v,i) => {
+                        <Hamburger_youtube_item_container>
+                            {youtube.map((v,i) => {
                                 return (
                                     <Hamburger_youtube_item key={i} >
                                         <Hamburger_youtube_item_img src={v.image_url} alt={v.image_url} />
@@ -455,21 +431,9 @@ const Main_Header = (props) => {
                                         <Hamburger_youtube_item_p>{v.uploadTime}</Hamburger_youtube_item_p>
                                     </Hamburger_youtube_item>
                                 );
-                           })}
+                            })}
+                        </Hamburger_youtube_item_container>
                     </Hamburger_youtube_div>
-                    <Hamburger_x_div>
-                        <Hamburger_x_guide>
-                            <p>New Tweet</p>
-                            <Hamburger_x_guide_img src='/images/ham_x.png'/>
-                            <Hamburger_x_guide_reload ref={xRef} onClick={handleXReload} src='/images/reload.png'/>
-                        </Hamburger_x_guide>
-                        <Hamburger_x_item/>
-                        <Hamburger_x_item/>
-                        <Hamburger_x_item/>
-                        <Hamburger_x_item/>
-                        <Hamburger_x_item/>
-                        <Hamburger_x_item/>
-                    </Hamburger_x_div>
                 </Hamburger_main_div>
             </Hamburger_div>
             {is_logined 
