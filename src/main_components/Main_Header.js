@@ -1,6 +1,6 @@
-import React,{useState, useCallback, useMemo} from 'react';
+import React,{useState, useCallback, useMemo, useRef, useEffect} from 'react';
 import styled from 'styled-components';
-import youtube_data from '../datas/Header_sideBar_youtube';
+import youtubeFetch from '../datas/Header_sideBar_youtube';
 
 // hamberger NEW youtube & twitter (1 x 10 grid x 2 라인)
 const Hamburger_div = styled.div.attrs(props => ({
@@ -25,15 +25,15 @@ const Hamburger_div = styled.div.attrs(props => ({
 const Hamburger_head = styled.div`
     width: 100%;
     height: 65px;
-    background-color: black;
+    background-color: #121219;
     display: flex;
     justify-content: right;
     align-items: center;
 `
-const Hamburger_head_p = styled.p`
-    font-size: 48px;
+const Hamburger_head_img = styled.img`
+    width: 30px;
+    height: 30px;
     margin-right: 10px;
-    pointer-events: all;
     cursor: pointer;
 `
 const Hamburger_main_div = styled.div`
@@ -60,8 +60,43 @@ const Hamburger_youtube_div = styled.div`
     overscroll-behavior: contain;
     // 스크롤 시 하나씩 넘기기	
 	scroll-snap-type: y mandatory;
-    background-color: red;
+    background-color: white;
 `
+const Hamburger_youtube_guide = styled.div`
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+
+    font-family: "Inter";
+    font-weight: bold;
+    color: black;
+    font-size: 33px;
+    // 스크롤 시 하나씩 넘기기(아이템)
+    scroll-snap-align: start;
+
+    @media (max-width: 1000px) {
+        font-size: 18px;
+    }
+`
+const Hamburger_youtube_guide_img = styled.img`
+    width: 50px;
+    height: 50px;
+`
+const Hamburger_youtube_guide_reload = styled(Hamburger_youtube_guide_img)`
+    cursor: pointer;
+
+    /* 회전 애니메이션 */
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+`
+const Hamburger_x_guide_reload = styled(Hamburger_youtube_guide_reload)`
+`
+
 const Hamburger_youtube_item = styled.div`
     // y축 scroll 작업 flex item 크기 고정 시키기
     flex-grow: 0;
@@ -72,7 +107,7 @@ const Hamburger_youtube_item = styled.div`
 
     width: 96%;
     height: 100%;
-    background-color: white;
+    background-color: black;
 
     @media (max-width: 1000px) {
         flex-basis: 300px;
@@ -81,9 +116,12 @@ const Hamburger_youtube_item = styled.div`
 
 // twitter(x) burger
 const Hamburger_x_div = styled(Hamburger_youtube_div)`
-    background-color: blue;
 `
 const Hamburger_x_item = styled(Hamburger_youtube_item)`
+`
+const Hamburger_x_guide = styled(Hamburger_youtube_guide)`
+`
+const Hamburger_x_guide_img = styled(Hamburger_youtube_guide_img)`
 `
 
 // hamburger 버튼 부분
@@ -110,6 +148,11 @@ const Hamburger_Button_img = styled.img`
     width: 50px;
     height: 50px;
     cursor: pointer;
+
+    @media (max-width: 1000px) {
+        width: 40px;
+        height: 40px;
+    }
 `
 
 
@@ -119,7 +162,7 @@ const Login_form = styled.form`
     width: 100%;
     top: 0px;
     height: 65px;
-    background-color: black;
+    background-color: #121219;
     z-index: 101;
 
     display: flex;
@@ -134,6 +177,7 @@ const Login_email = styled.input`
     border-radius: 20px;
     font-size: 15px;
     text-align: center;
+    border: none;
     // placeholder icon setting
     background-image: url('/images/id.png');
     background-repeat: no-repeat;
@@ -263,6 +307,7 @@ const Mypage_img = styled(Home_img)`
 const Logout_img = styled(Home_img)`
 `
 
+
 const Main_Header = (props) => {
     const [user, setUser] = useState({});
     const [clickedMenu, setClickedMenu] = useState({
@@ -282,6 +327,46 @@ const Main_Header = (props) => {
           }
         });
     });
+
+    // youtube reload data state
+    const [youtube, setYoutube] = useState([]);
+    useEffect(() => {
+        // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
+        const fetch_data = async () => {
+            const data = await youtubeFetch();
+            setYoutube(data);
+        };
+        fetch_data();
+    },[])
+   
+    const youtubeRef = useRef(null);
+    const handleYoutubeReload = useCallback(() => {
+        // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
+        const fetch_data = async () => {
+            const data = await youtubeFetch();
+            setYoutube(data);
+        };
+        fetch_data();
+
+        // 3바퀴
+        youtubeRef.current.style.animation = "spin 1s 3 linear";
+        setTimeout(() => {
+            youtubeRef.current.style.animation = "none"
+        }, 3000);
+    });
+
+    // x reload data state
+    const [x, setX] = useState([]);
+    const xRef = useRef(null);
+    const handleXReload = useCallback(() => {
+        
+        // 3바퀴
+        xRef.current.style.animation = "spin 1s 3 linear";
+        setTimeout(() => {
+            xRef.current.style.animation = "none";
+        }, 3000);
+    });
+
 
     const is_logined = useMemo(() => {
         if(user.email){
@@ -309,10 +394,15 @@ const Main_Header = (props) => {
         <>
             <Hamburger_div clickburger={clickBurger}>
                 <Hamburger_head>
-                    <Hamburger_head_p onClick={handleHamburgerClick}>X</Hamburger_head_p>
+                    <Hamburger_head_img src='/images/close.png' onClick={handleHamburgerClick}/>
                 </Hamburger_head>
                 <Hamburger_main_div>
                     <Hamburger_youtube_div>
+                        <Hamburger_youtube_guide>
+                            <p>New videos</p>
+                            <Hamburger_youtube_guide_img src='/images/ham_youtube.png'/>
+                            <Hamburger_youtube_guide_reload ref={youtubeRef} onClick={handleYoutubeReload} src='/images/reload.png'/>
+                        </Hamburger_youtube_guide>
                         <Hamburger_youtube_item/>
                         <Hamburger_youtube_item/>
                         <Hamburger_youtube_item/>
@@ -320,6 +410,11 @@ const Main_Header = (props) => {
                         <Hamburger_youtube_item/>
                     </Hamburger_youtube_div>
                     <Hamburger_x_div>
+                        <Hamburger_x_guide>
+                            <p>New Tweet</p>
+                            <Hamburger_x_guide_img src='/images/ham_x.png'/>
+                            <Hamburger_x_guide_reload ref={xRef} onClick={handleXReload} src='/images/reload.png'/>
+                        </Hamburger_x_guide>
                         <Hamburger_x_item/>
                         <Hamburger_x_item/>
                         <Hamburger_x_item/>
