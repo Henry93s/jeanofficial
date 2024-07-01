@@ -164,10 +164,14 @@ const Modal_Overlay = styled.div.attrs(props => ({
 }))`
     position: fixed;
     background-image: url('/images/modal_overlay.png');
-    top: 0;
+    top: 65px;
     width: 100%;
     height: 100%;
     z-index: 100;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 
     animation: opacityAni 0.5s;
 
@@ -179,18 +183,19 @@ const Modal_Overlay = styled.div.attrs(props => ({
 // 모달 컨텐츠
 const Modal_Contents = styled.img`
     position: fixed;
-    top: 50%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 20px;
-    width: 1000px;
-    height: 100%;
+    width: 900px;
+    height: 95%;
     z-index: 101;
     scrollbar-width: none;
     @media (max-width: 1000px) {
         width: 100%;
-        max-width: 1000px;
-        height: 100%;
+        top: 55%;
+        height: 85%;
+        max-width: 900px;
     }
 `
 
@@ -364,7 +369,7 @@ const Body_3_element2 = () => {
                     >
                     {supernatural.map((v,i) => {
                         return (
-                            <Card_Carousel_item carouselindex={carouselIndex} ref={v => cardRef.current[i] = v} key={v.key} className={v.is_focused}>
+                            <Card_Carousel_item carouselindex={carouselIndex} ref={v => cardRef.current[i] = v} key={v.key}>
                                 {/* 매개변수가 있는 이벤트 핸들러 함수 등은 익명함수로 넣어야 함!!! (아니면 렌더링될 때마다 바로 호출해버림) */}
                                 <Card_Carousel_item_img src={v.value} alt={v.value} onClick={() => handleCardClick(v.value)}/>
                             </Card_Carousel_item>

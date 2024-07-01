@@ -14,6 +14,7 @@ const Hamburger_div = styled.div.attrs(props => ({
     height: 100%;
     transform: translateX(-100%);
     transition: transform 0.5s ease-in-out;
+    font-family: "Gamja Flower";
     // maximum
     z-index: 102;
 
@@ -41,18 +42,20 @@ const Hamburger_main_div = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    height: 100%;
+    height: 96%;
+
 `
 // youtube burger
 const Hamburger_youtube_div = styled.div`
     width: 48%;
     height: 100%;
-    padding-left: 2%;
+    padding: 0 2% 0 2%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 20px;
     // y축 보이는 scroll 작업 // modal open 시 외부 스크롤 막았으므로 모달에서는 허용 셋팅
+    overflow-x: hidden;
     overflow-y: auto;
     // flex oneline!
     flex-wrap: nowrap;
@@ -61,6 +64,11 @@ const Hamburger_youtube_div = styled.div`
     // 스크롤 시 하나씩 넘기기	
 	scroll-snap-type: y mandatory;
     background-color: white;
+
+
+    @media (max-width: 1000px) {
+        padding-right: 20px;
+    }
 `
 const Hamburger_youtube_guide = styled.div`
     width: 100%;
@@ -70,7 +78,6 @@ const Hamburger_youtube_guide = styled.div`
     align-items: center;
     gap: 20px;
 
-    font-family: "Inter";
     font-weight: bold;
     color: black;
     font-size: 33px;
@@ -78,12 +85,17 @@ const Hamburger_youtube_guide = styled.div`
     scroll-snap-align: start;
 
     @media (max-width: 1000px) {
-        font-size: 18px;
+        font-size: 23px;
     }
 `
 const Hamburger_youtube_guide_img = styled.img`
     width: 50px;
     height: 50px;
+
+    @media (max-width: 1000px) {
+        width: 40px;
+        height: 40px;
+    }
 `
 const Hamburger_youtube_guide_reload = styled(Hamburger_youtube_guide_img)`
     cursor: pointer;
@@ -93,8 +105,11 @@ const Hamburger_youtube_guide_reload = styled(Hamburger_youtube_guide_img)`
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-`
-const Hamburger_x_guide_reload = styled(Hamburger_youtube_guide_reload)`
+
+    @media (max-width: 1000px) {
+        width: 30px;
+        height: 30px;
+    }
 `
 
 const Hamburger_youtube_item = styled.div`
@@ -107,10 +122,36 @@ const Hamburger_youtube_item = styled.div`
 
     width: 96%;
     height: 100%;
-    background-color: black;
+    background-color: #121219;
+    border-radius: 20px;
+    color: white;
+    padding: 20px 10px 0 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 
     @media (max-width: 1000px) {
         flex-basis: 300px;
+    }
+`
+const Hamburger_youtube_item_img = styled.img`
+    width: 100%;
+    height: 96%;
+`
+const Hamburger_youtube_item_a = styled.a`
+    font-size: 20px;
+    text-underline-offset: 5px;
+    text-decoration: underline;
+    color: white;
+    @media (max-width: 1000px) {
+        font-size: 17px;
+    }
+`
+const Hamburger_youtube_item_p = styled.p`
+    font-size: 18px;
+    @media (max-width: 1000px) {
+        font-size: 15px;
     }
 `
 
@@ -122,6 +163,8 @@ const Hamburger_x_item = styled(Hamburger_youtube_item)`
 const Hamburger_x_guide = styled(Hamburger_youtube_guide)`
 `
 const Hamburger_x_guide_img = styled(Hamburger_youtube_guide_img)`
+`
+const Hamburger_x_guide_reload = styled(Hamburger_youtube_guide_reload)`
 `
 
 // hamburger 버튼 부분
@@ -338,7 +381,7 @@ const Main_Header = (props) => {
         };
         fetch_data();
     },[])
-   
+    console.log(youtube)
     const youtubeRef = useRef(null);
     const handleYoutubeReload = useCallback(() => {
         // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
@@ -403,11 +446,15 @@ const Main_Header = (props) => {
                             <Hamburger_youtube_guide_img src='/images/ham_youtube.png'/>
                             <Hamburger_youtube_guide_reload ref={youtubeRef} onClick={handleYoutubeReload} src='/images/reload.png'/>
                         </Hamburger_youtube_guide>
-                        <Hamburger_youtube_item/>
-                        <Hamburger_youtube_item/>
-                        <Hamburger_youtube_item/>
-                        <Hamburger_youtube_item/>
-                        <Hamburger_youtube_item/>
+                        {youtube.map((v,i) => {
+                                return (
+                                    <Hamburger_youtube_item key={i} >
+                                        <Hamburger_youtube_item_img src={v.image_url} alt={v.image_url} />
+                                        <Hamburger_youtube_item_a href={v.video_url} target='_blank' title={v.title}>{v.title}</Hamburger_youtube_item_a>
+                                        <Hamburger_youtube_item_p>{v.uploadTime}</Hamburger_youtube_item_p>
+                                    </Hamburger_youtube_item>
+                                );
+                           })}
                     </Hamburger_youtube_div>
                     <Hamburger_x_div>
                         <Hamburger_x_guide>

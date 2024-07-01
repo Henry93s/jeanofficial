@@ -38,7 +38,7 @@ const Icon_div = styled.div`
     margin: 0 auto;
     width: 400px;
     height: 100px;
-    gap: 20px;
+    gap: 50px;
     margin-top: 5rem;
 
     @media (max-width: 1000px) {
@@ -73,8 +73,6 @@ const Body_1_video = () => {
                 </Video>
             </Main>
             <Icon_div>
-                <Icon_youtube href='https://www.youtube.com/c/NewJeans_official' target='_blank'><img src="/images/youtube.png" alt="youtube" style={{width: "100%", height: "100%"}}/></Icon_youtube>
-                <Icon_x href='https://twitter.com/NewJeans_ADOR' target='_blank'><img src="/images/x.png" alt="x" style={{width: "100%", height: "100%"}}/></Icon_x>
                 <Icon_insta href='https://www.instagram.com/newjeans_official/' target='_blank'><img src="/images/insta.png" alt="insta" style={{width: "100%", height: "100%"}}/></Icon_insta>
                 <Icon_facebook href='https://www.facebook.com/official.newjeans' target='_blank'><img src="/images/facebook.png" alt="facebook" style={{width: "100%", height: "100%"}}/></Icon_facebook>
             </Icon_div>

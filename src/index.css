@@ -5,6 +5,7 @@ body {
   height: 100vh;
   margin: 0 auto;
   padding: 0;
+  box-sizing: border-box;
   /* pc x scroll OFF(body overflow-x: hidden) */
   overflow-x: hidden;
 

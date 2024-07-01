@@ -26,7 +26,13 @@ const youtubeFetch = async () => {
             const videoId = v.id.videoId;
             const videoTitle = v.snippet.title;
             const thumbnailUrl = v.snippet.thumbnails.high.url;
-            
+            const publishedAt = v.snippet.publishedAt;
+            // 한국 지역 날짜 시간으로 변환
+            const koreanTime = new Date(publishedAt).toLocaleDateString("ko-KR", {
+                year: "numeric", month: "numeric", day: "numeric", weekday: "long"
+                , hour: "numeric", minute: "numeric", second: "numeric"
+            });
+
             // &#39; 문자를 ' 문자로, &amp; 문자를 & 문자로 replace
             let newVideo_title = videoTitle.replace(/&#39;/g, '\'');
             newVideo_title = newVideo_title.replace(/&amp;/g, '&');
@@ -35,7 +41,8 @@ const youtubeFetch = async () => {
             const videoData = {
                 title: newVideo_title,
                 image_url: thumbnailUrl,
-                video_url: `https://www.youtube.com/watch?v=${videoId}`
+                video_url: `https://www.youtube.com/watch?v=${videoId}`,
+                uploadTime: koreanTime
             };
             youtube_data.push(videoData);
         })
