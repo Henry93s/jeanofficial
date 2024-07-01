@@ -6,8 +6,8 @@ body {
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
-  /* pc x scroll OFF(body overflow-x: hidden) */
-  overflow-x: hidden;
+  /* pc & mobile x scroll OFF(body overflow-x: clip) */
+  overflow-x: clip;
 
   user-select: none;
   -webkit-user-select: none;
@@ -25,14 +25,3 @@ body {
   background-color: black;
   color: white;
 }
-
-
-/* mobile x scroll X (html, body : overflow-x: hidden) */
-/* 해당 설정 후 relative - absolute 연결 잘 되었는지 체크 필수 */
-/*
-@media (max-width: 1000px) {
-  html, body {
-    overflow-x: hidden;
-  }
-}
-*/

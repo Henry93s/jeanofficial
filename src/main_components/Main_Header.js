@@ -66,6 +66,7 @@ const Hamburger_youtube_div = styled.div`
     background-color: white;
 
 
+
     @media (max-width: 1000px) {
         padding-right: 20px;
     }
@@ -381,7 +382,7 @@ const Main_Header = (props) => {
         };
         fetch_data();
     },[])
-    console.log(youtube)
+
     const youtubeRef = useRef(null);
     const handleYoutubeReload = useCallback(() => {
         // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
