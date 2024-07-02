@@ -3,7 +3,9 @@ import styled from "styled-components";
 import L from 'leaflet';
 
 const Main_container = styled.div`
-    width: 100%;
+    // 주요 element component PC 가운데 정렬 + 너비 70%( / 100vw )
+    width: 70%;
+    margin: 0 auto;
     height: 1200px;
 
     display: flex;
@@ -12,6 +14,11 @@ const Main_container = styled.div`
     align-items: flex-start;
 
     margin-top: 600px;
+    
+    @media (max-width: 1000px) {
+        // 주요 element component mobile은 100% 유지
+        width: 100%;
+    }
 `
 const Map_p = styled.p`
     margin-left: 20px;

@@ -39,7 +39,7 @@ const Icon_div = styled.div`
     margin: 0 auto;
     width: 400px;
     height: 100px;
-    gap: 30px;
+    gap: 50px;
     margin-top: 5rem;
 
     @media (max-width: 1000px) {

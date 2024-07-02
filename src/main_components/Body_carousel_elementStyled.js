@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 const Main_flex_div = styled.div`
-    width: 100%;
+    // 주요 element component PC 가운데 정렬 + 너비 70%( / 100vw )
+    width: 70%;
+    margin: 0 auto;
+
     height: 1200px;
     margin-top: 600px;
     font-family: "Inter", "Noto Sans KR", sans-serif;
@@ -13,6 +16,8 @@ const Main_flex_div = styled.div`
     position: relative;
 
     @media (max-width: 1000px) {
+        // 주요 element component mobile은 100% 유지
+        width: 100%;
         height: 700px;
         margin-top: 150px;
     }
@@ -70,7 +75,8 @@ const Card_Carousel_item = styled.div.attrs(props => ({
     z-index: 1;
     // 스크롤 시 하나씩 넘기기(아이템)
     scroll-snap-align: start;
-    // x축 scroll 작업  
+    // x축 scroll 작업 (아래처럼 이미지를 고정시켜서 드래그나 클릭 시 x 스크롤 이동 길이를 측정함 !)
+    // + "이미지 크기 고정" 작업(div > img 구조[div background 아님 !] + div 에서 flex-frow, shrink, basis(절대 크기) 설정 !)
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 550px;

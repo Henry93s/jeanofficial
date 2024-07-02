@@ -1,24 +1,29 @@
 import styled from "styled-components";
 
 const Main_flex_div = styled.div`
-    width: 100%;
+    // 주요 element component PC 가운데 정렬 + 너비 70%( / 100vw )
+    width: 70%;
+    margin: 0 auto;
+
     height: 1000px;
     font-family: "Inter", "Noto Sans KR", sans-serif;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     text-align: center;
     flex-grow: 0;
     margin-top: 600px;
     @media (max-width: 1000px) {
+        // 주요 element component mobile은 100% 유지
+        width: 100%;
         height: 1700px;
         flex-direction: column;
         margin-top: 150px;
     }
 `
 const Flex_div_main = styled.div`
-    width: 100%;
+    width: 48%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -27,6 +32,11 @@ const Flex_div_main = styled.div`
     font-size: 15px;
     text-align: center;
     line-height: 0.5;
+
+    @media (max-width: 1000px) {
+        // 주요 element component mobile은 100% 유지
+        width: 100%;
+    }
 `
 const Flex_div_main1_div1 = styled.div`
     width: 100%;
@@ -51,7 +61,7 @@ const Flex_div_main1_div2 = styled.div`
 `
 
 const Flex_div_sub_div = styled.div`
-    width: 100%;
+    width: 48%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -59,6 +69,11 @@ const Flex_div_sub_div = styled.div`
     align-items: center;
     opacity: 0;
     transition: opacity 5s;
+
+    @media (max-width: 1000px) {
+        // 주요 element component mobile은 100% 유지
+        width: 100%;
+    }
 `
 
 const Flex_div_sub_element1 = styled.div`

@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Main = styled.div`
+    // 주요 element component PC 가운데 정렬 + 너비 70%( / 100vw )
+    width: 70%;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: baseline;
@@ -10,7 +13,7 @@ const Main = styled.div`
     font-weight: 700;
     margin-top: -200px;
 
-    gap: 10px;
+    gap: 17px;
     margin-bottom: 10px;
 
 

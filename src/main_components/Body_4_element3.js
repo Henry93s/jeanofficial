@@ -15,6 +15,7 @@ const New_Flex_div_sub_element1 = styled(Flex_div_sub_element1)`
 
     background-size: cover;
     background-position: center;
+    
     @media (max-width: 1000px) {
         background: url('/images/card-thumb-3.png') no-repeat;
         background-size: cover;
