@@ -10,7 +10,7 @@ const Hamburger_div = styled.div.attrs(props => ({
 }))`
     position: fixed;
     top: 0;
-    width: 50%;
+    width: 70%;
     height: 100%;
     transform: translateX(-100%);
     transition: transform 0.5s ease-in-out;
@@ -42,16 +42,17 @@ const Hamburger_main_div = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    height: 96%;
+    height: 100%;
 `
 // youtube burger
 const Hamburger_youtube_div = styled.div`
-    width: 100%;
-    height: 100%;
+    width: 48%;
+    height: 95%;
     padding: 0 2% 0 2%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
     gap: 20px;
     // y축 보이는 scroll 작업
     overflow-x: hidden;
@@ -61,6 +62,10 @@ const Hamburger_youtube_div = styled.div`
     // 스크롤 시 하나씩 넘기기	
 	scroll-snap-type: y mandatory;
     background-color: white;
+
+    @media (max-width: 1000px) {
+        height: 90%;
+    }
 `
 const Hamburger_youtube_guide = styled.div`
     width: 100%;
@@ -81,8 +86,8 @@ const Hamburger_youtube_guide = styled.div`
     }
 `
 const Hamburger_youtube_guide_img = styled.img`
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
 
     @media (max-width: 1000px) {
         width: 40px;
@@ -103,14 +108,6 @@ const Hamburger_youtube_guide_reload = styled(Hamburger_youtube_guide_img)`
         height: 30px;
     }
 `
-const Hamburger_youtube_item_container = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-`
 
 const Hamburger_youtube_item = styled.div`
     // y축 scroll 작업 flex item 크기 고정 시키기
@@ -120,8 +117,8 @@ const Hamburger_youtube_item = styled.div`
     // 스크롤 시 하나씩 넘기기(아이템)
     scroll-snap-align: start;
 
-    width: 33%;
-    height: 40%;
+    width: 95%;
+    height: 70%;
     background-color: #121219;
     border-radius: 20px;
     color: white;
@@ -132,13 +129,12 @@ const Hamburger_youtube_item = styled.div`
     justify-content: flex-start;
 
     @media (max-width: 1000px) {
-        height: 60%;
-        flex-basis: 300px;
+        flex-basis: 270px;
     }
 `
 const Hamburger_youtube_item_img = styled.img`
     width: 100%;
-    height: 96%;
+    height: 100%;
 `
 const Hamburger_youtube_item_a = styled.a`
     font-size: 20px;
@@ -155,6 +151,17 @@ const Hamburger_youtube_item_p = styled.p`
         font-size: 15px;
     }
 `
+const Hamburger_youtube_div2 = styled(Hamburger_youtube_div)`
+`
+const Hamburger_youtube_item2 = styled(Hamburger_youtube_item)`
+`
+const Hamburger_youtube_item_img2 = styled(Hamburger_youtube_item_img)`
+`
+const Hamburger_youtube_item_a2 = styled(Hamburger_youtube_item_a)`
+`
+const Hamburger_youtube_item_p2 = styled(Hamburger_youtube_item_p)`
+`
+
 
 // hamburger 버튼 부분
 const Hamburger_a = styled.a`
@@ -362,30 +369,46 @@ const Main_Header = (props) => {
 
     // youtube reload data state
     const [youtube, setYoutube] = useState([]);
+    const [shorts, setShorts] = useState([]);
     useEffect(() => {
         // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
         const fetch_data = async () => {
             const data = await youtubeFetch();
-            setYoutube(data);
+            setYoutube(data.youtube_data);
+            setShorts(data.shorts_data);
         };
         fetch_data();
     },[])
 
-    const youtubeRef = useRef(null);
+    const youtubeRef = useRef([]);
     const handleYoutubeReload = useCallback(() => {
         // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
         const fetch_data = async () => {
             const data = await youtubeFetch();
-            setYoutube(data);
+            setYoutube(data.youtube_data);
         };
         fetch_data();
 
         // 3바퀴
-        youtubeRef.current.style.animation = "spin 1s 3 linear";
+        youtubeRef.current[0].style.animation = "spin 1s 3 linear";
         setTimeout(() => {
-            youtubeRef.current.style.animation = "none"
+            youtubeRef.current[0].style.animation = "none"
         }, 3000);
     });
+    const handleShortsReload = useCallback(() => {
+        // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
+        const fetch_data = async () => {
+            const data = await youtubeFetch();
+            setShorts(data.shorts_data);
+        };
+        fetch_data();
+
+        // 3바퀴
+        youtubeRef.current[1].style.animation = "spin 1s 3 linear";
+        setTimeout(() => {
+            youtubeRef.current[1].style.animation = "none"
+        }, 3000);
+    })
 
     const is_logined = useMemo(() => {
         if(user.email){
@@ -394,6 +417,9 @@ const Main_Header = (props) => {
             return false;
         }
     });
+
+    console.log(youtube)
+    console.log(shorts)
 
     const handleMenuClick = useCallback((e) => {
         setClickedMenu((current) => {
@@ -420,9 +446,9 @@ const Main_Header = (props) => {
                         <Hamburger_youtube_guide>
                             <p>New videos</p>
                             <Hamburger_youtube_guide_img src='/images/ham_youtube.png'/>
-                            <Hamburger_youtube_guide_reload ref={youtubeRef} onClick={handleYoutubeReload} src='/images/reload.png'/>
+                            <Hamburger_youtube_guide_reload ref={element => youtubeRef.current[0] = element} onClick={handleYoutubeReload} src='/images/reload.png'/>
                         </Hamburger_youtube_guide>
-                        <Hamburger_youtube_item_container>
+                        
                             {youtube.map((v,i) => {
                                 return (
                                     <Hamburger_youtube_item key={i} >
@@ -432,8 +458,23 @@ const Main_Header = (props) => {
                                     </Hamburger_youtube_item>
                                 );
                             })}
-                        </Hamburger_youtube_item_container>
                     </Hamburger_youtube_div>
+                    <Hamburger_youtube_div2>
+                        <Hamburger_youtube_guide>
+                            <p>New shorts</p>
+                            <Hamburger_youtube_guide_img src='/images/shorts.png'/>
+                            <Hamburger_youtube_guide_reload ref={element => youtubeRef.current[1] = element}onClick={handleShortsReload} src='/images/reload.png'/>
+                        </Hamburger_youtube_guide>
+                            {shorts.map((v,i) => {
+                                return (
+                                    <Hamburger_youtube_item2 key={i} >
+                                        <Hamburger_youtube_item_img2 src={v.image_url} alt={v.image_url} />
+                                        <Hamburger_youtube_item_a2 href={v.video_url} target='_blank' title={v.title}>{v.title}</Hamburger_youtube_item_a2>
+                                        <Hamburger_youtube_item_p2>{v.uploadTime}</Hamburger_youtube_item_p2>
+                                    </Hamburger_youtube_item2>
+                                );
+                            })}
+                    </Hamburger_youtube_div2>
                 </Hamburger_main_div>
             </Hamburger_div>
             {is_logined 
