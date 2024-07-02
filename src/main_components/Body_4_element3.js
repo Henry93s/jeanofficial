@@ -11,9 +11,15 @@ const New_Flex_div_main1_div1 = styled(Flex_div_main1_div1)`
 `
 
 const New_Flex_div_sub_element1 = styled(Flex_div_sub_element1)`
-    background: url('/images/card-thumb-3.jpeg') no-repeat;
+    background: url('/images/card-thumb-3-pc.png') no-repeat;
+
     background-size: cover;
     background-position: center;
+    @media (max-width: 1000px) {
+        background: url('/images/card-thumb-3.png') no-repeat;
+        background-size: cover;
+    }
+    
 `
 
 const Body_4_element3 = () => {

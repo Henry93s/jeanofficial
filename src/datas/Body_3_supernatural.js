@@ -95,6 +95,36 @@ const Body_3_supernatural = [
         key: nanoid(),
         value: '/images/supernatural/supernatural-19.jpg',
         is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/supernatural/supernatural-20.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/supernatural/supernatural-21.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/supernatural/supernatural-22.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/supernatural/supernatural-23.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/supernatural/supernatural-24.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/supernatural/supernatural-25.jpg',
+        is_focused: "false"
     }
 ]
 

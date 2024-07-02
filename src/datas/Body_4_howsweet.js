@@ -91,6 +91,41 @@ const Body_4_howsweet = [
         value: '/images/howsweet/howsweet-18.jpg',
         is_focused: "false"
     },
+    {
+        key: nanoid(),
+        value: '/images/howsweet/howsweet-19.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/howsweet/howsweet-20.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/howsweet/howsweet-21.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/howsweet/howsweet-22.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/howsweet/howsweet-23.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/howsweet/howsweet-24.jpg',
+        is_focused: "false"
+    },
+    {
+        key: nanoid(),
+        value: '/images/howsweet/howsweet-25.jpg',
+        is_focused: "false"
+    },
 ]
 
 export default Body_4_howsweet;

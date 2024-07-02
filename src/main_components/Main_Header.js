@@ -267,11 +267,11 @@ const Logined_div = styled.div`
     border-bottom: 1px solid white;
     z-index: 101;
 
-
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+    gap: 10px;
 `
 
 // props 로 스타일에 지속적으로 변화가 필요할 때는 styled.attrs 프로퍼티를 이용한다!
@@ -301,8 +301,7 @@ const Home_a = styled.div.attrs(props => ({
     font-weight: 600;
     cursor: pointer;
     transition: background-color 1s;
-    
-    border-radius: 300px;
+    border-radius: 20px;
 
     @keyframes backgroundAni {
         0%{background-color: black}
@@ -315,6 +314,7 @@ const Home_a = styled.div.attrs(props => ({
     }
 
     @media (max-width: 1000px) {
+        width: 50px;
         font-size: 13px;
     }
 `
