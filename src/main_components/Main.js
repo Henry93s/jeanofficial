@@ -8,13 +8,14 @@ import Body_3_element2 from './Body_3_element2';
 const Main = (props) => {
 
     return (
-        <>
+        // Link to : home header 버튼
+        <div id="scroll_1">
             <Main_Header />
             <Title_Header />
             <Body_1_video />
             <Body_2_element1 />
             <Body_3_element2 />
-        </>
+        </div>
     );
 }
 

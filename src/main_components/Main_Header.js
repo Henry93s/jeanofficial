@@ -1,6 +1,7 @@
 import React,{useState, useCallback, useMemo, useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import youtubeFetch from '../datas/Header_sideBar_youtube';
+import {Link} from 'react-scroll';
 
 // hamberger NEW youtube & twitter (1 x 10 grid x 2 라인)
 const Hamburger_div = styled.div.attrs(props => ({
@@ -42,12 +43,12 @@ const Hamburger_main_div = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    height: 100%;
+    height: 95%;
 `
 // youtube burger
 const Hamburger_youtube_div = styled.div`
     width: 48%;
-    height: 95%;
+    height: 100%;
     padding: 0 2% 0 2%;
     display: flex;
     flex-direction: column;
@@ -59,12 +60,10 @@ const Hamburger_youtube_div = styled.div`
     overflow-y: auto;
     // modal scroll setting : 자식 태그 스크롤 할 때, 부모 태그에다가는 스크롤 막기
     overscroll-behavior: contain;
-    // 스크롤 시 하나씩 넘기기	
-	scroll-snap-type: y mandatory;
     background-color: white;
 
     @media (max-width: 1000px) {
-        height: 90%;
+        height: 98%;
     }
 `
 const Hamburger_youtube_guide = styled.div`
@@ -78,8 +77,6 @@ const Hamburger_youtube_guide = styled.div`
     font-weight: bold;
     color: black;
     font-size: 33px;
-    // 스크롤 시 하나씩 넘기기(아이템)
-    scroll-snap-align: start;
 
     @media (max-width: 1000px) {
         font-size: 23px;
@@ -114,8 +111,6 @@ const Hamburger_youtube_item = styled.div`
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 350px;
-    // 스크롤 시 하나씩 넘기기(아이템)
-    scroll-snap-align: start;
 
     width: 95%;
     height: 70%;
@@ -201,7 +196,8 @@ const Login_form = styled.form`
     width: 100%;
     top: 0px;
     height: 65px;
-    background-color: #121219;
+    background-color: black;
+    border-bottom: 1px solid white;
     z-index: 101;
 
     display: flex;
@@ -268,6 +264,7 @@ const Logined_div = styled.div`
     top: 0px;
     height: 65px;
     background-color: black;
+    border-bottom: 1px solid white;
     z-index: 101;
 
 
@@ -289,9 +286,9 @@ const Card_Carousel_item = styled.div.attrs(props => ({
 ~ 정의
 `
 */
-const Home_a = styled.a.attrs(props => ({
+const Home_a = styled.div.attrs(props => ({
     style: {
-        backgroundColor: props.clicked === "true" ? "#0071E3" : "black"
+        animation: props.clicked === "true" ? "backgroundAni 1s ease-in-out" : "none"
     },
 }))`
     width: 150px;
@@ -303,12 +300,18 @@ const Home_a = styled.a.attrs(props => ({
     font-size: 24px;
     font-weight: 600;
     cursor: pointer;
+    transition: background-color 1s;
     
     border-radius: 300px;
-    transition: background-color 1s;
 
-    &:hover {
-        background-color: #0071E3;
+    @keyframes backgroundAni {
+        0%{background-color: black}
+        50%{background-color: #0071E3}
+        100%{background-color: black}
+    }
+
+    &:hover{
+        background-color: #0071E3
     }
 
     @media (max-width: 1000px) {
@@ -350,8 +353,8 @@ const Logout_img = styled(Home_img)`
 const Main_Header = (props) => {
     const [user, setUser] = useState({});
     const [clickedMenu, setClickedMenu] = useState({
-        Home_a: "true",
-        Freeboard_a: "false",
+        Home_a: "false",
+        Board_a: "false",
         Store_a: "false",
         Mypage_a: "false"
     });
@@ -411,28 +414,28 @@ const Main_Header = (props) => {
     })
 
     const is_logined = useMemo(() => {
-        if(user.email){
+        if(!user.email){
             return true;
         } else {
             return false;
         }
     });
 
-    console.log(youtube)
-    console.log(shorts)
-
     const handleMenuClick = useCallback((e) => {
         setClickedMenu((current) => {
-            const newClickedMenu = {
-                Home_a: "false",
-                Board_a: "false",
-                Store_a: "false",
-                Mypage_a: "false"
-            };
+            const newClickedMenu = {...current};
             const target = e.target.name + "_a";
             newClickedMenu[target] = "true";
             return newClickedMenu;
         })
+        setTimeout(() => {
+            setClickedMenu((current) => {
+                const newClickedMenu = {...current};
+                const target = e.target.name + "_a";
+                newClickedMenu[target] = "false";
+                return newClickedMenu;
+            })
+        }, 1100);
     });
 
     return (
@@ -482,14 +485,22 @@ const Main_Header = (props) => {
                     <Hamburger_a>
                         <Hamburger_Button_img src='/images/hamburger.png' alt='hamburger_button' onClick={handleHamburgerClick} title='최신 소식 보기'/>
                     </Hamburger_a>
-                    <Home_a clicked={clickedMenu.Home_a} onClick={handleMenuClick} name="Home" title='홈'>
-                        <Home_img src="/images/home.svg" name="Home"/></Home_a>
-                    <Board_a clicked={clickedMenu.Board_a} onClick={handleMenuClick} name="Board" title='게시판'>
-                        <Board_img src="/images/board.png" name="Board"/>
-                    </Board_a>
-                    <Store_a clicked={clickedMenu.Store_a} onClick={handleMenuClick} name="Store" title='한정 굿즈 판매'>
-                        <Store_img src="/images/store.png"  name="Store"/>
-                    </Store_a>
+                    {/* div 태그에 Link 컴포넌트를 감싸서 id="" 로 스크롤 이동하기 위함 */}
+                    <Link to="scroll_1" spy={true} smooth={true}>
+                        <Home_a clicked={clickedMenu.Home_a} onClick={handleMenuClick} name="Home" title='홈'>
+                            <Home_img src="/images/home.svg" name="Home"/>
+                        </Home_a>
+                    </Link>
+                    <Link to="scroll_2" spy={true} smooth={true}>
+                        <Board_a clicked={clickedMenu.Board_a} onClick={handleMenuClick} name="Board" title='게시판'>
+                            <Board_img src="/images/board.png" name="Board"/>
+                        </Board_a>
+                    </Link>
+                    <Link to="scroll_3" spy={true} smooth={true}>
+                        <Store_a clicked={clickedMenu.Store_a} onClick={handleMenuClick} name="Store" title='한정 굿즈 판매'>
+                            <Store_img src="/images/store.png"  name="Store"/>
+                        </Store_a>
+                    </Link>
                     <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick} name="Mypage" title='마이 페이지'>
                         <Mypage_img src="/images/human.png" name="Mypage"/>
                     </Mypage_a>
