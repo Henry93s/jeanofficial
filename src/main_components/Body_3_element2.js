@@ -164,7 +164,7 @@ const Body_3_element2 = () => {
                         <Modal_Contents src={cardSrc} alt={cardSrc} />
             </Modal_Overlay>
             <Main_flex_div>
-                <Main_flex_div_p ref={element => targetRef.current[0] = element}>Supernatural<br/>Photo</Main_flex_div_p>
+                <Main_flex_div_p ref={element => targetRef.current[0] = element}>Supernatural 🍩<br/>Photo</Main_flex_div_p>
                 <Card_Carousel_left><img src="/images/left.png" alt="left" onClick={handleCarouselClick} name="leftClick"/></Card_Carousel_left>
                 <Card_Carousel_right><img src="/images/right.png" alt="right" onClick={handleCarouselClick} name="rightClick"/></Card_Carousel_right>
                 <Card_Carousel_div ref={element => targetRef.current[1] = element}

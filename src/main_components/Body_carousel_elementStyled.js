@@ -24,6 +24,10 @@ const Main_flex_div_p = styled.p`
     opacity: 0;
     transition: opacity 3s;
     text-shadow: 2px 2px 2px gray;
+
+    @media (max-width: 1000px) {
+        font-size: 40px;
+    }
 `
 const Card_Carousel_div = styled.div`
     width: 96%;

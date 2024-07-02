@@ -322,7 +322,7 @@ const Home_a = styled.div.attrs(props => ({
 const Board_a = styled(Home_a)`
 `
 
-const Store_a = styled(Home_a)`
+const Concert_a = styled(Home_a)`
 `
 
 const Mypage_a = styled(Home_a)`
@@ -342,7 +342,7 @@ const Home_img = styled.img`
 `
 const Board_img = styled(Home_img)`
 `
-const Store_img = styled(Home_img)`
+const Concert_img = styled(Home_img)`
 `
 const Mypage_img = styled(Home_img)`
 `
@@ -355,7 +355,7 @@ const Main_Header = (props) => {
     const [clickedMenu, setClickedMenu] = useState({
         Home_a: "false",
         Board_a: "false",
-        Store_a: "false",
+        Concert_a: "false",
         Mypage_a: "false"
     });
     // hamberger clicked state (app.js props(before using redux))
@@ -492,14 +492,14 @@ const Main_Header = (props) => {
                         </Home_a>
                     </Link>
                     <Link to="scroll_2" spy={true} smooth={true}>
+                    <Concert_a clicked={clickedMenu.Concert_a} onClick={handleMenuClick} name="Concert" title='한정 굿즈 판매'>
+                        <Concert_img src="/images/concert.png"  name="Concert"/>
+                    </Concert_a>
+                    </Link>
+                    <Link to="scroll_3" spy={true} smooth={true}>
                         <Board_a clicked={clickedMenu.Board_a} onClick={handleMenuClick} name="Board" title='게시판'>
                             <Board_img src="/images/board.png" name="Board"/>
                         </Board_a>
-                    </Link>
-                    <Link to="scroll_3" spy={true} smooth={true}>
-                        <Store_a clicked={clickedMenu.Store_a} onClick={handleMenuClick} name="Store" title='한정 굿즈 판매'>
-                            <Store_img src="/images/store.png"  name="Store"/>
-                        </Store_a>
                     </Link>
                     <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick} name="Mypage" title='마이 페이지'>
                         <Mypage_img src="/images/human.png" name="Mypage"/>
