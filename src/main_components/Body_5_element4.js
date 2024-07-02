@@ -1,11 +1,11 @@
 import React, {useRef, useEffect, useState, useCallback} from "react";
-import Body_3_supernatural from "../datas/Body_3_supernatural";
+import Body_4_howsweet from "../datas/Body_4_howsweet";
 import {Main_flex_div, Main_flex_div_p, Card_Carousel_div, Card_Carousel_item, Card_Carousel_item_img,
     Card_Carousel_right, Card_Carousel_left, Carousel_Swipe_Guide, Carousel_Swipe_Guide_img, Carousel_Swipe_Guide_p,
     Modal_Overlay, Modal_Contents
 } from './Body_carousel_elementStyled';
 
-const Body_3_element2 = () => {
+const Body_5_element4 = () => {
     // 캐러셀 인덱스 state (좌우버튼 클릭)
     const [carouselIndex, setCarouselIndex] = useState({
         index: 0,
@@ -13,7 +13,7 @@ const Body_3_element2 = () => {
         translateValue: 0
     });
     // 사진 데이터 state
-    const [supernatural, setSupernatural] = useState(Body_3_supernatural);
+    const [howsweet, setHowsweet] = useState(Body_4_howsweet);
     
     // 캐러셀 드래그 states, 캐러셀 items Ref
     const cardRef = useRef([]);
@@ -57,8 +57,8 @@ const Body_3_element2 = () => {
                     // 570 / n 으로 드래그에 따른 translateX 값 조절
                     const move = newCarouselIndex.translateValue - (570 / 4.5);
                     // 드래그 다음 제한 설정 추가
-                    if(Math.abs(move) > 570 * (supernatural.length - 1)){
-                        newCarouselIndex.translateValue = (570 * (supernatural.length - 1)) * (-1);
+                    if(Math.abs(move) > 570 * (howsweet.length - 1)){
+                        newCarouselIndex.translateValue = (570 * (howsweet.length - 1)) * (-1);
                     } else {
                         newCarouselIndex.translateValue = move;
                     }
@@ -147,8 +147,8 @@ const Body_3_element2 = () => {
                 // gap(20px) + width(flex-basis (550px)) = 570 px
                 const move = newCarouselIndex.translateValue - (570);
                 // 최대 다음 클릭 제한 설정 추가
-                if(Math.abs(move) > 570 * (supernatural.length - 1)){
-                    newCarouselIndex.translateValue = (570 * (supernatural.length - 1)) * (-1);
+                if(Math.abs(move) > 570 * (howsweet.length - 1)){
+                    newCarouselIndex.translateValue = (570 * (howsweet.length - 1)) * (-1);
                 } else {
                     newCarouselIndex.translateValue = move;
                 }
@@ -164,7 +164,7 @@ const Body_3_element2 = () => {
                         <Modal_Contents src={cardSrc} alt={cardSrc} />
             </Modal_Overlay>
             <Main_flex_div>
-                <Main_flex_div_p ref={element => targetRef.current[0] = element}>Supernatural<br/>Photo</Main_flex_div_p>
+                <Main_flex_div_p ref={element => targetRef.current[0] = element}>How sweet<br/>Photo</Main_flex_div_p>
                 <Card_Carousel_left><img src="/images/left.png" alt="left" onClick={handleCarouselClick} name="leftClick"/></Card_Carousel_left>
                 <Card_Carousel_right><img src="/images/right.png" alt="right" onClick={handleCarouselClick} name="rightClick"/></Card_Carousel_right>
                 <Card_Carousel_div ref={element => targetRef.current[1] = element}
@@ -173,7 +173,7 @@ const Body_3_element2 = () => {
                         onMouseUp={handleIsMouseUp}
                         onMouseMove={handleIsMouseMove}
                     >
-                    {supernatural.map((v,i) => {
+                    {howsweet.map((v,i) => {
                         return (
                             <Card_Carousel_item carouselindex={carouselIndex} ref={v => cardRef.current[i] = v} key={v.key}>
                                 {/* 매개변수가 있는 이벤트 핸들러 함수 등은 익명함수로 넣어야 함!!! (아니면 렌더링될 때마다 바로 호출해버림) */}
@@ -194,4 +194,4 @@ const Body_3_element2 = () => {
 }
 
 
-export default Body_3_element2;
+export default Body_5_element4;
