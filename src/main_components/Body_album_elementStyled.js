@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Main_flex_div = styled.div`
-    // 주요 element component PC 가운데 정렬 + 너비 70%( / 100vw )
-    width: 70%;
+    // 주요 element component PC 가운데 정렬 + 너비 75%( / 100vw )
+    width: 80%;
     margin: 0 auto;
 
     height: 1000px;
@@ -117,7 +117,7 @@ export const Flex_div_sub_element2_a_p1 = styled.p`
 `
 export const Flex_div_sub_element2_a_p2 = styled.p`
     font-weight: bold;
-    font-size: 43px;
+    font-size: 40px;
     text-shadow: 3px 2px 2px gray;
 
     @media (max-width: 1000px) {
@@ -125,7 +125,7 @@ export const Flex_div_sub_element2_a_p2 = styled.p`
     }
 `
 export const Flex_div_sub_element2_a_p3 = styled.p`
-    font-size: 33px;
+    font-size: 23px;
 
     @media (max-width: 1000px) {
         font-size: 20px;

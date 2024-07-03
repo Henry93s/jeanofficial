@@ -1,5 +1,11 @@
 const Local_youtube = [
     {
+        "title": "[Light Jeans] 'How Sweet' & 'Bubble Gum' Music Show Behind EP.2 | NewJeans",
+        "image_url": "https://i.ytimg.com/vi/DoHvCdl35qk/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=DoHvCdl35qk",
+        "uploadTime": "2024. 7. 2. 화요일 오후 7:00:00"
+    },
+    {
         "title": "[Making Jeans] NewJeans (뉴진스) 'Right Now' MV Behind",
         "image_url": "https://i.ytimg.com/vi/EWaojqzNBpg/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=EWaojqzNBpg",
@@ -112,12 +118,6 @@ const Local_youtube = [
         "image_url": "https://i.ytimg.com/vi/KNpU0wB2ozo/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=KNpU0wB2ozo",
         "uploadTime": "2024. 5. 2. 목요일 오후 7:00:01"
-    },
-    {
-        "title": "[Jeans' ZINE] 제2회 엉망잔칭 토론회 EP.1 데자부🤦‍♀️ | NewJeans",
-        "image_url": "https://i.ytimg.com/vi/FN_KHxXZC0k/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=FN_KHxXZC0k",
-        "uploadTime": "2024. 4. 25. 목요일 오후 7:00:01"
     }
 ];
 

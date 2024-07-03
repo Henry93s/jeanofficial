@@ -4,7 +4,7 @@ import L from 'leaflet';
 
 const Main_container = styled.div`
     // 주요 element component PC 가운데 정렬 + 너비 70%( / 100vw )
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     height: 1200px;
 
@@ -88,7 +88,7 @@ const Map_sub_div2_p = styled(Map_sub_div_poster)`
     border-radius: 20px;
     font-family: "Gamja Flower";
     color: black;
-    font-size: 33px;
+    font-size: 30px;
     text-align: center;
     text-shadow: 1px 1px 1px gray;
     background-color: #F8EFE6;

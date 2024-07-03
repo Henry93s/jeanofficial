@@ -382,6 +382,8 @@ const Main_Header = (props) => {
         };
         fetch_data();
     },[])
+    console.log(youtube);
+    console.log(shorts);
 
     const youtubeRef = useRef([]);
     const handleYoutubeReload = useCallback(() => {
