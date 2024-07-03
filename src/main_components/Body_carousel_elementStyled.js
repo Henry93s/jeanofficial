@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-const Main_flex_div = styled.div`
-    // 주요 element component PC 가운데 정렬 + 너비 70%( / 100vw )
-    width: 70%;
+export const Main_flex_div = styled.div`
+    // 캐러셀 element component PC 가운데 정렬 + 너비 90%( / 100vw )
+    width: 90%;
     margin: 0 auto;
 
     height: 1200px;
@@ -22,7 +22,7 @@ const Main_flex_div = styled.div`
         margin-top: 150px;
     }
 `
-const Main_flex_div_p = styled.p`
+export const Main_flex_div_p = styled.p`
     padding-left: 20px;
     font-size: 48px;
     font-weight: 600;
@@ -34,7 +34,7 @@ const Main_flex_div_p = styled.p`
         font-size: 40px;
     }
 `
-const Card_Carousel_div = styled.div`
+export const Card_Carousel_div = styled.div`
     width: 96%;
     height: 100%;
     margin: 0 auto;
@@ -60,7 +60,7 @@ const Card_Carousel_div = styled.div`
         overflow-x: auto;
     }
 `
-const Card_Carousel_item = styled.div.attrs(props => ({
+export const Card_Carousel_item = styled.div.attrs(props => ({
     // 좌우 버튼 시 캐러셀 내부 x 스크롤 이동 동작 명령 (css props 받음 -> carouselIndex {index, direction})
     style: {transform: `translateX(${props.carouselindex.translateValue}px)`},
 }))`
@@ -89,7 +89,7 @@ const Card_Carousel_item = styled.div.attrs(props => ({
     }
 `
 
-const Card_Carousel_item_img = styled.img`
+export const Card_Carousel_item_img = styled.img`
     width: 100%;
     height: 100%;
     border-radius: 20px;
@@ -107,7 +107,7 @@ const Card_Carousel_item_img = styled.img`
     }
 `
 
-const Card_Carousel_right = styled.div`
+export const Card_Carousel_right = styled.div`
     width: 70px;
     height: 70px;
     // Main_flex_div 에 상대적으로 위치하여야므로 absolute
@@ -136,12 +136,12 @@ const Card_Carousel_right = styled.div`
     }
 `
 
-const Card_Carousel_left = styled(Card_Carousel_right)`
+export const Card_Carousel_left = styled(Card_Carousel_right)`
     left: 20px;
 `
 
 // 하단 swipe 드래그 공간
-const Carousel_Swipe_Guide = styled.div`
+export const Carousel_Swipe_Guide = styled.div`
     // 하단 swipe 드래그 공간을 위한 absolute - Card_Carousel_div(relative 설정)
     position: absolute;
     bottom: 0;
@@ -156,16 +156,16 @@ const Carousel_Swipe_Guide = styled.div`
         display: none;
     }
 `
-const Carousel_Swipe_Guide_img = styled.img`
+export const Carousel_Swipe_Guide_img = styled.img`
     width: 50px;
     height: 50px;
 `
-const Carousel_Swipe_Guide_p = styled.p`
+export const Carousel_Swipe_Guide_p = styled.p`
     font-size: bold;
 `
 
 // 모달 오버레이
-const Modal_Overlay = styled.div.attrs(props => ({
+export const Modal_Overlay = styled.div.attrs(props => ({
     style: {
         display: props.ismodal === "true" ? "block" : "none"
     }
@@ -189,7 +189,7 @@ const Modal_Overlay = styled.div.attrs(props => ({
     }
 `
 // 모달 컨텐츠
-const Modal_Contents = styled.img`
+export const Modal_Contents = styled.img`
     position: fixed;
     top: 52%;
     left: 50%;
@@ -206,8 +206,3 @@ const Modal_Contents = styled.img`
         max-width: 900px;
     }
 `
-
-export {Main_flex_div, Main_flex_div_p, Card_Carousel_div, Card_Carousel_item, Card_Carousel_item_img,
-    Card_Carousel_right, Card_Carousel_left, Carousel_Swipe_Guide, Carousel_Swipe_Guide_img, Carousel_Swipe_Guide_p,
-    Modal_Overlay, Modal_Contents
-};

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Main_flex_div = styled.div`
+export const Main_flex_div = styled.div`
     // 주요 element component PC 가운데 정렬 + 너비 70%( / 100vw )
     width: 70%;
     margin: 0 auto;
@@ -22,7 +22,7 @@ const Main_flex_div = styled.div`
         margin-top: 150px;
     }
 `
-const Flex_div_main = styled.div`
+export const Flex_div_main = styled.div`
     width: 48%;
     height: 100%;
     display: flex;
@@ -38,7 +38,7 @@ const Flex_div_main = styled.div`
         width: 100%;
     }
 `
-const Flex_div_main1_div1 = styled.div`
+export const Flex_div_main1_div1 = styled.div`
     width: 100%;
     height: 70%;
     opacity: 0;
@@ -49,7 +49,7 @@ const Flex_div_main1_div1 = styled.div`
     }
 `
 
-const Flex_div_main1_div2 = styled.div`
+export const Flex_div_main1_div2 = styled.div`
     width: 100%;
     height: 30%;
     opacity: 0;
@@ -60,7 +60,7 @@ const Flex_div_main1_div2 = styled.div`
     }
 `
 
-const Flex_div_sub_div = styled.div`
+export const Flex_div_sub_div = styled.div`
     width: 48%;
     height: 100%;
     display: flex;
@@ -76,7 +76,7 @@ const Flex_div_sub_div = styled.div`
     }
 `
 
-const Flex_div_sub_element1 = styled.div`
+export const Flex_div_sub_element1 = styled.div`
     width: 100%;
     height: 65%;
     box-shadow: inset 0 0 20px gray;
@@ -87,7 +87,7 @@ const Flex_div_sub_element1 = styled.div`
     }
 `
 
-const Flex_div_sub_element2 = styled(Flex_div_sub_element1)`
+export const Flex_div_sub_element2 = styled(Flex_div_sub_element1)`
     height: 35%;
     background: none;
     background-color: white;
@@ -103,11 +103,11 @@ const Flex_div_sub_element2 = styled(Flex_div_sub_element1)`
         justify-content: center;
     }
 `
-const Flex_div_sub_element2_a = styled.a`
+export const Flex_div_sub_element2_a = styled.a`
    text-decoration: none;
    color: black;
 `
-const Flex_div_sub_element2_a_p1 = styled.p`
+export const Flex_div_sub_element2_a_p1 = styled.p`
     color: gray;
     font-size: 28px;
 
@@ -115,7 +115,7 @@ const Flex_div_sub_element2_a_p1 = styled.p`
         font-size: 20px;
     }
 `
-const Flex_div_sub_element2_a_p2 = styled.p`
+export const Flex_div_sub_element2_a_p2 = styled.p`
     font-weight: bold;
     font-size: 43px;
     text-shadow: 3px 2px 2px gray;
@@ -124,16 +124,12 @@ const Flex_div_sub_element2_a_p2 = styled.p`
         font-size: 22px;
     }
 `
-const Flex_div_sub_element2_a_p3 = styled.p`
+export const Flex_div_sub_element2_a_p3 = styled.p`
     font-size: 33px;
 
     @media (max-width: 1000px) {
         font-size: 20px;
     }
 `
-const Flex_div_sub_element2_a_p4 = styled(Flex_div_sub_element2_a_p3)`
+export const Flex_div_sub_element2_a_p4 = styled(Flex_div_sub_element2_a_p3)`
 `
-
-export {Main_flex_div, Flex_div_main, Flex_div_main1_div1, Flex_div_main1_div2, Flex_div_sub_div,Flex_div_sub_element1,
-    Flex_div_sub_element2, Flex_div_sub_element2_a, Flex_div_sub_element2_a_p1, Flex_div_sub_element2_a_p2,
-    Flex_div_sub_element2_a_p3, Flex_div_sub_element2_a_p4}
