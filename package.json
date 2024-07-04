@@ -22,11 +22,12 @@
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.11",
+    "ts-node": "^10.9.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "export PORT=3001 && react-scripts start",
+    "build": "react-scripts build && cp -r build/* ../newjeans_official_server/public/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

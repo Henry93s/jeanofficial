@@ -1,5 +1,11 @@
 const Local_shorts = [
     {
+        "title": "Ditto in Tokyo Dome Bunnies Camp 2024🐰#NewJeans #뉴진스#BunniesCamp #BunniesCamp2024TokyoDome",
+        "image_url": "https://i.ytimg.com/vi/01lYZyfjaXc/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/01lYZyfjaXc",
+        "uploadTime": "2024. 7. 4. 목요일 오후 8:00:00"
+    },
+    {
         "title": "#NJ_memefolder #Film_By_NewJeans #NewJeans #뉴진스 #NewJeans_is_Everywhere",
         "image_url": "https://i.ytimg.com/vi/QVYKrN8bVy8/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/QVYKrN8bVy8",
@@ -46,6 +52,12 @@ const Local_shorts = [
         "image_url": "https://i.ytimg.com/vi/fWT0fY1ZTr0/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/fWT0fY1ZTr0",
         "uploadTime": "2024. 6. 7. 금요일 오후 4:00:19"
+    },
+    {
+        "title": "[Making Jeans] NewJeans (뉴진스) 'How Sweet' MV Behind",
+        "image_url": "https://i.ytimg.com/vi/r0u5URS3VXE/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/r0u5URS3VXE",
+        "uploadTime": "2024. 6. 6. 목요일 오후 7:00:01"
     },
     {
         "title": "Yeah, don't you know how sweet it tastes?☔️#NewJeans#뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
@@ -106,18 +118,6 @@ const Local_shorts = [
         "image_url": "https://i.ytimg.com/vi/iH0olvj_PhM/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/iH0olvj_PhM",
         "uploadTime": "2024. 5. 25. 토요일 오전 11:00:01"
-    },
-    {
-        "title": "MINJI says #HowSweet it tastes🍫#NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
-        "image_url": "https://i.ytimg.com/vi/4bqK8G9gfVM/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/4bqK8G9gfVM",
-        "uploadTime": "2024. 5. 25. 토요일 오전 11:00:21"
-    },
-    {
-        "title": "DANIELLE’s sweet moves #HowSweet🐰#NewJeans #뉴진스#NewJeans_HowSweet #NewJeans_is_Everywhere",
-        "image_url": "https://i.ytimg.com/vi/67x-67jpZUI/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/67x-67jpZUI",
-        "uploadTime": "2024. 5. 25. 토요일 오전 11:00:25"
     }
 ];
 

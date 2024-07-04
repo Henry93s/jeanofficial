@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import React,{useState, useCallback, useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import youtubeFetch from '../datas/Header_sideBar_youtube';
