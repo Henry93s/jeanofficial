@@ -4,9 +4,11 @@ import styled from "styled-components";
 const Login_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
 
+    /* pc & mobile x scroll OFF~ (body overflow-x: clip) */
+    overflow-x: clip;
     background-color: #18181A;
 `
 
@@ -79,7 +81,7 @@ const Login_email_input = styled.input`
     border-radius: 5px;
     border: 1px solid #2C2C2D;
 
-    padding-left: 10px;
+    padding-left: 15px;
 
     &:focus {
         border-color: #9061F9;
@@ -146,6 +148,7 @@ const Login = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+        console.log("button")
         
     }
 
@@ -171,11 +174,11 @@ const Login = () => {
                     <Login_span>로그인 🍭</Login_span>
                     <Login_email_div>
                         <Login_email_span>이메일</Login_email_span>
-                        <Login_email_input onChange={handleEmailChange}/>
+                        <Login_email_input placeholder="your_email@email.com" onChange={handleEmailChange}/>
                     </Login_email_div>
                     <Login_password_div>
                         <Login_password_span>비밀번호</Login_password_span>
-                        <Login_password_input type="password" onChange={handlePasswordChange}/>
+                        <Login_password_input type="password" placeholder="영문 + 숫자 + 특수문자 8자 이상" onChange={handlePasswordChange}/>
                     </Login_password_div>
                     <Login_submit_button type="submit">Continue</Login_submit_button>
                     <Login_underline_span>or</Login_underline_span>

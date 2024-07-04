@@ -3,74 +3,8 @@ import styled from 'styled-components';
 import {Link} from 'react-scroll';
 import Main_Header_Sidebar from './Main_Header_Sidebar';
 
-const Login_form = styled.form`
-    // sticky header
-    position: sticky;
-    width: 100%;
-    top: 0px;
-    height: 65px;
-    background-color: #121219;
-    border-bottom: 1px solid white;
-    z-index: 101;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-`
-const Login_email = styled.input`
-    width: 300px;
-    height: 40px;
-    border-radius: 20px;
-    font-size: 15px;
-    text-align: center;
-    border: none;
-    // placeholder icon setting
-    background-image: url('/images/id.png');
-    background-repeat: no-repeat;
-    background-position: left;
-    background-position-x: 15px;
-
-    @media (max-width: 1000px) {
-        width: 110px;
-        background-size: 20px;
-        font-size: 12px;
-        height: 25px;
-        background-position-x: 3px;
-    }
-`
-
-const Login_pw = styled(Login_email)`
-    width: 200px;
-    background-image: url('/images/password.png');
-
-    @media (max-width: 1000px) {
-        width: 90px;
-    }
-`
-
-const Login_button = styled.button`
-    width: 60px;
-    height: 50px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: transparent;
-`
-const Login_button_img = styled.img`
-    width: 100%;
-    height: 100%;
-
-    @media (max-width: 1000px) {
-        height: 80%;
-    }
-`
-
 //
-const Logined_div = styled.div`
+const Container_div = styled.div`
     // sticky header
     position: sticky;
     width: 100%;
@@ -109,10 +43,8 @@ const Home_a = styled.div.attrs(props => ({
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    font-size: 24px;
-    font-weight: 600;
     cursor: pointer;
+
     transition: background-color 1s;
     border-radius: 20px;
 
@@ -127,6 +59,7 @@ const Home_a = styled.div.attrs(props => ({
     }
 
     @media (max-width: 1000px) {
+        border-radius: 10px;
         width: 50px;
         font-size: 13px;
     }
@@ -141,7 +74,35 @@ const Concert_a = styled(Home_a)`
 const Mypage_a = styled(Home_a)`
 `
 
-const Logout_a = styled(Home_a)`
+const Logout_a = styled.a`
+    width: 150px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR';
+
+    cursor: pointer;
+    transition: color 0.5s;
+
+    &:hover{
+        color: #9061F9;
+    }
+
+    @media (max-width: 1000px) {
+        width: 50px;
+        font-size: 13px;
+    }
+`
+
+const Login_a = styled(Logout_a)`
 `
 
 const Home_img = styled.img`
@@ -161,6 +122,9 @@ const Mypage_img = styled(Home_img)`
 `
 const Logout_img = styled(Home_img)`
 `
+const Login_img = styled(Home_img)`
+`
+
 // hamburger 버튼 부분
 const Hamburger_a = styled.a`
     width: 150px;
@@ -202,7 +166,7 @@ const Main_Header = (props) => {
     });
 
     const is_logined = useMemo(() => {
-        if(!user.email){
+        if(user.email){
             return true;
         } else {
             return false;
@@ -241,8 +205,7 @@ const Main_Header = (props) => {
     return (
         <>
             <Main_Header_Sidebar clickBurger={clickBurger} handleHamburgerClick={handleHamburgerClick}/>
-            {is_logined 
-            && <Logined_div>
+            <Container_div>
                     <Hamburger_a>
                         <Hamburger_Button_img src='/images/hamburger.png' alt='hamburger_button' onClick={handleHamburgerClick} title='최신 youtube 소식'/>
                     </Hamburger_a>
@@ -262,24 +225,23 @@ const Main_Header = (props) => {
                             <Board_img src="/images/board.png" name="Board"/>
                         </Board_a>
                     </Link>
-                    <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick} name="Mypage" title='마이 페이지'>
-                        <Mypage_img src="/images/human.png" name="Mypage"/>
-                    </Mypage_a>
-                    <Logout_a>
-                        <Logout_img src="/images/logout.png" name="Logout" title='로그아웃'/>
-                    </Logout_a>
-                </Logined_div>
-            ||  <Login_form>
-                    <Hamburger_a>
-                    <Hamburger_Button_img src='/images/hamburger.png' alt='hamburger_button' onClick={handleHamburgerClick} title='최신 소식 보기'/>
-                    </Hamburger_a>
-                    <Login_email placeholder="이메일" />
-                    <Login_pw placeholder="패스워드" type='password' />
-                    <Login_button>
-                        <Login_button_img src='/images/login.png' />
-                    </Login_button>
-                </Login_form>
-            }
+                    {is_logined &&
+                        <>
+                            <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick} name="Mypage" title='마이 페이지'>
+                                <Mypage_img src="/images/human.png" name="Mypage"/>
+                            </Mypage_a>
+                            <Logout_a>
+                                로그아웃
+                            </Logout_a>
+                        </> 
+                        ||
+                        <>
+                            <Login_a href="/login">
+                                로그인
+                            </Login_a>
+                        </>
+                    }
+            </Container_div>
         </>
     );
 }

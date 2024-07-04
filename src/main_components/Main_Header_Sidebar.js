@@ -3,7 +3,7 @@ import React,{useState, useCallback, useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import youtubeFetch from '../datas/Header_sideBar_youtube';
 
-// hamberger NEW youtube & twitter (1 x 10 grid x 2 라인)
+// hamberger NEW youtube & 숏츠 (1 x 10 grid x 2 라인)
 const Hamburger_div = styled.div.attrs(props => ({
     style: {
         transform: props.clickburger === "true" ? "translateX(0%)" : "translateX(-100%)"
