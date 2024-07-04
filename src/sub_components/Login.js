@@ -23,6 +23,12 @@ const Login_Container_div = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    font-family: "Noto Sans KR";
+
+    @media (max-width: 1000px) {
+        width: 400px;
+    }
 `
 
 const Login_main_form = styled.form`
@@ -44,7 +50,6 @@ const Login_span = styled.span`
     align-self: flex-start;
     margin-left: 10%;
 
-    font-family: "Noto Sans KR";
     font-size: 25px;
     color: white;
     font-weight: bold;
@@ -52,6 +57,7 @@ const Login_span = styled.span`
 
 const Login_email_div = styled.div`
     width: 80%;
+    height: 15%;
 
     display: flex;
     flex-direction: column;
@@ -65,7 +71,7 @@ const Login_email_span = styled.span`
 const Login_email_input = styled.input`
     margin: 0 auto;
     width: 95%;
-    height: 40px;
+    height: 50%;
 
     color: white;
     background-color: #181619;
@@ -76,6 +82,7 @@ const Login_email_input = styled.input`
     padding-left: 10px;
 
     &:focus {
+        border-color: #9061F9;
         // input focus 시 테두리 지우기
         outline: none;
     }
@@ -113,7 +120,6 @@ const Login_underline_span = styled.span`
     color: #5F5F61;
     text-align: center;
     font-size: 15px;
-    font-family: "Noto Sans KR";
 `
 const Login_underline_signup = styled(Login_underline_span)`
 `
@@ -161,15 +167,14 @@ const Login = () => {
     return (
         <Login_Overlay>
             <Login_Container_div>
-                
                 <Login_main_form onSubmit={handleFormSubmit}>
                     <Login_span>로그인 🍭</Login_span>
                     <Login_email_div>
-                        <Login_email_span>Email</Login_email_span>
+                        <Login_email_span>이메일</Login_email_span>
                         <Login_email_input onChange={handleEmailChange}/>
                     </Login_email_div>
                     <Login_password_div>
-                        <Login_password_span>Password</Login_password_span>
+                        <Login_password_span>비밀번호</Login_password_span>
                         <Login_password_input type="password" onChange={handlePasswordChange}/>
                     </Login_password_div>
                     <Login_submit_button type="submit">Continue</Login_submit_button>
@@ -181,13 +186,9 @@ const Login = () => {
                         <Login_underline_link href="/findpw"> 비밀번호 찾기</Login_underline_link>
                     </Login_underline_findpw>
                 </Login_main_form>
-        
             </Login_Container_div>
-
         </Login_Overlay>
-
-    )
+    );
 }
-
 
 export default Login;
