@@ -9,7 +9,7 @@ const Login_form = styled.form`
     width: 100%;
     top: 0px;
     height: 65px;
-    background-color: black;
+    background-color: #121219;
     border-bottom: 1px solid white;
     z-index: 101;
 
@@ -76,7 +76,7 @@ const Logined_div = styled.div`
     width: 100%;
     top: 0px;
     height: 65px;
-    background-color: black;
+    background-color: #121219;
     border-bottom: 1px solid white;
     z-index: 101;
 
