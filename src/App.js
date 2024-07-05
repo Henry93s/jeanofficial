@@ -3,6 +3,8 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Main from './main_components/Main';
 import Notfound from './util_components/Notfound';
 import Login from './sub_components/Login';
+import Findpw from './sub_components/Findpw';
+import PasswordChange from './sub_components/PasswordChange';
 import './App.css';
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
           <Routes>
             <Route path="/" exact="true" element={<Main />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/findpw" element={<Findpw />} />
+            <Route path="/pwchange" element={<PasswordChange />} />
             <Route path="*" element={<Notfound />} />
           </Routes>
       </BrowserRouter>

@@ -117,7 +117,7 @@ export const Card_Carousel_right = styled.div`
     font-size: 50px;
     right: 20px;
     cursor: pointer;
-    background-color: gray;
+    background-color: #9061F9;
     opacity: 0.65;
     display: flex;
     align-items: center;

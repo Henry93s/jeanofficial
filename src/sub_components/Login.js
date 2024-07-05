@@ -1,5 +1,6 @@
-import React,{useState} from "react";
+import React,{useState, useRef} from "react";
 import styled from "styled-components";
+import Alert from "../util_components/Alert";
 
 const Login_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
@@ -16,7 +17,11 @@ const Login_Container_div = styled.div`
     width: 700px;
     height: 700px;
     
-    // 요소 중앙 완전 정렬
+    // absolute div 요소 중앙 완전 정렬
+    /* c.f
+        + div 수평 중앙 정렬 -> margin: 0 auto;
+        + text 수평 중앙 정렬 -> text-align: center;
+    */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -30,6 +35,7 @@ const Login_Container_div = styled.div`
 
     @media (max-width: 1000px) {
         width: 400px;
+        height: 100%;
     }
 `
 
@@ -71,7 +77,6 @@ const Login_email_span = styled.span`
     font-weight: bold;
 `
 const Login_email_input = styled.input`
-    margin: 0 auto;
     width: 95%;
     height: 50%;
 
@@ -144,12 +149,23 @@ const Login = () => {
         email: "",
         password: ""
     });
-
+    const alertOpenRef = useRef(null);
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
         console.log("button")
-        
+        if(!loginUser.email || !loginUser.password){
+            alertOpenRef.current.handleOpenAlert("로그인 알림", "이메일과 비밀번호를 입력해주세요.");
+            return;
+        }
+    
+        if(!/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(loginUser.email)){
+            alertOpenRef.current.handleOpenAlert("로그인 알림", "이메일 형식을 다시 확인해주세요.");
+            return;
+        }
+
+
+        console.log("login 요청");
     }
 
     const handleEmailChange = (e) => {
@@ -168,29 +184,32 @@ const Login = () => {
     };
 
     return (
-        <Login_Overlay>
-            <Login_Container_div>
-                <Login_main_form onSubmit={handleFormSubmit}>
-                    <Login_span>로그인 🍭</Login_span>
-                    <Login_email_div>
-                        <Login_email_span>이메일</Login_email_span>
-                        <Login_email_input placeholder="your_email@email.com" onChange={handleEmailChange}/>
-                    </Login_email_div>
-                    <Login_password_div>
-                        <Login_password_span>비밀번호</Login_password_span>
-                        <Login_password_input type="password" placeholder="영문 + 숫자 + 특수문자 8자 이상" onChange={handlePasswordChange}/>
-                    </Login_password_div>
-                    <Login_submit_button type="submit">Continue</Login_submit_button>
-                    <Login_underline_span>or</Login_underline_span>
-                    <Login_underline_signup>계정이 없으신가요?
-                        <Login_underline_link href="/signup"> 회원가입</Login_underline_link>       
-                    </Login_underline_signup>
-                    <Login_underline_findpw>비밀번호를 잊어버렸어요! 
-                        <Login_underline_link href="/findpw"> 비밀번호 찾기</Login_underline_link>
-                    </Login_underline_findpw>
-                </Login_main_form>
-            </Login_Container_div>
-        </Login_Overlay>
+        <>
+            <Alert ref={alertOpenRef} />
+            <Login_Overlay>
+                <Login_Container_div>
+                    <Login_main_form onSubmit={handleFormSubmit}>
+                        <Login_span>로그인 🍭</Login_span>
+                        <Login_email_div>
+                            <Login_email_span>이메일</Login_email_span>
+                            <Login_email_input placeholder="your_email@email.com" onChange={handleEmailChange}/>
+                        </Login_email_div>
+                        <Login_password_div>
+                            <Login_password_span>비밀번호</Login_password_span>
+                            <Login_password_input type="password" placeholder="영문 + 숫자 + 특수문자 8자 이상" onChange={handlePasswordChange}/>
+                        </Login_password_div>
+                        <Login_submit_button type="submit">Continue</Login_submit_button>
+                        <Login_underline_span>or</Login_underline_span>
+                        <Login_underline_signup>계정이 없으신가요?
+                            <Login_underline_link href="/signup"> 회원가입</Login_underline_link>       
+                        </Login_underline_signup>
+                        <Login_underline_findpw>비밀번호를 잊어버렸어요! 
+                            <Login_underline_link href="/findpw"> 비밀번호 찾기</Login_underline_link>
+                        </Login_underline_findpw>
+                    </Login_main_form>
+                </Login_Container_div>
+            </Login_Overlay>
+        </>
     );
 }
 

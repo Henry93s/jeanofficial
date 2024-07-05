@@ -50,12 +50,12 @@ const Home_a = styled.div.attrs(props => ({
 
     @keyframes backgroundAni {
         0%{background-color: black}
-        50%{background-color: #0071E3}
+        50%{background-color: #9061F9}
         100%{background-color: black}
     }
 
     &:hover{
-        background-color: #0071E3
+        background-color: #9061F9
     }
 
     @media (max-width: 1000px) {
@@ -84,19 +84,22 @@ const Logout_a = styled.a`
     text-align: center;
     text-decoration: none;
 
-    color: white;
+    color: #9061F9;
     font-size: 20px;
-    font-weight: 600;
+    font-weight: bold;
     font-family: 'Noto Sans KR';
 
+    border-radius: 20px;
     cursor: pointer;
-    transition: color 0.5s;
+
+    transition: background-color 1s;
 
     &:hover{
-        color: #9061F9;
+        background-color: white;
     }
 
     @media (max-width: 1000px) {
+        border-radius: 10px;
         width: 50px;
         font-size: 13px;
     }
@@ -216,7 +219,7 @@ const Main_Header = (props) => {
                         </Home_a>
                     </Link>
                     <Link to="scroll_2" spy={true} smooth={true}>
-                    <Concert_a clicked={clickedMenu.Concert_a} onClick={handleMenuClick} name="Concert" title='한정 굿즈 판매'>
+                    <Concert_a clicked={clickedMenu.Concert_a} onClick={handleMenuClick} name="Concert" title='콘서트'>
                         <Concert_img src="/images/concert.png"  name="Concert"/>
                     </Concert_a>
                     </Link>
@@ -227,7 +230,7 @@ const Main_Header = (props) => {
                     </Link>
                     {is_logined &&
                         <>
-                            <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick} name="Mypage" title='마이 페이지'>
+                            <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick} name="Mypage" title='개인 정보 수정'>
                                 <Mypage_img src="/images/human.png" name="Mypage"/>
                             </Mypage_a>
                             <Logout_a>

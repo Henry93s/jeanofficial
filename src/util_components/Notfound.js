@@ -3,8 +3,9 @@ import styled from 'styled-components';
 
 const Title = styled.h1`
     font-size: 2.5rem;
+    font-family: "Noto Sans KR";
     text-align: center;
-    color: aliceblue;
+    color: #9061F9;
 `
 
 const Notfound = () => {
