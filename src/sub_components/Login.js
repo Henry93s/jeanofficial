@@ -1,4 +1,4 @@
-import React,{useState, useRef} from "react";
+import React,{useState, useRef, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 
@@ -151,7 +151,7 @@ const Login = () => {
     });
     const alertOpenRef = useRef(null);
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
         console.log("button")
         if(!loginUser.email || !loginUser.password){
@@ -166,22 +166,22 @@ const Login = () => {
 
 
         console.log("login 요청");
-    }
+    });
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = useCallback((e) => {
         setLoginUser((current) => {
             const newLogin = {...current};
             newLogin.email = e.target.value;
             return newLogin; 
         });
-    };
-    const handlePasswordChange = (e) => {
+    });
+    const handlePasswordChange = useCallback((e) => {
         setLoginUser((current) => {
             const newLogin = {...current};
             newLogin.password = e.target.value;
             return newLogin; 
         });
-    };
+    });
 
     return (
         <>

@@ -6,6 +6,7 @@ import Login from './sub_components/Login';
 import Findpw from './sub_components/Findpw';
 import PasswordChange from './sub_components/PasswordChange';
 import Signup from './sub_components/Signup';
+import MypagePut from './sub_components/MypagePut';
 import './App.css';
 
 
@@ -21,6 +22,7 @@ function App() {
             <Route path="/findpw" element={<Findpw />} />
             <Route path="/pwchange" element={<PasswordChange />} />
             <Route path='/signup' element={<Signup />} />
+            <Route path='/mypage' element={<MypagePut />} />
             <Route path="*" element={<Notfound />} />
           </Routes>
       </BrowserRouter>

@@ -1,7 +1,8 @@
-import React,{useState, useCallback, useMemo} from 'react';
+import React,{useState, useCallback, useMemo, useEffect} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-scroll';
 import Main_Header_Sidebar from './Main_Header_Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 //
 const Container_div = styled.div`
@@ -160,21 +161,36 @@ const Hamburger_Button_img = styled.img`
 `
 
 const Main_Header = (props) => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({
+        logined: false,
+        email: ""
+    });
     const [clickedMenu, setClickedMenu] = useState({
         Home_a: "false",
         Board_a: "false",
         Concert_a: "false",
         Mypage_a: "false"
     });
+    const navigate = useNavigate();
 
     const is_logined = useMemo(() => {
-        if(user.email){
+        if(user.logined){
             return true;
         } else {
             return false;
         }
     });
+
+    // 페이지 진입 시 로그인 또는 로그아웃 되었는지 체크 effect
+    // 잠시 임시로 셋팅함
+    useEffect(() => {
+        setUser((current) => {
+            const newUser = {...current};
+            newUser.logined = true;
+            newUser.email = "gudrjsdn8825@naver.com";
+            return newUser;
+        });
+    },[]);
 
     const handleMenuClick = useCallback((e) => {
         setClickedMenu((current) => {
@@ -205,6 +221,22 @@ const Main_Header = (props) => {
         });
     });
 
+    const handleMypageNav = useCallback(() => {
+        // 원래 로그인 되어 있는 이메일을 넘겨줘야 함
+        // navigate 할 때 user email 넘겨줌(이메일 전달 위함)
+        navigate('/mypage', {state: user});
+    });
+
+    const handleLogout = useCallback(() =>{
+        // 원래 실제 로그아웃 요청하고 문제없을 시 진행하여야 함
+        setUser((current) => {
+            const newUser = {...current};
+            newUser.logined = false;
+            newUser.email = "";
+            return newUser;
+        });
+    });
+
     return (
         <>
             <Main_Header_Sidebar clickBurger={clickBurger} handleHamburgerClick={handleHamburgerClick}/>
@@ -230,10 +262,10 @@ const Main_Header = (props) => {
                     </Link>
                     {is_logined &&
                         <>
-                            <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMenuClick} name="Mypage" title='개인 정보 수정'>
+                            <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMypageNav} name="Mypage" title='개인 정보 수정'>
                                 <Mypage_img src="/images/human.png" name="Mypage"/>
                             </Mypage_a>
-                            <Logout_a>
+                            <Logout_a onClick={handleLogout}>
                                 로그아웃
                             </Logout_a>
                         </> 

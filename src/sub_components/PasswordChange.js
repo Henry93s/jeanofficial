@@ -1,4 +1,4 @@
-import React,{useRef, useState} from "react";
+import React,{useRef, useState, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import { useLocation } from "react-router-dom";
@@ -168,7 +168,7 @@ const PasswordChange = () => {
     });
     const alertOpenRef = useRef(null);
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
         if(password.password.length < 8){
             alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", "패스워드는 8자 이상으로 입력해주세요.");
@@ -184,22 +184,22 @@ const PasswordChange = () => {
         }
         console.log("email, password 로 db 수정 요청");
         
-    }
+    });
 
-    const handlePasswordChange = (e) => {
+    const handlePasswordChange = useCallback((e) => {
         setPassword((current) => {
             const newPasswordChange = {...current};
             newPasswordChange.password = e.target.value;
             return newPasswordChange; 
         });
-    };
-    const handlePasswordConfirmChange = (e) => {
+    });
+    const handlePasswordConfirmChange = useCallback((e) => {
         setPassword((current) => {
             const newPasswordChange = {...current};
             newPasswordChange.passwordConfirm = e.target.value;
             return newPasswordChange; 
         });
-    };
+    });
 
 
 

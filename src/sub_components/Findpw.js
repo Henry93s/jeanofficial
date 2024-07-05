@@ -1,4 +1,4 @@
-import React,{useRef, useState} from "react";
+import React,{useCallback, useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
@@ -191,7 +191,7 @@ const Findpw = () => {
     const alertOpenRef = useRef(null);
     const navigate = useNavigate();
 
-    const handleVerifyButton = () => {
+    const handleVerifyButton = useCallback(() => {
         if(!/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(FindpwUser.email)){
             alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림","이메일 형식을 다시 확인해주세요.");
             return;
@@ -203,9 +203,9 @@ const Findpw = () => {
         verifyBtnRef.current.style.cursor = "default";
         verifyBtnRef.current.disabled = "true";
         emailInputRef.current.disabled = "true";
-    }
+    });
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
         
         console.log("인증번호 검사 요청")
@@ -213,22 +213,22 @@ const Findpw = () => {
         // navigate 할 때 user 상태 넘겨줌(이메일 전달 위함)
         
         navigate('/pwchange', {state: FindpwUser});
-    }
+    });
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = useCallback((e) => {
         setFindpwUser((current) => {
             const newFindpw = {...current};
             newFindpw.email = e.target.value;
             return newFindpw; 
         });
-    };
-    const handleVerifyCodeChange = (e) => {
+    });
+    const handleVerifyCodeChange = useCallback((e) => {
         setFindpwUser((current) => {
             const newFindpw = {...current};
             newFindpw.verifyCode = e.target.value;
             return newFindpw; 
         });
-    };
+    });
 
 
 

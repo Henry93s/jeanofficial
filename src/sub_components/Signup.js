@@ -1,7 +1,6 @@
-import React,{useRef, useState} from "react";
+import React,{useRef, useState, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
-import { useLocation } from "react-router-dom";
 
 const Signup_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
@@ -208,7 +207,7 @@ const Signup = () => {
     const verifyBtnRef = useRef(null);
     const emailInputRef = useRef(null);
 
-    const handleEmailVerifyGet = () => {
+    const handleEmailVerifyGet = useCallback(() => {
         if(!/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(addUser.email)){
             alertOpenRef.current.handleOpenAlert("회원가입 알림","이메일 형식을 다시 확인해주세요.");
             return;
@@ -220,13 +219,13 @@ const Signup = () => {
         verifyBtnRef.current.style.cursor = "default";
         verifyBtnRef.current.disabled = "true";
         emailInputRef.current.disabled = "true";
-    };
+    });
 
-    const handleEmailVerifyPost = () => {
+    const handleEmailVerifyPost = useCallback(() => {
         console.log("인증번호가 맞는지 서버 확인 요청");
-    }
+    });
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
         console.log("인증이 되었는지 확인 요청");
         console.log("닉네임 중복 확인 요청");
@@ -245,44 +244,44 @@ const Signup = () => {
         }
         console.log("email, password, nickname 으로 db 추가 요청");
         
-    }
+    });
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.email = e.target.value;
             return newAddUser; 
         });
-    };
+    });
 
-    const handlePasswordChange = (e) => {
+    const handlePasswordChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.password = e.target.value;
             return newAddUser; 
         });
-    };
-    const handlePasswordConfirmChange = (e) => {
+    });
+    const handlePasswordConfirmChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.passwordConfirm = e.target.value;
             return newAddUser; 
         });
-    };
-    const handleNicknameChange = (e) => {
+    });
+    const handleNicknameChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.nickname = e.target.value;
             return newAddUser; 
         });
-    };
-    const handleCodeChange = (e) => {
+    });
+    const handleCodeChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.code = e.target.value;
             return newAddUser; 
         });
-    }
+    });
 
     return (
         <>
