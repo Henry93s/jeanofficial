@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Title = styled.h1`
-    font-size: 2.5rem;
-    font-family: "Noto Sans KR";
+    font-size: 20px;
     text-align: center;
     color: #9061F9;
 `

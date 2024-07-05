@@ -144,11 +144,11 @@ const Findpw_email_verify_button = styled.button`
         font-size: 13px;
     }
 `
-const Findpw_password_div = styled(Findpw_email_div)`
+const Findpw_code_div = styled(Findpw_email_div)`
 `
-const Findpw_password_span = styled(Findpw_email_span)`
+const Findpw_code_span = styled(Findpw_email_span)`
 `
-const Findpw_password_input = styled(Findpw_email_input)`
+const Findpw_code_input = styled(Findpw_email_input)`
     width: 80%;
     @media (max-width: 1000px) {
         width: 70%;
@@ -169,8 +169,6 @@ const Findpw_underline_span = styled.span`
     font-size: 15px;
 `
 const Findpw_underline_signup = styled(Findpw_underline_span)`
-`
-const Findpw_underline_findpw = styled(Findpw_underline_span)`
 `
 const Findpw_underline_link = styled.a`
     text-decoration: none;
@@ -200,7 +198,7 @@ const Findpw = () => {
         }
         console.log("이메일 db 에 존재하는지 요청");
 
-
+        console.log("인증번호가 정상 전송될 때 아래 막기 작업")
         verifyBtnRef.current.style.backgroundColor = "#1E1E20";
         verifyBtnRef.current.style.cursor = "default";
         verifyBtnRef.current.disabled = "true";
@@ -246,10 +244,10 @@ const Findpw = () => {
                             <Findpw_email_input ref={emailInputRef} placeholder="your_email@email.com" onChange={handleEmailChange}/>
                             <Findpw_email_verify_button type="button" onClick={handleVerifyButton} ref={verifyBtnRef}>인증번호 받기</Findpw_email_verify_button>
                         </Findpw_email_div>
-                        <Findpw_password_div>
-                            <Findpw_password_span>인증번호</Findpw_password_span>
-                            <Findpw_password_input placeholder="6자리 인증코드 입력" onChange={handleVerifyCodeChange}/>
-                        </Findpw_password_div>
+                        <Findpw_code_div>
+                            <Findpw_code_span>인증번호</Findpw_code_span>
+                            <Findpw_code_input placeholder="6자리 인증코드 입력" onChange={handleVerifyCodeChange}/>
+                        </Findpw_code_div>
                         <Findpw_submit_button type="submit">인증번호 확인</Findpw_submit_button>
                         <Findpw_underline_span>or</Findpw_underline_span>
                         <Findpw_underline_signup>계정이 없으신가요?
