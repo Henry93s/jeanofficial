@@ -54,6 +54,7 @@ const Body_2_element1 = () => {
             <Flex_div_sub_div ref={element => targetRef.current[2] = element}>
                 <New_Flex_div_sub_element1 />
                 <Flex_div_sub_element2>
+                    {/* 외부 링크는 a 태그 사용하여야 함 */}
                     <Flex_div_sub_element2_a href="https://www.youtube.com/watch?v=ZncbtRo7RXs" target="_blank" style={{textDecoration: "none"}}>
                         <Flex_div_sub_element2_a_p1>New Album<br/></Flex_div_sub_element2_a_p1>
                         <Flex_div_sub_element2_a_p2>'Supernatural' 발매! 🐰<br /></Flex_div_sub_element2_a_p2>

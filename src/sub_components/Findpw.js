@@ -1,5 +1,5 @@
 import React,{useCallback, useRef, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 
@@ -170,7 +170,7 @@ const Findpw_underline_span = styled.span`
 `
 const Findpw_underline_signup = styled(Findpw_underline_span)`
 `
-const Findpw_underline_link = styled.a`
+const Findpw_underline_link = styled(Link)`
     text-decoration: none;
     color: #9061F9;
     font-weight: bold;
@@ -230,8 +230,6 @@ const Findpw = () => {
         });
     });
 
-
-
     return (
         <>
             <Alert ref={alertOpenRef} />
@@ -251,7 +249,7 @@ const Findpw = () => {
                         <Findpw_submit_button type="submit">인증번호 확인</Findpw_submit_button>
                         <Findpw_underline_span>or</Findpw_underline_span>
                         <Findpw_underline_signup>계정이 없으신가요?
-                            <Findpw_underline_link href="/signup"> 회원가입</Findpw_underline_link>       
+                            <Findpw_underline_link to="/signup"> 회원가입</Findpw_underline_link>       
                         </Findpw_underline_signup>
                     </Findpw_main_form>
                 </Findpw_Container_div>

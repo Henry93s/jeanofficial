@@ -1,5 +1,11 @@
 const Local_shorts = [
     {
+        "title": "Breaktime 🥁 at Tokyo Dome Bunnies Camp 2024 #NewJeans #뉴진스 #BunniesCamp #BunniesCamp2024TokyoDome",
+        "image_url": "https://i.ytimg.com/vi/WOW0Qxk8RGE/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/WOW0Qxk8RGE",
+        "uploadTime": "2024. 7. 5. 금요일 오후 8:00:35"
+    },
+    {
         "title": "Ditto in Tokyo Dome Bunnies Camp 2024🐰#NewJeans #뉴진스#BunniesCamp #BunniesCamp2024TokyoDome",
         "image_url": "https://i.ytimg.com/vi/01lYZyfjaXc/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/01lYZyfjaXc",
@@ -112,12 +118,6 @@ const Local_shorts = [
         "image_url": "https://i.ytimg.com/vi/O4GpT2j8FVg/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/O4GpT2j8FVg",
         "uploadTime": "2024. 5. 25. 토요일 오후 6:00:01"
-    },
-    {
-        "title": "Bring your own flavor🍭with #HowSweet on YouTube Shorts #NewJeans #뉴진스 #NewJeans_HowSweet",
-        "image_url": "https://i.ytimg.com/vi/iH0olvj_PhM/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/iH0olvj_PhM",
-        "uploadTime": "2024. 5. 25. 토요일 오전 11:00:01"
     }
 ];
 

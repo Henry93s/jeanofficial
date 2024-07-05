@@ -46,6 +46,7 @@ const Icon_div = styled.div`
         margin-top: 3rem;
     }
 `
+{/* 외부 링크는 a 태그 사용하여야 함 */}
 const Icon_youtube = styled.a`
     width: 50px;
     height: 50px;

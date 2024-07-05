@@ -1,6 +1,7 @@
 import React,{useState, useRef, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
+import { Link } from "react-router-dom";
 
 const Login_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
@@ -132,7 +133,8 @@ const Login_underline_signup = styled(Login_underline_span)`
 `
 const Login_underline_findpw = styled(Login_underline_span)`
 `
-const Login_underline_link = styled.a`
+// Link 컴포넌트의 경우 a 와 같이 기본 태그가 아니므로 함수형으로 styled 해야 함!!!
+const Login_underline_link = styled(Link)`
     text-decoration: none;
     color: #9061F9;
     font-weight: bold;
@@ -201,10 +203,10 @@ const Login = () => {
                         <Login_submit_button type="submit">Continue</Login_submit_button>
                         <Login_underline_span>or</Login_underline_span>
                         <Login_underline_signup>계정이 없으신가요?
-                            <Login_underline_link href="/signup"> 회원가입</Login_underline_link>       
+                            <Login_underline_link to="/signup"> 회원가입</Login_underline_link>       
                         </Login_underline_signup>
                         <Login_underline_findpw>비밀번호를 잊어버렸어요! 
-                            <Login_underline_link href="/findpw"> 비밀번호 찾기</Login_underline_link>
+                            <Login_underline_link to="/findpw"> 비밀번호 찾기</Login_underline_link>
                         </Login_underline_findpw>
                     </Login_main_form>
                 </Login_Container_div>

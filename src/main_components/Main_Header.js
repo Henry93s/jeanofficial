@@ -1,8 +1,9 @@
 import React,{useState, useCallback, useMemo, useEffect} from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-scroll';
 import Main_Header_Sidebar from './Main_Header_Sidebar';
-import { useNavigate } from 'react-router-dom';
+// scrollLink 로도 Link 를 사용하기 위해서 별칭 as 사용 !
+import {Link as ScrollLink} from 'react-scroll';
+import { useNavigate, Link } from 'react-router-dom';
 
 //
 const Container_div = styled.div`
@@ -34,7 +35,7 @@ const Card_Carousel_item = styled.div.attrs(props => ({
 ~ 정의
 `
 */
-const Home_a = styled.div.attrs(props => ({
+const Home_div = styled.div.attrs(props => ({
     style: {
         animation: props.clicked === "true" ? "backgroundAni 1s ease-in-out" : "none"
     },
@@ -66,16 +67,16 @@ const Home_a = styled.div.attrs(props => ({
     }
 `
 
-const Board_a = styled(Home_a)`
+const Board_div = styled(Home_div)`
 `
 
-const Concert_a = styled(Home_a)`
+const Concert_div = styled(Home_div)`
 `
 
-const Mypage_a = styled(Home_a)`
+const Mypage_div = styled(Home_div)`
 `
 
-const Logout_a = styled.a`
+const Logout_link = styled(Link)`
     width: 150px;
     height: 40px;
 
@@ -106,7 +107,7 @@ const Logout_a = styled.a`
     }
 `
 
-const Login_a = styled(Logout_a)`
+const Login_link = styled(Logout_link)`
 `
 
 const Home_img = styled.img`
@@ -124,13 +125,9 @@ const Concert_img = styled(Home_img)`
 `
 const Mypage_img = styled(Home_img)`
 `
-const Logout_img = styled(Home_img)`
-`
-const Login_img = styled(Home_img)`
-`
 
 // hamburger 버튼 부분
-const Hamburger_a = styled.a`
+const Hamburger_link = styled(Link)`
     width: 150px;
     height: 40px;
     // 혼자 어느정도 왼쪽에 놓기 위한 flex-grow 설정
@@ -166,10 +163,10 @@ const Main_Header = (props) => {
         email: ""
     });
     const [clickedMenu, setClickedMenu] = useState({
-        Home_a: "false",
-        Board_a: "false",
-        Concert_a: "false",
-        Mypage_a: "false"
+        Home_div: "false",
+        Board_div: "false",
+        Concert_div: "false",
+        Mypage_div: "false"
     });
     const navigate = useNavigate();
 
@@ -195,14 +192,14 @@ const Main_Header = (props) => {
     const handleMenuClick = useCallback((e) => {
         setClickedMenu((current) => {
             const newClickedMenu = {...current};
-            const target = e.target.name + "_a";
+            const target = e.target.name + "_div";
             newClickedMenu[target] = "true";
             return newClickedMenu;
         })
         setTimeout(() => {
             setClickedMenu((current) => {
                 const newClickedMenu = {...current};
-                const target = e.target.name + "_a";
+                const target = e.target.name + "_div";
                 newClickedMenu[target] = "false";
                 return newClickedMenu;
             })
@@ -241,39 +238,39 @@ const Main_Header = (props) => {
         <>
             <Main_Header_Sidebar clickBurger={clickBurger} handleHamburgerClick={handleHamburgerClick}/>
             <Container_div>
-                    <Hamburger_a>
+                    <Hamburger_link>
                         <Hamburger_Button_img src='/images/hamburger.png' alt='hamburger_button' onClick={handleHamburgerClick} title='최신 youtube 소식'/>
-                    </Hamburger_a>
-                    {/* div 태그에 Link 컴포넌트를 감싸서 id="" 로 스크롤 이동하기 위함 */}
-                    <Link to="scroll_1" spy={true} smooth={true}>
-                        <Home_a clicked={clickedMenu.Home_a} onClick={handleMenuClick} name="Home" title='홈'>
+                    </Hamburger_link>
+                    {/* div 태그에 Link 컴포넌트를 감싸서 id="" 로 스크롤 이동하기 위함, Link(scroll) 사용 시 Link(Route) 와 중첩되면 안돼서 div 로 함! */}
+                    <ScrollLink to="scroll_1" spy={true} smooth={true}>
+                        <Home_div clicked={clickedMenu.Home_div} onClick={handleMenuClick} name="Home" title='홈'>
                             <Home_img src="/images/home.svg" name="Home"/>
-                        </Home_a>
-                    </Link>
-                    <Link to="scroll_2" spy={true} smooth={true}>
-                    <Concert_a clicked={clickedMenu.Concert_a} onClick={handleMenuClick} name="Concert" title='콘서트'>
+                        </Home_div>
+                    </ScrollLink>
+                    <ScrollLink to="scroll_2" spy={true} smooth={true}>
+                    <Concert_div clicked={clickedMenu.Concert_div} onClick={handleMenuClick} name="Concert" title='콘서트'>
                         <Concert_img src="/images/concert.png"  name="Concert"/>
-                    </Concert_a>
-                    </Link>
-                    <Link to="scroll_3" spy={true} smooth={true}>
-                        <Board_a clicked={clickedMenu.Board_a} onClick={handleMenuClick} name="Board" title='게시판'>
+                    </Concert_div>
+                    </ScrollLink>
+                    <ScrollLink to="scroll_3" spy={true} smooth={true}>
+                        <Board_div clicked={clickedMenu.Board_div} onClick={handleMenuClick} name="Board" title='게시판'>
                             <Board_img src="/images/board.png" name="Board"/>
-                        </Board_a>
-                    </Link>
+                        </Board_div>
+                    </ScrollLink>
                     {is_logined &&
                         <>
-                            <Mypage_a clicked={clickedMenu.Mypage_a} onClick={handleMypageNav} name="Mypage" title='개인 정보 수정'>
+                            <Mypage_div clicked={clickedMenu.Mypage_div} onClick={handleMypageNav} name="Mypage" title='개인 정보 수정'>
                                 <Mypage_img src="/images/human.png" name="Mypage"/>
-                            </Mypage_a>
-                            <Logout_a onClick={handleLogout}>
+                            </Mypage_div>
+                            <Logout_link onClick={handleLogout}>
                                 로그아웃
-                            </Logout_a>
+                            </Logout_link>
                         </> 
                         ||
                         <>
-                            <Login_a href="/login">
+                            <Login_link to="/login">
                                 로그인
-                            </Login_a>
+                            </Login_link>
                         </>
                     }
             </Container_div>

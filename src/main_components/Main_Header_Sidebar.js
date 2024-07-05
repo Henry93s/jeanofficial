@@ -131,6 +131,7 @@ const Hamburger_youtube_item_img = styled.img`
     width: 100%;
     height: 100%;
 `
+/* 외부 링크는 a 태그 사용하여야 함 */
 const Hamburger_youtube_item_a = styled.a`
     font-size: 20px;
     text-underline-offset: 5px;
@@ -223,6 +224,7 @@ const Main_Header_Sidebar = (props) => {
                                 return (
                                     <Hamburger_youtube_item key={i} >
                                         <Hamburger_youtube_item_img src={v.image_url} alt={v.image_url} />
+                                        {/* 외부 링크는 a 태그 사용하여야 함 */}
                                         <Hamburger_youtube_item_a href={v.video_url} target='_blank' title={v.title}>{v.title}</Hamburger_youtube_item_a>
                                         <Hamburger_youtube_item_p>{v.uploadTime}</Hamburger_youtube_item_p>
                                     </Hamburger_youtube_item>
@@ -239,6 +241,7 @@ const Main_Header_Sidebar = (props) => {
                                 return (
                                     <Hamburger_youtube_item2 key={i} >
                                         <Hamburger_youtube_item_img2 src={v.image_url} alt={v.image_url} />
+                                        {/* 외부 링크는 a 태그 사용하여야 함 */}
                                         <Hamburger_youtube_item_a2 href={v.video_url} target='_blank' title={v.title}>{v.title}</Hamburger_youtube_item_a2>
                                         <Hamburger_youtube_item_p2>{v.uploadTime}</Hamburger_youtube_item_p2>
                                     </Hamburger_youtube_item2>

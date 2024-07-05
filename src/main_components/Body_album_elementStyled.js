@@ -103,6 +103,7 @@ export const Flex_div_sub_element2 = styled(Flex_div_sub_element1)`
         justify-content: center;
     }
 `
+{/* 외부 링크는 a 태그 사용하여야 함 */}
 export const Flex_div_sub_element2_a = styled.a`
    text-decoration: none;
    color: black;
