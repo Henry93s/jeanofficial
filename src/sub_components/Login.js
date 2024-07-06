@@ -2,6 +2,7 @@ import React,{useState, useRef, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Login_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
