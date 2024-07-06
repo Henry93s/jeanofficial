@@ -1,7 +1,9 @@
-import React,{forwardRef, useImperativeHandle, useState} from "react";
+import React,{forwardRef, useImperativeHandle, useState, useRef} from "react";
 import styled from "styled-components";
+import axiosCustom from "./axiosCustom";
+import Alert from "./Alert";
 
-const Alert_Overlay = styled.div`
+const Popup_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
     // 외부 컴포넌트와 겹치므로 overlay position absolute, 외부 컴포넌트보다 z-index 우선순위 up
     position: absolute;
@@ -14,7 +16,7 @@ const Alert_Overlay = styled.div`
     background-color: #18181A;
 `
 
-const Alert_container_div = styled.div`
+const Popup_container_div = styled.div`
     width: 500px;
     height: 250px;
     
@@ -49,23 +51,32 @@ const Alert_container_div = styled.div`
         height: 250px;
     }
 `
-const Alert_span = styled.span`
+const Popup_span = styled.span`
     justify-self: flex-start;
     align-self: flex-start;
-    margin-left: 10%;
+    margin-left: 5%;
 
     font-size: 22px;
     color: white;
     font-weight: bold;
 `
-const Alert_span_text = styled(Alert_span)`
-    margin-left: 10%;
+const Popup_span_text = styled(Popup_span)`
+    margin-left: 5%;
     font-size: 15px;
     font-weight: 400;
 `
-const Alert_button = styled.button`
-    width: 25%;
-    height: 20%;
+const Popup_button_div = styled.div`
+    width: 50%;
+    height: 30%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+`
+const Popup_button = styled.button`
+    width: 40%;
+    height: 60%;
 
     background-color: #9061F9;
     border: none;
@@ -86,39 +97,57 @@ const Alert_button = styled.button`
 `
 
 // 함수형 컴포넌트에 ref 사용 시 forwardRef 를 사용함
-const Alert = forwardRef((props, ref) => {
-    const [isAlert, setIsAlert] = useState(false);
+const Popup = forwardRef((props, ref) => {
+    const [isPopup, setIsPopup] = useState(false);
     const [span, setSpan] = useState("");
     const [text, setText] = useState("");
+    // 예 일 때 콜백 함수 실행 상태
+    const [isOk, setIsOk] = useState(null);
+    const alertOpenRef = useRef(null);
 
     // 함수형 컴포넌트 중 외부에서 호출할 메서드는 useImperativeHandle 로 사용함
     useImperativeHandle(ref, () => ({
-        handleOpenAlert(span, text) {
+        handleOpenPopup(span, text, callback) {
             setSpan(span);
             setText(text);
-            setIsAlert(true);
+            // 콜백 함수 정의 추가
+            setIsOk(callback);
+            setIsPopup(true);
         },
     }));
     
-    const handleCloseAlert = () => {
-        setIsAlert(false);
+    const handleOkPopup = () => {
+        // 예 일 때 콜백함수 진행
+        console.log("ok?")
+        isOk(props.parameter);
+
+        setIsPopup(false);
         setSpan("");
         setText("");
     };
 
+    const handleCancelPopup = () => {
+        setIsPopup(false);
+        setSpan("");
+        setText("");
+    }
+
     return (
-        <>
-            {isAlert &&
-                <Alert_Overlay>
-                    <Alert_container_div style={isAlert ? {animation: "popup 1s"} : {animation: "none"}}>
-                        <Alert_span>{span}</Alert_span>
-                        <Alert_span_text>{text}</Alert_span_text>
-                        <Alert_button onClick={handleCloseAlert}>확인</Alert_button>
-                    </Alert_container_div>
-                </Alert_Overlay>
+        <>  <Alert ref={alertOpenRef} />
+            {isPopup &&
+                <Popup_Overlay>
+                    <Popup_container_div style={isPopup ? {animation: "popup 1s"} : {animation: "none"}}>
+                        <Popup_span>{span}</Popup_span>
+                        <Popup_span_text>{text}</Popup_span_text>
+                        <Popup_button_div>
+                            <Popup_button onClick={handleOkPopup}>예</Popup_button>
+                            <Popup_button onClick={handleCancelPopup}>아니오</Popup_button>
+                        </Popup_button_div>
+                    </Popup_container_div>
+                </Popup_Overlay>
             }
         </>
     )
 });
 
-export default Alert;
+export default Popup;

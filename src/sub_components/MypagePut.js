@@ -1,7 +1,9 @@
 import React,{useRef, useState, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
-import { useLocation } from "react-router-dom";
+import Popup from '../util_components/Popup';
+import { useLocation, Link } from "react-router-dom";
+import axiosCustom from "../util_components/axiosCustom";
 
 const MypagePut_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
@@ -161,6 +163,24 @@ const MypagePut_submit_button = styled.button`
     }
 `
 
+const MypagePut_underline_a = styled.a`
+    text-decoration: none;
+    color: #9061F9;
+    font-weight: bold;
+
+    // custom
+    align-self: flex-end;
+    margin-right: 5%;
+    margin-bottom: 2%;
+
+    transition: color 0.5s;
+    cursor: pointer;
+
+    &:hover{
+        color: #A47CFB;
+    }
+`
+
 const MypagePut = () => {
     const [putUser, setputUser] = useState({
         nickname: "",
@@ -168,6 +188,7 @@ const MypagePut = () => {
         passwordConfirm: ""
     });
     const alertOpenRef = useRef(null);
+    const popupOpenRef = useRef(null);
     // main 에서 개인정보 수정할 때 보내온 state 를 location 객체에서 불러옴
     const location = useLocation();
     const email = location.state.email;
@@ -181,11 +202,11 @@ const MypagePut = () => {
             return;
         }
         else if(!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&`~$^()_+])[A-Za-z\d@!%*#?&`~$^()_+]{8,}$/.test(putUser.password)){
-            alertOpenRef.current.handleOpenAlert("개인정보 수정  알림", "비밀번호는 영문 + 숫자 + 특수문자의 조합으로 설정해 주세요.");
+            alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", "비밀번호는 영문 + 숫자 + 특수문자의 조합으로 설정해 주세요.");
             return;
         }
         if(putUser.password !== putUser.passwordConfirm) {
-            alertOpenRef.current.handleOpenAlert("개인정보 수정  알림", "비밀번호 확인이 일치하지 않습니다.");
+            alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", "비밀번호 확인이 일치하지 않습니다.");
             return;
         }
         console.log("email 을 기준으로 password, nickname 으로 db 수정 요청");
@@ -214,8 +235,22 @@ const MypagePut = () => {
         });
     });
 
+    const userOut = useCallback((email) => {
+        axiosCustom.post('http://localhost:3002/users/deleteByEmail',{email})
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", res.data.message);
+            return;
+        })
+    });
+    // 콜백 함수를 파라미터로 넘기기 !!! =>  () => "콜백함수명"
+    const handleOutUser = useCallback(() => {
+        popupOpenRef.current.handleOpenPopup("개인정보 수정 알림", "회원 탈퇴를 진행하시겠습니까? 회원 정보 및 작성글, 댓글 모두 삭제됩니다.", () => userOut);
+        return;
+    });
+
     return (
         <>
+            <Popup parameter={email} ref={popupOpenRef} />
             <Alert ref={alertOpenRef} />
             <MypagePut_Overlay>
                 <MypagePut_Container_div>
@@ -237,6 +272,7 @@ const MypagePut = () => {
                             <MypagePut_passwordConfirm_span>비밀번호 확인</MypagePut_passwordConfirm_span>
                             <MypagePut_passwordConfirm_input type="password" placeholder="위와 동일한 비밀번호 입력" onChange={handlePasswordConfirmChange}/>
                         </MypagePut_passwordConfirm_div>
+                        <MypagePut_underline_a onClick={handleOutUser}>탈퇴하기</MypagePut_underline_a>
                         <MypagePut_submit_button type="submit">수정하기</MypagePut_submit_button>
                     </MypagePut_main_form>
                 </MypagePut_Container_div>
