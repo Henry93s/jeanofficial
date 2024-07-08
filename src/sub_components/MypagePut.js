@@ -117,24 +117,24 @@ const MypagePut_email_input = styled.input`
     }
 `
 
-const MypagePut_nickname_div = styled(MypagePut_email_div)`
+const MypagePut_name_div = styled(MypagePut_email_div)`
 `
-const MypagePut_nickname_span = styled(MypagePut_email_span)`
+const MypagePut_name_span = styled(MypagePut_email_span)`
 `
-const MypagePut_nickname_input = styled(MypagePut_email_input)`
+const MypagePut_name_input = styled(MypagePut_email_input)`
     width: 65%;
 `
-const MypagePut_password_div = styled(MypagePut_nickname_div)`
+const MypagePut_password_div = styled(MypagePut_name_div)`
 `
-const MypagePut_password_span = styled(MypagePut_nickname_span)`
+const MypagePut_password_span = styled(MypagePut_name_span)`
 `
-const MypagePut_password_input = styled(MypagePut_nickname_input)`
+const MypagePut_password_input = styled(MypagePut_name_input)`
 `
-const MypagePut_passwordConfirm_div = styled(MypagePut_nickname_div)`
+const MypagePut_passwordConfirm_div = styled(MypagePut_name_div)`
 `
-const MypagePut_passwordConfirm_span = styled(MypagePut_nickname_span)`
+const MypagePut_passwordConfirm_span = styled(MypagePut_name_span)`
 `
-const MypagePut_passwordConfirm_input = styled(MypagePut_nickname_input)`
+const MypagePut_passwordConfirm_input = styled(MypagePut_name_input)`
 `
 
 const MypagePut_submit_button = styled.button`
@@ -162,16 +162,16 @@ const MypagePut_submit_button = styled.button`
         font-size: 15px;
     }
 `
-
+const MypagePut_underline_div = styled.div`
+    width: 90%;
+    margin-bottom: 3%;
+    display: flex;
+    justify-content: space-between;
+`
 const MypagePut_underline_a = styled.a`
     text-decoration: none;
     color: #9061F9;
     font-weight: bold;
-
-    // custom
-    align-self: flex-end;
-    margin-right: 5%;
-    margin-bottom: 2%;
 
     transition: color 0.5s;
     cursor: pointer;
@@ -180,10 +180,22 @@ const MypagePut_underline_a = styled.a`
         color: #A47CFB;
     }
 `
+const MypagePut_underline_link = styled(Link)`
+    text-decoration: none;
+    color: #9061F9;
+    font-weight: bold;
+
+    transition: color 0.5s;
+    cursor: pointer;
+
+    &:hover{
+        color: #A47CFB;
+    }   
+`
 
 const MypagePut = () => {
     const [putUser, setputUser] = useState({
-        nickname: "",
+        name: "",
         password: "",
         passwordConfirm: ""
     });
@@ -195,13 +207,17 @@ const MypagePut = () => {
 
     const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
-        console.log("닉네임 중복 확인 요청");
-
-        if(putUser.password.length < 8){
-            alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", "패스워드는 8자 이상으로 입력해주세요.");
+        if(putUser.name.length < 2 && putUser.password.length < 8){
+            alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", "수정할 닉네임 또는 비밀번호를 입력해주세요.");
             return;
         }
-        else if(!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&`~$^()_+])[A-Za-z\d@!%*#?&`~$^()_+]{8,}$/.test(putUser.password)){
+        if(putUser.password.length >= 1 && putUser.password.length < 8){
+            alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", "수정할 비밀번호를 8자 이상 입력해주세요.");
+            return;
+        }
+        if(putUser.password.length >= 8 && 
+            !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&`~$^()_+])[A-Za-z\d@!%*#?&`~$^()_+]{8,}$/.test(putUser.password))
+        {
             alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", "비밀번호는 영문 + 숫자 + 특수문자의 조합으로 설정해 주세요.");
             return;
         }
@@ -209,8 +225,19 @@ const MypagePut = () => {
             alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", "비밀번호 확인이 일치하지 않습니다.");
             return;
         }
-        console.log("email 을 기준으로 password, nickname 으로 db 수정 요청");
-        
+        // 개인 정보 수정 (password or name)
+        const bodyData = {email: email};
+        if(putUser.name.length >= 2){
+            bodyData.name = putUser.name;
+        }
+        if(putUser.password.length >= 8){
+            bodyData.password = putUser.password;
+        }
+        axiosCustom.put('http://localhost:3002/users/', bodyData)
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", res.data.message);
+            return;
+        });
     });
 
     const handlePasswordChange = useCallback((e) => {
@@ -227,14 +254,15 @@ const MypagePut = () => {
             return newputUser; 
         });
     });
-    const handleNicknameChange = useCallback((e) => {
+    const handleNameChange = useCallback((e) => {
         setputUser((current) => {
             const newputUser = {...current};
-            newputUser.nickname = e.target.value;
+            newputUser.name = e.target.value;
             return newputUser; 
         });
     });
 
+    // 회원 탈퇴 콜백함수
     const userOut = useCallback((email) => {
         axiosCustom.post('http://localhost:3002/users/deleteByEmail',{email})
         .then(res => {
@@ -260,10 +288,10 @@ const MypagePut = () => {
                             <MypagePut_email_span>이메일</MypagePut_email_span>
                             <MypagePut_email_input disabled value={email}/>
                         </MypagePut_email_div>
-                        <MypagePut_nickname_div>
-                            <MypagePut_nickname_span>닉네임</MypagePut_nickname_span>
-                            <MypagePut_nickname_input placeholder="12자 이내 닉네임 입력" maxLength='12' onChange={handleNicknameChange}/>
-                        </MypagePut_nickname_div>
+                        <MypagePut_name_div>
+                            <MypagePut_name_span>닉네임</MypagePut_name_span>
+                            <MypagePut_name_input placeholder="12자 이내 닉네임 입력" maxLength='12' onChange={handleNameChange}/>
+                        </MypagePut_name_div>
                         <MypagePut_password_div>
                             <MypagePut_password_span>비밀번호</MypagePut_password_span>
                             <MypagePut_password_input type="password" placeholder="영문 + 숫자 + 특수문자 8자 이상" onChange={handlePasswordChange}/>
@@ -272,7 +300,10 @@ const MypagePut = () => {
                             <MypagePut_passwordConfirm_span>비밀번호 확인</MypagePut_passwordConfirm_span>
                             <MypagePut_passwordConfirm_input type="password" placeholder="위와 동일한 비밀번호 입력" onChange={handlePasswordConfirmChange}/>
                         </MypagePut_passwordConfirm_div>
-                        <MypagePut_underline_a onClick={handleOutUser}>탈퇴하기</MypagePut_underline_a>
+                        <MypagePut_underline_div>
+                            <MypagePut_underline_link to="/">HOME</MypagePut_underline_link>
+                            <MypagePut_underline_a onClick={handleOutUser}>탈퇴하기</MypagePut_underline_a>
+                        </MypagePut_underline_div>
                         <MypagePut_submit_button type="submit">수정하기</MypagePut_submit_button>
                     </MypagePut_main_form>
                 </MypagePut_Container_div>

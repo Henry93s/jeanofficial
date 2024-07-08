@@ -1,7 +1,8 @@
 import React,{useRef, useState, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axiosCustom from "../util_components/axiosCustom";
 
 const PasswordChange_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
@@ -160,6 +161,7 @@ const PasswordChange_submit_button = styled.button`
 const PasswordChange = () => {
     // 전달 받은 이메일을 받기 위해 location.state 객체 사용
     const location = useLocation();
+    const navigate = useNavigate();
     const email = location.state.email;
 
     const [password, setPassword] = useState({
@@ -182,8 +184,15 @@ const PasswordChange = () => {
             alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", "비밀번호 확인이 일치하지 않습니다.");
             return;
         }
-        console.log("email, password 로 db 수정 요청");
-        
+        axiosCustom.put('http://localhost:3002/users/',{email, password: password.password})
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", res.data.message);
+            if(res.data && res.data.code === 200){
+                // 로그인 페이지로 이동
+                navigate('/login');
+            }
+            return;
+        })
     });
 
     const handlePasswordChange = useCallback((e) => {
@@ -200,8 +209,6 @@ const PasswordChange = () => {
             return newPasswordChange; 
         });
     });
-
-
 
     return (
         <>
