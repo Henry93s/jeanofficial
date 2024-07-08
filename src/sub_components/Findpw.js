@@ -2,6 +2,7 @@ import React,{useCallback, useRef, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
+import axiosCustom from "../util_components/axiosCustom";
 
 const Findpw_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
@@ -184,35 +185,52 @@ const Findpw_underline_link = styled(Link)`
 const Findpw = () => {
     const [FindpwUser, setFindpwUser] = useState({
         email: "",
-        verifyCode: ""
+        secret: ""
     });
     const emailInputRef = useRef(null);
     const verifyBtnRef = useRef(null);
     const alertOpenRef = useRef(null);
     const navigate = useNavigate();
 
+    // 인증번호 전송 요청 - 이메일 형식, 이메일 가입 여부도 체크해줌.
     const handleVerifyButton = useCallback(() => {
-        if(!/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(FindpwUser.email)){
-            alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림","이메일 형식을 다시 확인해주세요.");
+        const {email} = FindpwUser;
+        axiosCustom.post('http://localhost:3002/users/verify/findpw', {email})
+        .then(res => {
+            controlVerifyButton(res);
+            alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
             return;
-        }
-        console.log("이메일 db 에 존재하는지 요청");
-
-        console.log("인증번호가 정상 전송될 때 아래 막기 작업")
-        verifyBtnRef.current.style.backgroundColor = "#1E1E20";
-        verifyBtnRef.current.style.cursor = "default";
-        verifyBtnRef.current.disabled = "true";
-        emailInputRef.current.disabled = "true";
+        });
     });
+    const controlVerifyButton = (res) => {
+        if(res.data && res.data.code === 200){
+            // 정상적으로 요청했을 때에는 이메일 입력 비활성화 및 인증 요청 버튼 비활성화
+            verifyBtnRef.current.style.backgroundColor = "#1E1E20";
+            verifyBtnRef.current.style.cursor = "default";
+            verifyBtnRef.current.disabled = true;
+            emailInputRef.current.disabled = true;
+        } else {
+            verifyBtnRef.current.style.backgroundColor = "#9061F9";
+            verifyBtnRef.current.style.cursor = "pointer";
+            verifyBtnRef.current.removeAttribute('disabled');
+            emailInputRef.current.removeAttribute('disabled');
+        }
+    };
 
     const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
-        
-        console.log("인증번호 검사 요청")
-        console.log("비밀번호 변경 페이지로 이동")
-        // navigate 할 때 user 상태 넘겨줌(이메일 전달 위함)
-        
-        navigate('/pwchange', {state: FindpwUser});
+        // 인증번호 검사 요청
+        const {email, secret} = FindpwUser;
+        axiosCustom.post('http://localhost:3002/users/verify/confirm', {email, secret})
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
+            if(res.data && res.data.code === 200){
+                // 비밀번호 변경 페이지로 이동
+                // navigate 할 때 user 상태 넘겨줌(이메일 전달 위함)
+                navigate('/pwchange', {state: FindpwUser});
+            }
+            return;
+        });
     });
 
     const handleEmailChange = useCallback((e) => {
@@ -222,10 +240,10 @@ const Findpw = () => {
             return newFindpw; 
         });
     });
-    const handleVerifyCodeChange = useCallback((e) => {
+    const handlesecretChange = useCallback((e) => {
         setFindpwUser((current) => {
             const newFindpw = {...current};
-            newFindpw.verifyCode = e.target.value;
+            newFindpw.secret = e.target.value;
             return newFindpw; 
         });
     });
@@ -240,13 +258,13 @@ const Findpw = () => {
                         <Findpw_email_div>
                             <Findpw_email_span>이메일</Findpw_email_span>
                             <Findpw_email_input ref={emailInputRef} placeholder="your_email@email.com" onChange={handleEmailChange}/>
-                            <Findpw_email_verify_button type="button" onClick={handleVerifyButton} ref={verifyBtnRef}>인증번호 받기</Findpw_email_verify_button>
+                            <Findpw_email_verify_button type="button" onClick={handleVerifyButton} ref={verifyBtnRef}>인증요청</Findpw_email_verify_button>
                         </Findpw_email_div>
                         <Findpw_code_div>
                             <Findpw_code_span>인증번호</Findpw_code_span>
-                            <Findpw_code_input placeholder="6자리 인증코드 입력" onChange={handleVerifyCodeChange}/>
+                            <Findpw_code_input placeholder="6자리 인증코드 입력" onChange={handlesecretChange}/>
                         </Findpw_code_div>
-                        <Findpw_submit_button type="submit">인증번호 확인</Findpw_submit_button>
+                        <Findpw_submit_button type="submit">인증확인</Findpw_submit_button>
                         <Findpw_underline_span>or</Findpw_underline_span>
                         <Findpw_underline_signup>계정이 없으신가요?
                             <Findpw_underline_link to="/signup"> 회원가입</Findpw_underline_link>       

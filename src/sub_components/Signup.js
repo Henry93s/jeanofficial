@@ -223,7 +223,7 @@ const Signup = () => {
         });
     });
     const controlVerifyButton = (res) => {
-        if(res.data.code === 200){
+        if(res.data && res.data.code === 200){
             // 정상적으로 요청했을 때에는 이메일 비활성화 및 인증번호 받기 버튼 비활성화
             verifyBtnRef.current.style.backgroundColor = "#1E1E20";
             verifyBtnRef.current.style.cursor = "default";
@@ -325,12 +325,12 @@ const Signup = () => {
                         <Signup_email_div>
                             <Signup_email_span>이메일</Signup_email_span>
                             <Signup_email_input placeholder="your_email@email.com" ref={emailInputRef} onChange={handleEmailChange}/>
-                            <Signup_email_verify_button type="button" ref={verifyBtnRef} onClick={handleEmailVerifyGet}>인증번호 받기</Signup_email_verify_button>
+                            <Signup_email_verify_button type="button" ref={verifyBtnRef} onClick={handleEmailVerifyGet}>인증요청</Signup_email_verify_button>
                         </Signup_email_div>
                         <Signup_secret_div>
                             <Signup_secret_span>인증번호</Signup_secret_span>
                             <Signup_secret_input placeholder="인증번호를 입력하세요." onChange={handlesecretChange}/>
-                            <Signup_secret_verify_button type="button" onClick={handleEmailVerifyPost}>인증번호 확인</Signup_secret_verify_button>
+                            <Signup_secret_verify_button type="button" onClick={handleEmailVerifyPost}>인증확인</Signup_secret_verify_button>
                         </Signup_secret_div>
                         <Signup_name_div>
                             <Signup_name_span>닉네임</Signup_name_span>
