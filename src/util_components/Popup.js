@@ -118,8 +118,6 @@ const Popup = forwardRef((props, ref) => {
     }));
     
     const handleOkPopup = () => {
-        // 예 일 때 콜백함수 진행
-        console.log("ok?")
         isOk(props.parameter);
 
         setIsPopup(false);
