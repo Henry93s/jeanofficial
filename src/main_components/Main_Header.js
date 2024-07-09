@@ -170,7 +170,9 @@ const Main_Header = (props) => {
     const dispatch = useDispatch();
     console.log(user)
     const [isLogined, setIsLogined] = useState(false);
-    // 서버에서 보내진 토큰(쿠키 안)에 값이 있을 때, 로그인되었으므로 토큰을 저장하고, 현재 로그인된 email, nickName 을 찾아서 저장함.
+    // 로그인 후(navigate 되었을 때) 리렌더링 시 서버에서 보내진 토큰(쿠키 안)에 값이 있을 때, 
+    // 로그인되었으므로 토큰을 저장하고, 현재 로그인된 email, nickName 을 찾아서 저장함.
+    // 이후에도 user 정보가 변화할 때(개인정보수정-닉네임) 다시 email, nickName 을 찾아서 저장함.
     useEffect(() => {
         const token = document.cookie.split("=")[1];
         if(token && token.length > 0){

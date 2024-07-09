@@ -169,6 +169,7 @@ const Login = () => {
             alertOpenRef.current.handleOpenAlert("로그인 알림", res.data.message);
             if(res.data && res.data.code === 200){
                 // 메인 페이지로 이동
+                // navigate 는 컴포넌트 리렌더링이 동작함 !
                 navigate('/');
             }
             return;
