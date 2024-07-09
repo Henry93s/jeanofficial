@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axiosCustom from "../util_components/axiosCustom";
 // redux 상태 관리 사용
 import { useDispatch } from "react-redux";
-import { login } from "../redux/UserSlice";
+import { setEmail } from "../redux/UserSlice";
 
 const Login_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
@@ -168,8 +168,6 @@ const Login = () => {
             // 에러시 알림 팝업 발생함.
             alertOpenRef.current.handleOpenAlert("로그인 알림", res.data.message);
             if(res.data && res.data.code === 200){
-                // 로그인된 email 은 redux 상태에 저장(nickName 은 / 페이지에서 추가 반영 예정)
-                dispatch(login({email: loginUser.email, nickName: "", token: ""}));
                 // 메인 페이지로 이동
                 navigate('/');
             }

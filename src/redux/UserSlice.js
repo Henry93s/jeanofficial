@@ -14,9 +14,13 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers:{
-        login(state, action){
+        setEmail(state, action){
             state.user.email = action.payload.email;
+        },
+        setNickName(state, action){
             state.user.nickName = action.payload.nickName;
+        },
+        setToken(state, action){
             state.user.token = action.payload.token;
         },
         logout(state, action){
@@ -28,7 +32,9 @@ const userSlice = createSlice({
 });
 
 // 유저 로그인 상태에 따른 액션 생성자 함수 불러오고, export
-export const login = userSlice.actions.login;
+export const setEmail = userSlice.actions.setEmail;
+export const setNickName = userSlice.actions.setNickName;
+export const setToken = userSlice.actions.setToken;
 export const logout = userSlice.actions.logout;
 
 // userSlice(액션 생성자 + 리듀서 함수) reducer export

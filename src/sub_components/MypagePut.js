@@ -4,6 +4,8 @@ import Alert from "../util_components/Alert";
 import Popup from '../util_components/Popup';
 import { useLocation, Link } from "react-router-dom";
 import axiosCustom from "../util_components/axiosCustom";
+import { useDispatch } from 'react-redux';
+import { setNickName, logout } from '../redux/UserSlice';
 
 const MypagePut_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
@@ -204,7 +206,7 @@ const MypagePut = () => {
     // main 에서 개인정보 수정할 때 보내온 state 를 location 객체에서 불러옴
     const location = useLocation();
     const email = location.state.email;
-    console.log(email);
+    const dispatch = useDispatch();
 
     const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
@@ -237,6 +239,11 @@ const MypagePut = () => {
         axiosCustom.put('http://localhost:3002/users/', bodyData)
         .then(res => {
             alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", res.data.message);
+
+            // 수정된 nickName 을 다시 로그인 정보에 저장함.
+            if(res.data && res.data.code === 200){
+                dispatch(setNickName({nickName: putUser.name}));
+            }
             return;
         });
     });
@@ -268,6 +275,18 @@ const MypagePut = () => {
         axiosCustom.post('http://localhost:3002/users/deleteByEmail',{email})
         .then(res => {
             alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", res.data.message);
+
+            // 정상 탈퇴 시 기존 로그인된 정보를 비우고 로그아웃 하여야 함
+            if(res.data && res.data.code === 200){
+                const token = document.cookie.split("=")[1];
+                if(token && token.length > 0){
+                    axiosCustom.get('http://localhost:3002/logout')
+                    .then(res => {
+                        dispatch(logout());
+                        setIsLogined(false);
+                    })
+                }
+            }
             return;
         })
     });

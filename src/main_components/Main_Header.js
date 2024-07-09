@@ -6,7 +6,7 @@ import {Link as ScrollLink} from 'react-scroll';
 import { useNavigate, Link } from 'react-router-dom';
 // redux 에서 user 상태를 가져오기 위한 useSelector
 import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../redux/UserSlice';
+import { setNickName, setToken, logout, setEmail } from '../redux/UserSlice';
 import axiosCustom from '../util_components/axiosCustom';
 
 //
@@ -170,20 +170,27 @@ const Main_Header = (props) => {
     const dispatch = useDispatch();
     console.log(user)
     const [isLogined, setIsLogined] = useState(false);
-    // 서버에서 보내진 토큰(쿠키 안)에 값이 있을 때, 로그인되었으므로 로그인 정보를 가져옴
+    // 서버에서 보내진 토큰(쿠키 안)에 값이 있을 때, 로그인되었으므로 토큰을 저장하고, 현재 로그인된 email, nickName 을 찾아서 저장함.
     useEffect(() => {
         const token = document.cookie.split("=")[1];
         if(token && token.length > 0){
-            // user.email 확인 후 nickName 을 찾아서 다시 저장함.
+            // token 을 저장하고, 현재 로그인된 email, nickName 을 찾아서 저장함.
+            dispatch(setToken({token: token}));
             const getuser = async () => {
                 const res = await axiosCustom.get('http://localhost:3002/getuser');
-                console.log("getuser res.data ", res.data);
-                dispatch(login({email: res.data.email, nickName: res.data.name, token: token}));
+                console.log("getuser res.data.email ", res.data.email);
+                dispatch(setEmail({email: res.data.email}));
             }
             getuser();
+            const getNickName = async () => {
+                const res = await axiosCustom.post('http://localhost:3002/users/email', {email: user.email});
+                console.log("getNickName res.data.data.name ", res.data.data.name);
+                dispatch(setNickName({nickName: res.data.data.name}));
+            }
+            getNickName();
             setIsLogined(true);
         }
-    }, [user.email]);
+    }, [user]);
 
     const handleLogout = useCallback(() =>{
         // 원래 실제 로그아웃 요청하고 문제없을 시 진행하여야 함
