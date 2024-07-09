@@ -4,6 +4,10 @@ import Main_Header_Sidebar from './Main_Header_Sidebar';
 // scrollLink 로도 Link 를 사용하기 위해서 별칭 as 사용 !
 import {Link as ScrollLink} from 'react-scroll';
 import { useNavigate, Link } from 'react-router-dom';
+// redux 에서 user 상태를 가져오기 위한 useSelector
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from '../redux/UserSlice';
+import axiosCustom from '../util_components/axiosCustom';
 
 //
 const Container_div = styled.div`
@@ -158,10 +162,43 @@ const Hamburger_Button_img = styled.img`
 `
 
 const Main_Header = (props) => {
-    const [user, setUser] = useState({
-        logined: false,
-        email: ""
+
+
+    // build 후 서버에서 체크하기 !
+    // 페이지 진입 시 로그인 또는 로그아웃 되었는지 체크함(user)
+    const user = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    console.log(user)
+    const [isLogined, setIsLogined] = useState(false);
+    // 서버에서 보내진 토큰(쿠키 안)에 값이 있을 때, 로그인되었으므로 로그인 정보를 가져옴
+    useEffect(() => {
+        const token = document.cookie.split("=")[1];
+        if(token && token.length > 0){
+            // user.email 확인 후 nickName 을 찾아서 다시 저장함.
+            const getuser = async () => {
+                const res = await axiosCustom.get('http://localhost:3002/getuser');
+                console.log("getuser res.data ", res.data);
+                dispatch(login({email: res.data.email, nickName: res.data.name, token: token}));
+            }
+            getuser();
+            setIsLogined(true);
+        }
+    }, [user.email]);
+
+    const handleLogout = useCallback(() =>{
+        // 원래 실제 로그아웃 요청하고 문제없을 시 진행하여야 함
+        const token = document.cookie.split("=")[1];
+        if(token && token.length > 0){
+            axiosCustom.get('http://localhost:3002/logout')
+            .then(res => {
+                dispatch(logout());
+                setIsLogined(false);
+            })
+        }
     });
+    //
+
+
     const [clickedMenu, setClickedMenu] = useState({
         Home_div: "false",
         Board_div: "false",
@@ -169,25 +206,6 @@ const Main_Header = (props) => {
         Mypage_div: "false"
     });
     const navigate = useNavigate();
-
-    const is_logined = useMemo(() => {
-        if(user.logined){
-            return true;
-        } else {
-            return false;
-        }
-    });
-
-    // 페이지 진입 시 로그인 또는 로그아웃 되었는지 체크 effect
-    // 잠시 임시로 셋팅함
-    useEffect(() => {
-        setUser((current) => {
-            const newUser = {...current};
-            newUser.logined = true;
-            newUser.email = "gudrjsdn8825@naver.com";
-            return newUser;
-        });
-    },[]);
 
     const handleMenuClick = useCallback((e) => {
         setClickedMenu((current) => {
@@ -221,17 +239,7 @@ const Main_Header = (props) => {
     const handleMypageNav = useCallback(() => {
         // 원래 로그인 되어 있는 이메일을 넘겨줘야 함
         // navigate 할 때 user email 넘겨줌(이메일 전달 위함)
-        navigate('/mypage', {state: user});
-    });
-
-    const handleLogout = useCallback(() =>{
-        // 원래 실제 로그아웃 요청하고 문제없을 시 진행하여야 함
-        setUser((current) => {
-            const newUser = {...current};
-            newUser.logined = false;
-            newUser.email = "";
-            return newUser;
-        });
+        navigate('/mypage', {state: {email: user.email} });
     });
 
     return (
@@ -257,7 +265,7 @@ const Main_Header = (props) => {
                             <Board_img src="/images/board.png" name="Board"/>
                         </Board_div>
                     </ScrollLink>
-                    {is_logined &&
+                    {isLogined &&
                         <>
                             <Mypage_div clicked={clickedMenu.Mypage_div} onClick={handleMypageNav} name="Mypage" title='개인 정보 수정'>
                                 <Mypage_img src="/images/human.png" name="Mypage"/>

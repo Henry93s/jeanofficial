@@ -1,23 +1,28 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 // 유저 로그인 초기 상태 정의 
-const initialUserState = {
-    email: "",
-    nickName: ""
+const initialState = {
+    user: {
+        email: "",
+        nickName: "",
+        token: ""
+    }
 };
 
 // 유저 로그인 상태 (액션 생성자 + 리듀서) 함수 정의
 const userSlice = createSlice({
     name: 'user',
-    initialUserState,
+    initialState,
     reducers:{
         login(state, action){
-            state.email = action.payload.email;
-            state.nickName = action.payload.nickName;
+            state.user.email = action.payload.email;
+            state.user.nickName = action.payload.nickName;
+            state.user.token = action.payload.token;
         },
         logout(state, action){
-            state.email = "";
-            state.nickName = "";
+            state.user.email = "";
+            state.user.nickName = "";
+            state.user.token = "";
         }
     }
 });

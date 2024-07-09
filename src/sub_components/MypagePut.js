@@ -204,6 +204,7 @@ const MypagePut = () => {
     // main 에서 개인정보 수정할 때 보내온 state 를 location 객체에서 불러옴
     const location = useLocation();
     const email = location.state.email;
+    console.log(email);
 
     const handleFormSubmit = useCallback((e) => {
         e.preventDefault();

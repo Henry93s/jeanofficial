@@ -1,7 +1,11 @@
 import React,{useState, useRef, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axiosCustom from "../util_components/axiosCustom";
+// redux 상태 관리 사용
+import { useDispatch } from "react-redux";
+import { login } from "../redux/UserSlice";
 
 const Login_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
@@ -152,22 +156,25 @@ const Login = () => {
         password: ""
     });
     const alertOpenRef = useRef(null);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
+    // 로그인 요청
+    // 이메일 형식, 이메일 또는 패스워드 입력 여부 사전 체크 server 진행
     const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
-        console.log("button")
-        if(!loginUser.email || !loginUser.password){
-            alertOpenRef.current.handleOpenAlert("로그인 알림", "이메일과 비밀번호를 입력해주세요.");
+        axiosCustom.post('http://localhost:3002/login/auth',{email: loginUser.email, password: loginUser.password})
+        .then(res => {
+            // 에러시 알림 팝업 발생함.
+            alertOpenRef.current.handleOpenAlert("로그인 알림", res.data.message);
+            if(res.data && res.data.code === 200){
+                // 로그인된 email 은 redux 상태에 저장(nickName 은 / 페이지에서 추가 반영 예정)
+                dispatch(login({email: loginUser.email, nickName: "", token: ""}));
+                // 메인 페이지로 이동
+                navigate('/');
+            }
             return;
-        }
-    
-        if(!/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(loginUser.email)){
-            alertOpenRef.current.handleOpenAlert("로그인 알림", "이메일 형식을 다시 확인해주세요.");
-            return;
-        }
-
-
-        console.log("login 요청");
+        });
     });
 
     const handleEmailChange = useCallback((e) => {
