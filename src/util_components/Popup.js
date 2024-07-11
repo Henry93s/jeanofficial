@@ -104,7 +104,6 @@ const Popup = forwardRef((props, ref) => {
     const [text, setText] = useState("");
     // 예 일 때 콜백 함수 실행 상태
     const [isOk, setIsOk] = useState(null);
-    const alertOpenRef = useRef(null);
 
     // 함수형 컴포넌트 중 외부에서 호출할 메서드는 useImperativeHandle 로 사용함
     useImperativeHandle(ref, () => ({
@@ -132,7 +131,7 @@ const Popup = forwardRef((props, ref) => {
     }
 
     return (
-        <>  <Alert ref={alertOpenRef} />
+        <> 
             {isPopup &&
                 <Popup_Overlay>
                     <Popup_container_div style={isPopup ? {animation: "popup 1s"} : {animation: "none"}}>

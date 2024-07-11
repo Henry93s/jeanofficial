@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axiosCustom from "../util_components/axiosCustom";
 // redux 상태 관리 사용
 import { useDispatch } from "react-redux";
-import { setEmail } from "../redux/UserSlice";
 
 const Login_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
@@ -163,7 +162,7 @@ const Login = () => {
     // 이메일 형식, 이메일 또는 패스워드 입력 여부 사전 체크 server 진행
     const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
-        axiosCustom.post('http://localhost:3002/login/auth',{email: loginUser.email, password: loginUser.password})
+        axiosCustom.post('/login/auth',{email: loginUser.email, password: loginUser.password})
         .then(res => {
             // 에러시 알림 팝업 발생함.
             alertOpenRef.current.handleOpenAlert("로그인 알림", res.data.message);
