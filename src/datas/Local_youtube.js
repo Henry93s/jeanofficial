@@ -1,9 +1,21 @@
 const Local_youtube = [
     {
+        "title": "[Making Jeans] NewJeans (뉴진스) 'Supernatural' Dance Practice Behind",
+        "image_url": "https://i.ytimg.com/vi/ZopziBas10I/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=ZopziBas10I",
+        "uploadTime": "2024. 7. 11. 목요일 오후 7:00:01"
+    },
+    {
         "title": "[Light Jeans] OLENS Behind 💐  | NewJeans",
         "image_url": "https://i.ytimg.com/vi/H-PeJ06fXZM/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=H-PeJ06fXZM",
         "uploadTime": "2024. 7. 9. 화요일 오후 7:00:01"
+    },
+    {
+        "title": "[Making Jeans] NewJeans (뉴진스) 'Supernatural' MV Behind",
+        "image_url": "https://i.ytimg.com/vi/MkZRrg7JMwY/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=MkZRrg7JMwY",
+        "uploadTime": "2024. 7. 5. 금요일 오후 7:00:02"
     },
     {
         "title": "NewJeans (뉴진스) 'Right Now' MV Reaction",
@@ -54,16 +66,34 @@ const Local_youtube = [
         "uploadTime": "2024. 6. 20. 목요일 오후 7:00:00"
     },
     {
+        "title": "NewJeans (뉴진스) 'Hype Boy' Stage Cam @ CHUNG-ANG UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/a7JDrjIZOVs/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=a7JDrjIZOVs",
+        "uploadTime": "2024. 6. 19. 수요일 오후 5:00:18"
+    },
+    {
         "title": "[Light Jeans] 'How Sweet' & 'Bubble Gum' Music Show Behind EP.1| NewJeans",
         "image_url": "https://i.ytimg.com/vi/45PssTBLYN4/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=45PssTBLYN4",
         "uploadTime": "2024. 6. 18. 화요일 오후 7:00:01"
     },
     {
+        "title": "You just get my heart pump, pumping💗 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_BubbleGum",
+        "image_url": "https://i.ytimg.com/vi/8Uz7TnoXw80/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=8Uz7TnoXw80",
+        "uploadTime": "2024. 6. 14. 금요일 오후 7:30:01"
+    },
+    {
         "title": "NewJeans (뉴진스) 'Bubble Gum' MV Review",
         "image_url": "https://i.ytimg.com/vi/77exoBXDIYQ/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=77exoBXDIYQ",
         "uploadTime": "2024. 6. 14. 금요일 오후 7:00:03"
+    },
+    {
+        "title": "[Making Jeans] NewJeans (뉴진스) 'Bubble Gum' & 'How Sweet' Recording Behind",
+        "image_url": "https://i.ytimg.com/vi/oahU6529S7w/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=oahU6529S7w",
+        "uploadTime": "2024. 6. 13. 목요일 오후 7:00:01"
     },
     {
         "title": "NewJeans (뉴진스) 'How Sweet' MV Review",
@@ -76,48 +106,6 @@ const Local_youtube = [
         "image_url": "https://i.ytimg.com/vi/r0u5URS3VXE/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=r0u5URS3VXE",
         "uploadTime": "2024. 6. 6. 목요일 오후 7:00:01"
-    },
-    {
-        "title": "[Light Jeans] Essential Campaign Behind🫧 | NewJeans",
-        "image_url": "https://i.ytimg.com/vi/8mSTSg3OnD4/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=8mSTSg3OnD4",
-        "uploadTime": "2024. 5. 29. 수요일 오후 7:00:00"
-    },
-    {
-        "title": "NewJeans (뉴진스) 'How Sweet' 응원법",
-        "image_url": "https://i.ytimg.com/vi/9u2xXFLQHdc/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=9u2xXFLQHdc",
-        "uploadTime": "2024. 5. 24. 금요일 오후 5:00:00"
-    },
-    {
-        "title": "NewJeans (뉴진스) 'Bubble Gum' 응원법",
-        "image_url": "https://i.ytimg.com/vi/wP-IVGgNj-I/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=wP-IVGgNj-I",
-        "uploadTime": "2024. 5. 23. 목요일 오후 7:00:01"
-    },
-    {
-        "title": "[About Jeans] MINJI SCENE🎬 #5 비아리츠 가요? | MINJI vlog",
-        "image_url": "https://i.ytimg.com/vi/958bjfKWAD4/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=958bjfKWAD4",
-        "uploadTime": "2024. 5. 21. 화요일 오후 7:00:00"
-    },
-    {
-        "title": "[Light Jeans] NIKE Air Max Campaign Shoot Behind 👟 | NewJeans",
-        "image_url": "https://i.ytimg.com/vi/9xK5GdVOAIA/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=9xK5GdVOAIA",
-        "uploadTime": "2024. 5. 19. 일요일 오후 2:00:01"
-    },
-    {
-        "title": "[Light Jeans] 24FW Seoul Fashion Week Campaign Behind🌃 | NewJeans",
-        "image_url": "https://i.ytimg.com/vi/8Usgble0HZk/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=8Usgble0HZk",
-        "uploadTime": "2024. 5. 10. 금요일 오후 7:00:01"
-    },
-    {
-        "title": "[Jeans' ZINE] 조금 이른 봄놀이 EP.1 날씨의 배신🌧 | NewJeans",
-        "image_url": "https://i.ytimg.com/vi/TVwcdynVbHE/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=TVwcdynVbHE",
-        "uploadTime": "2024. 5. 9. 목요일 오후 7:00:01"
     }
 ];
 

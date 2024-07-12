@@ -20,9 +20,9 @@ const youtubeFetch = async () => {
                 channelId: CHANNEL_ID,
                 part: 'snippet',
                 order: 'date',
-                maxResults: 20,
+                maxResults: 40,
                 type: 'video',
-                videoDuration: 'medium'
+                // videoDuration: 'medium'
             }
         });
         console.log("api 1")
@@ -50,7 +50,7 @@ const youtubeFetch = async () => {
             };
             youtube_data.push(videoData);
         })
-        youtube.youtube_data = youtube_data;
+        // youtube.youtube_data = youtube_data;
 
         const res2 = await axios.get(`https://www.googleapis.com/youtube/v3/search`,{
             // 최신 쇼츠 top 10 동영상 fetch
@@ -59,9 +59,10 @@ const youtubeFetch = async () => {
                 channelId: CHANNEL_ID,
                 part: 'snippet',
                 order: 'date',
-                maxResults: 20,
+                maxResults: 30,
                 type: 'video',
-                q: '#Shorts'
+                videoDuration: 'short'
+                // q: '#Shorts'
             }
         });
         console.log("api 2")
@@ -79,7 +80,13 @@ const youtubeFetch = async () => {
             let newVideo_title = videoTitle.replace(/&#39;/g, '\'');
             newVideo_title = newVideo_title.replace(/&amp;/g, '&');
     
-    
+            // youtube_data 에 shortsData 가 있을 경우 중복 제거 작업
+            const findIndex = youtube_data.findIndex(e => e.uploadTime === koreanTime);
+            if(findIndex !== -1){
+                youtube_data.splice(findIndex, 1);
+            }
+
+
             const shortsData = {
                 title: newVideo_title,
                 image_url: thumbnailUrl,
@@ -88,6 +95,8 @@ const youtubeFetch = async () => {
             };
             shorts_data.push(shortsData);
         })
+        // 중복 데이터 제거한 youtube_data 를 반환할 youtube 에 포함
+        youtube.youtube_data = youtube_data;
         youtube.shorts_data = shorts_data;
 
         return youtube;

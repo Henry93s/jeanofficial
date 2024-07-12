@@ -1,5 +1,17 @@
 const Local_shorts = [
     {
+        "title": "얼른 잡아줘 Hold my hand, my hand✨ #NewJeans #뉴진스 #NewJeans_Supernatural #NewJeans_RightNow",
+        "image_url": "https://i.ytimg.com/vi/jYxt1Deh-ok/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/jYxt1Deh-ok",
+        "uploadTime": "2024. 7. 12. 금요일 오후 6:42:56"
+    },
+    {
+        "title": "다가와봐 right now, right now 🪩 baby, I'm not #NewJeans #뉴진스 #NewJeans_Supernatural #NewJeans_RightNow",
+        "image_url": "https://i.ytimg.com/vi/NcQ_TFnlVs4/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/NcQ_TFnlVs4",
+        "uploadTime": "2024. 7. 12. 금요일 오후 6:42:31"
+    },
+    {
         "title": "Breaktime 🥁 at Tokyo Dome Bunnies Camp 2024 #NewJeans #뉴진스 #BunniesCamp #BunniesCamp2024TokyoDome",
         "image_url": "https://i.ytimg.com/vi/WOW0Qxk8RGE/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/WOW0Qxk8RGE",
@@ -10,6 +22,12 @@ const Local_shorts = [
         "image_url": "https://i.ytimg.com/vi/01lYZyfjaXc/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/01lYZyfjaXc",
         "uploadTime": "2024. 7. 4. 목요일 오후 8:00:00"
+    },
+    {
+        "title": "#NJ_memefolder #Film_By_NewJeans #NewJeans #뉴진스 #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/tv1aDPdsaO4/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/tv1aDPdsaO4",
+        "uploadTime": "2024. 6. 24. 월요일 오후 2:00:35"
     },
     {
         "title": "#NJ_memefolder #Film_By_NewJeans #NewJeans #뉴진스 #NewJeans_is_Everywhere",
@@ -24,10 +42,64 @@ const Local_shorts = [
         "uploadTime": "2024. 6. 22. 토요일 오후 7:02:25"
     },
     {
+        "title": "I gotta see the meaning of it🛸#NewJeans #뉴진스#NewJeans_Supernatural #NewJeans_RightNow",
+        "image_url": "https://i.ytimg.com/vi/D69vKyWjVGE/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/D69vKyWjVGE",
+        "uploadTime": "2024. 6. 22. 토요일 오후 7:02:36"
+    },
+    {
+        "title": "NewJeans (뉴진스) 'How Sweet' Stage Cam @ KOREA UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/HWiiwmzPJe4/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/HWiiwmzPJe4",
+        "uploadTime": "2024. 6. 20. 목요일 오후 5:00:06"
+    },
+    {
+        "title": "NewJeans (뉴진스) 'OMG' Stage Cam @ PUSAN NATIONAL UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/mDZEznPaDFk/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/mDZEznPaDFk",
+        "uploadTime": "2024. 6. 20. 목요일 오후 5:00:16"
+    },
+    {
+        "title": "NewJeans (뉴진스) 'Bubble Gum' Stage Cam @ DONG-EUI UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/vfkVtcYj0cU/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/vfkVtcYj0cU",
+        "uploadTime": "2024. 6. 20. 목요일 오후 5:00:10"
+    },
+    {
+        "title": "NewJeans (뉴진스) 'Cookie' Stage Cam @ SEJONG UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/tIm2LVL6rVM/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/tIm2LVL6rVM",
+        "uploadTime": "2024. 6. 19. 수요일 오후 5:00:12"
+    },
+    {
+        "title": "NewJeans (뉴진스) 'How Sweet' Stage Cam @ DONGGUK UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/P7gcp4-ovYQ/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/P7gcp4-ovYQ",
+        "uploadTime": "2024. 6. 19. 수요일 오후 5:00:06"
+    },
+    {
+        "title": "NewJeans (뉴진스) 'ETA' Stage Cam @ CHOSUN UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/VWLWY2mLL2I/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/VWLWY2mLL2I",
+        "uploadTime": "2024. 6. 19. 수요일 오후 5:00:01"
+    },
+    {
+        "title": "I'm always so excited to meetᯓ🐹 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_BubbleGum",
+        "image_url": "https://i.ytimg.com/vi/1bS2bTqiQcE/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/1bS2bTqiQcE",
+        "uploadTime": "2024. 6. 16. 일요일 오후 4:30:52"
+    },
+    {
         "title": "We're gonna fly away🫧🪽#NewJeans #뉴진스 #NewJeans_HowSweet#NewJeans_BubbleGum #NewJeans_is_Everywhere",
         "image_url": "https://i.ytimg.com/vi/Y5LSGdLExC0/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/Y5LSGdLExC0",
         "uploadTime": "2024. 6. 14. 금요일 오후 7:30:08"
+    },
+    {
+        "title": "#HowSweet Moonwalk with…🍭 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/ySwOJxPQEOc/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/ySwOJxPQEOc",
+        "uploadTime": "2024. 6. 13. 목요일 오후 4:00:34"
     },
     {
         "title": "you little demon 😈🍪😈🍪 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
@@ -54,16 +126,16 @@ const Local_shorts = [
         "uploadTime": "2024. 6. 7. 금요일 오후 7:20:36"
     },
     {
+        "title": "How SweeTEEZ🍭#ATEEZ #SEONGHWA #MINGI#HowSweet #NewJeans #뉴진스 #HAERIN #MINJI #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/zdjC9bNvdwQ/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/zdjC9bNvdwQ",
+        "uploadTime": "2024. 6. 7. 금요일 오후 7:20:18"
+    },
+    {
         "title": "see you out 🚃 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_BubbleGum #NewJeans_is_Everywhere",
         "image_url": "https://i.ytimg.com/vi/fWT0fY1ZTr0/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/fWT0fY1ZTr0",
         "uploadTime": "2024. 6. 7. 금요일 오후 4:00:19"
-    },
-    {
-        "title": "[Making Jeans] NewJeans (뉴진스) 'How Sweet' MV Behind",
-        "image_url": "https://i.ytimg.com/vi/r0u5URS3VXE/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/r0u5URS3VXE",
-        "uploadTime": "2024. 6. 6. 목요일 오후 7:00:01"
     },
     {
         "title": "Yeah, don't you know how sweet it tastes?☔️#NewJeans#뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
@@ -78,46 +150,34 @@ const Local_shorts = [
         "uploadTime": "2024. 6. 5. 수요일 오후 2:00:03"
     },
     {
-        "title": "Add little #HowSweet moves to any moments🤭 Share how you vibe on YouTube Shorts #NewJeans_HowSweet",
-        "image_url": "https://i.ytimg.com/vi/Nj2Fntezalg/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/Nj2Fntezalg",
-        "uploadTime": "2024. 5. 28. 화요일 오전 12:00:01"
+        "title": "[About Jeans] 걍해린 4걍. 뉴욕 나들이 | HAERIN vlog",
+        "image_url": "https://i.ytimg.com/vi/N1yypxDSxpY/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/N1yypxDSxpY",
+        "uploadTime": "2024. 6. 4. 화요일 오후 7:00:01"
     },
     {
-        "title": "Sweetest way to make HYEIN blush😘Catch the cutest #HowSweet moment with your crew on YouTube Shorts",
-        "image_url": "https://i.ytimg.com/vi/QAfRcQIukgw/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/QAfRcQIukgw",
-        "uploadTime": "2024. 5. 28. 화요일 오전 12:00:16"
+        "title": "⋰˚⚪︎｡.bubble bubble bubble｡.⚪︎⋰˚ #NewJeans #뉴진스 #NewJeans_BubbleGum #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/3915EE-78LI/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/3915EE-78LI",
+        "uploadTime": "2024. 6. 2. 일요일 오후 3:00:35"
     },
     {
-        "title": "Oh my baby☁️ Sweet like bubble gum🫧 #NewJeans #뉴진스#NewJeans_BubbleGum #NewJeans_is_Everywhere",
-        "image_url": "https://i.ytimg.com/vi/nnm02nr4Z6c/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/nnm02nr4Z6c",
-        "uploadTime": "2024. 5. 26. 일요일 오후 4:44:10"
+        "title": "⋰˚⚪︎｡.bubble bubble bubble｡.⚪︎⋰˚ #NewJeans #뉴진스 #NewJeans_BubbleGum #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/Le_zIqxQ8ZE/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/Le_zIqxQ8ZE",
+        "uploadTime": "2024. 6. 2. 일요일 오후 3:00:47"
     },
     {
-        "title": "Now that I'm without you✨ #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
-        "image_url": "https://i.ytimg.com/vi/PAuBNVz_vb4/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/PAuBNVz_vb4",
-        "uploadTime": "2024. 5. 26. 일요일 오후 1:30:45"
+        "title": "ৎ୭ 𓂃How sweet it tastes𓂃ৎ୭ #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/TaKddm-7090/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/TaKddm-7090",
+        "uploadTime": "2024. 6. 2. 일요일 오후 3:00:13"
     },
     {
-        "title": "Moonwalking on the elevator🎶 Show off your #HowSweet moonwalk on YouTube Shorts #NewJeans_HowSweet",
-        "image_url": "https://i.ytimg.com/vi/Nyb59LCZZUg/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/Nyb59LCZZUg",
-        "uploadTime": "2024. 5. 25. 토요일 오후 6:00:20"
-    },
-    {
-        "title": "Can’t stop the #HowSweet moonwalk🌙👟 Now share your take on YouTube Shorts #NewJeans_HowSweet",
-        "image_url": "https://i.ytimg.com/vi/4_na1xity6c/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/4_na1xity6c",
-        "uploadTime": "2024. 5. 25. 토요일 오후 6:00:10"
-    },
-    {
-        "title": "Even a📞can't stop the groove! Show off your #HowSweet moonwalk on YouTube Shorts #NewJeans_HowSweet",
-        "image_url": "https://i.ytimg.com/vi/O4GpT2j8FVg/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/O4GpT2j8FVg",
-        "uploadTime": "2024. 5. 25. 토요일 오후 6:00:01"
+        "title": "ৎ୭ 𓂃How sweet it tastes𓂃ৎ୭ #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/khpt0b0yRZI/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/khpt0b0yRZI",
+        "uploadTime": "2024. 6. 2. 일요일 오후 3:00:24"
     }
 ];
 
