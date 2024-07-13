@@ -184,7 +184,7 @@ const PasswordChange = () => {
             alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", "비밀번호 확인이 일치하지 않습니다.");
             return;
         }
-        axiosCustom.put('http://localhost:3002/users/',{email, password: password.password})
+        axiosCustom.put('/users',{email, password: password.password})
         .then(res => {
             alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", res.data.message);
             if(res.data && res.data.code === 200){

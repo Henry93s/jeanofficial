@@ -236,7 +236,7 @@ const MypagePut = () => {
         if(putUser.password.length >= 8){
             bodyData.password = putUser.password;
         }
-        axiosCustom.put('http://localhost:3002/users/', bodyData)
+        axiosCustom.put('/users', bodyData)
         .then(res => {
             alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", res.data.message);
 
@@ -272,7 +272,7 @@ const MypagePut = () => {
 
     // 회원 탈퇴 콜백함수
     const userOut = useCallback((email) => {
-        axiosCustom.post('http://localhost:3002/users/deleteByEmail',{email})
+        axiosCustom.post('/users/deleteByEmail',{email})
         .then(res => {
             alertOpenRef.current.handleOpenAlert("개인정보 수정 알림", res.data.message);
 
@@ -280,7 +280,7 @@ const MypagePut = () => {
             if(res.data && res.data.code === 200){
                 const token = document.cookie.split("=")[1];
                 if(token && token.length > 0){
-                    axiosCustom.get('http://localhost:3002/logout')
+                    axiosCustom.get('/logout')
                     .then(res => {
                         dispatch(logout());
                         setIsLogined(false);
@@ -292,7 +292,7 @@ const MypagePut = () => {
     });
     // 콜백 함수를 파라미터로 넘기기 !!! =>  () => "콜백함수명"
     const handleOutUser = useCallback(() => {
-        popupOpenRef.current.handleOpenPopup("개인정보 수정 알림", "회원 탈퇴를 진행하시겠습니까? 회원 정보 및 작성글, 댓글 모두 삭제됩니다.", () => userOut);
+        popupOpenRef.current.handleOpenPopup("개인정보 수정 알림", "회원 탈퇴를 진행하시겠습니까? 회원 정보 및 작성글이 모두 삭제됩니다.", () => userOut);
         return;
     });
 

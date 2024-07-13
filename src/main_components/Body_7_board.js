@@ -1,4 +1,4 @@
-import React,{useState, useRef, useEffect} from "react";
+import React,{useState, useRef, useEffect, useCallback} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import Popup from "../util_components/Popup";
@@ -166,10 +166,21 @@ const Board_list_pagenation_ul = styled.ul`
 `
 const Board_list_pagenation_span = styled.span`
     cursor: pointer;
+    font-weight: bold;
+    transition: color 0.5s;
+
+    &:hover {
+        color: #9061F9;
+    }
 `
 const Board_list_pagenation_li = styled.li`
     list-style: none;
     cursor: pointer;
+    transition: color 0.5s;
+
+    &:hover {
+        color: #9061F9;
+    }
 `
 
 
@@ -289,6 +300,8 @@ const Body_7_board = () => {
     const [mode, setMode] = useState("list");
     // 글 읽기, 쓰기 또는 수정 상태에서 제목, 내용 상태
     const [text, setText] = useState({
+        nanoid: "",
+        email: "",
         writer: "",
         title: "",
         content: "",
@@ -301,6 +314,12 @@ const Body_7_board = () => {
         page: 1,
         total: 0,
         totalPage: 0
+    });
+
+    // 글 삭제 시 popup 컴포넌트로 props 전달 상태
+    const [delprop, setDelprop] = useState({
+        email: "",
+        nanoid: ""
     });
 
     // 첫 페이지 로드 시 (1page) 게시글 불러오기, 이후 mode 변경 시 마다 post, page read
@@ -351,21 +370,21 @@ const Body_7_board = () => {
         });
     };
     // 리스트에서 검색 동작
-    const searchHandle = () => {
+    const searchHandle = useCallback(() => {
         console.log("searchHandle")
-    };
+    });
     // 리스트에서 엔터 시 검색 동작 유도
-    const inputEnterHandle = (e) => {
+    const inputEnterHandle = useCallback((e) => {
         if(e.key === "Enter"){
             searchHandle();
         }
-    };
+    });
     // 글 화면에서 리스트 화면으로 뒤로 가기
-    const backHandle = () => {
+    const backHandle = useCallback(() => {
         setMode("list");
-    };
+    });
     // 리스트 화면에서 글쓰기 화면으로
-    const writeStartHandle = () => {
+    const writeStartHandle = useCallback(() => {
         if(user.email.length < 1){
             alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
@@ -379,20 +398,23 @@ const Body_7_board = () => {
             newSetText.content = "";
             return newSetText;
         })
-    };
-    // 글 보기 화면에서 글수정 화면으로
-    const writePutHandle = () => {
-        setMode("put");
+    });
+    // 글 보기 화면에서 글 수정 화면으로
+    const putStartHandle = useCallback(() => {
+        if(user.email.length < 1){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            return;
+        }
+        if(user.email !== text.email){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
+            return;
+        }
 
-        setText((current) => {
-            const newSetText = {...current};
-            newSetText.title = "nanoid_hide_title";
-            newSetText.content = "nanoid_hide_title_text";
-            return newSetText;
-        })
-    };
+        setMode("put");
+    });
+
     // 글쓰기, 글수정 화면에서 text 수정 시 발동
-    const writeChangeHandle = (e) => {
+    const writeChangeHandle = useCallback((e) => {
         if(e.target.name === "title"){
             setText((current) => {
                 const newSetText = {...current};
@@ -406,10 +428,10 @@ const Body_7_board = () => {
                 return newSetText;
             });
         }
-    };
+    });
 
     // 글쓰기 동작
-    const postWriteHandle = () => {
+    const postWriteHandle = useCallback(() => {
         if(user.email.length < 1){
             alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
@@ -430,10 +452,74 @@ const Body_7_board = () => {
             }
             return;
         })
-    }
+    });
+
+    // 글 수정 동작
+    const postPutHandle = useCallback(() => {
+        if(user.email.length < 1){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            return;
+        }
+        if(user.email !== text.email){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
+            return;
+        }
+        if(text.title.length > 20){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 제목은 20자 이내로 작성해주세요.");
+            return;
+        }
+        if(text.title.length < 3 || text.content.length < 3){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 제목 또는 내용은 3자 이상 작성해주세요.");
+            return;
+        }
+        axiosCustom.post('/post/put',{email: user.email, title: text.title, content: text.content
+            , nanoid: text.nanoid})
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
+            if(res.data.code === 200){
+                backHandle();
+            }
+            return;
+        })
+    });
+
+    // 글 삭제 콜백함수
+    const postDelCallback = useCallback((props) => {
+        axiosCustom.delete('/post/del',{
+            // axios delete 의 경우 두 번째 인자에 data: {} 로 body 데이터를 보낼 수 있다.
+            data: {email: props.email, nanoid: props.nanoid}
+        })
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
+            if(res.data.code === 200){
+                backHandle();
+            }
+            return;
+        })
+    });
+
+    // 글 삭제 동작
+    const postDelHandle = useCallback(() => {
+        if(user.email.length < 1){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            return;
+        }
+        if(user.email !== text.email){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
+            return;
+        }
+        setDelprop((current) => {
+            const newDelprop = {...current};
+            newDelprop.email = user.email;
+            newDelprop.nanoid = text.nanoid;
+            return newDelprop; 
+        });
+        popupOpenRef.current.handleOpenPopup("게시판 알림", "글 삭제를 진행하시겠습니까?", () => postDelCallback);
+        return;
+    });
 
     // 특정 글 읽기 동작
-    const postReadHandle = (e) => {
+    const postReadHandle = useCallback((e) => {
         const nanoid = e.target.getAttribute("name");
         axiosCustom.get(`/post/read/${nanoid}`)
         .then(res => {
@@ -443,6 +529,8 @@ const Body_7_board = () => {
                 setMode("read");
                 setText((current) => {
                     const newSetText = {...current};
+                    newSetText.nanoid = post.nanoid;
+                    newSetText.email = post.author.email;
                     newSetText.writer = post.author.name;
                     newSetText.title = post.title;
                     newSetText.content = post.content;
@@ -456,12 +544,14 @@ const Body_7_board = () => {
             }
             return;
         })
-    }
+    });
+
+
 
     return (
         <>
         <div style={{marginTop: "600px", width: "80%"}}>
-            <Popup parameter={"put or delete 시 nanoid"} ref={popupOpenRef} />
+            <Popup parameter={delprop} ref={popupOpenRef} />
             <Alert ref={alertOpenRef} />
         </div>
         <Body_container id="scroll_3">
@@ -488,11 +578,11 @@ const Body_7_board = () => {
                         </Content_sub_div_div>
 
                         <Content_sub_div_div>
-                            <img src="/images/modify.png" onClick={writePutHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
+                            <img src="/images/modify.png" onClick={putStartHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
                             <span>수정</span>
                         </Content_sub_div_div>
                         <Content_sub_div_div>
-                            <img src="/images/delete.png" style={{width:"50px", height:"50px", cursor:"pointer"}} />
+                            <img src="/images/delete.png" onClick={postDelHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
                             <span>삭제</span>
                         </Content_sub_div_div>
                     </Content_sub_div>
@@ -522,18 +612,18 @@ const Body_7_board = () => {
                 <>
                     <Content_div>
                         <Content_div_back onClick={backHandle}></Content_div_back>
-                        <Content_div_writer disabled value="read_writer"/>
+                        <Content_div_writer style={{border:"none"}} disabled defaultValue={text.writer}/>
                         {/* react 에서는 기본 input value 설정 시 defaultValue 로 지정해야 함 */}
                         <label for="inputTitle">제목: </label>
                         <Content_div_title onChange={writeChangeHandle} id="inputTitle" name="title" defaultValue={text.title} />
-                        <Content_div_date disabled value="read_date"/>
+                        <Content_div_date style={{border:"none"}} disabled defaultValue={text.updateAt}/>
                     </Content_div>
                     <label for="inputContent">내용: </label>
                     <Content_text onChange={writeChangeHandle} id="inputContent" name="content" defaultValue={text.content}/>
                     <Content_sub_div>
                         <Content_sub_div_div>
-                            <img src="/images/write.png" style={{width:"50px", height:"50px", cursor:"pointer"}} />
-                            <span style={{marginTop:"5%"}}>작성하기</span>
+                            <img src="/images/write.png" onClick={postPutHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
+                            <span style={{marginTop:"5%"}}>수정하기</span>
                         </Content_sub_div_div>
                     </Content_sub_div>
                 </>

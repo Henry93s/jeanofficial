@@ -195,7 +195,7 @@ const Findpw = () => {
     // 인증번호 전송 요청 - 이메일 형식, 이메일 가입 여부도 체크해줌.
     const handleVerifyButton = useCallback(() => {
         const {email} = FindpwUser;
-        axiosCustom.post('http://localhost:3002/users/verify/findpw', {email})
+        axiosCustom.post('/users/verify/findpw', {email})
         .then(res => {
             controlVerifyButton(res);
             alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
@@ -221,7 +221,7 @@ const Findpw = () => {
         e.preventDefault();
         // 인증번호 검사 요청
         const {email, secret} = FindpwUser;
-        axiosCustom.post('http://localhost:3002/users/verify/confirm', {email, secret})
+        axiosCustom.post('/users/verify/confirm', {email, secret})
         .then(res => {
             alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
             if(res.data && res.data.code === 200){

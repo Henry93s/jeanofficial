@@ -215,7 +215,7 @@ const Signup = () => {
     // 인증번호 전송 요청 - 이메일 형식, 이메일 가입 여부도 체크해줌.
     const handleEmailVerifyGet = useCallback(() => {
         const {email} = addUser;
-        axiosCustom.post('http://localhost:3002/users/verify', {email})
+        axiosCustom.post('/users/verify', {email})
         .then(res => {
             controlVerifyButton(res);
             alertOpenRef.current.handleOpenAlert("회원가입 알림", res.data.message);
@@ -240,7 +240,7 @@ const Signup = () => {
     // 인증번호가 맞는지 서버 확인 요청
     const handleEmailVerifyPost = useCallback(() => {
         const {email, secret} = addUser;
-        axiosCustom.post('http://localhost:3002/users/verify/confirm', {email, secret})
+        axiosCustom.post('/users/verify/confirm', {email, secret})
         .then(res => {
             alertOpenRef.current.handleOpenAlert("회원가입 알림", res.data.message);
             return;
@@ -268,7 +268,7 @@ const Signup = () => {
         }
         // email, password, name 으로 db 추가 요청
         const {email, password, name} = addUser;
-        axiosCustom.post('http://localhost:3002/users/', {email, password, name})
+        axiosCustom.post('/users', {email, password, name})
         .then(res => {
             if(res.data.code === 200){
                 navigate('/login');
