@@ -162,8 +162,6 @@ const Hamburger_Button_img = styled.img`
 `
 
 const Main_Header = (props) => {
-
-
     // build 후 서버에서 체크하기 !
     // 페이지 진입 시 로그인 또는 로그아웃 되었는지 체크함(user)
     const user = useSelector(state => state.user);
@@ -180,13 +178,13 @@ const Main_Header = (props) => {
             dispatch(setToken({token: token}));
             const getuser = async () => {
                 const res = await axiosCustom.get('http://localhost:3002/getuser');
-                console.log("getuser res.data.email ", res.data.email);
+                // console.log("getuser res.data.email ", res.data.email);
                 dispatch(setEmail({email: res.data.email}));
             }
             getuser();
             const getNickName = async () => {
                 const res = await axiosCustom.post('http://localhost:3002/users/email', {email: user.email});
-                console.log("getNickName res.data.data.name ", res.data.data.name);
+                // console.log("getNickName res.data.data.name ", res.data.data.name);
                 dispatch(setNickName({nickName: res.data.data.name}));
             }
             getNickName();

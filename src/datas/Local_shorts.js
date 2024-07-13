@@ -1,5 +1,11 @@
 const Local_shorts = [
     {
+        "title": "Back to Hype Boy💫💖 #NewJeans #뉴진스 #NewJeans_HypeBoy #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/wHkXnfRnrmw/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/wHkXnfRnrmw",
+        "uploadTime": "2024. 7. 13. 토요일 오후 4:33:48"
+    },
+    {
         "title": "얼른 잡아줘 Hold my hand, my hand✨ #NewJeans #뉴진스 #NewJeans_Supernatural #NewJeans_RightNow",
         "image_url": "https://i.ytimg.com/vi/jYxt1Deh-ok/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/jYxt1Deh-ok",
@@ -78,16 +84,22 @@ const Local_shorts = [
         "uploadTime": "2024. 6. 19. 수요일 오후 5:00:06"
     },
     {
-        "title": "NewJeans (뉴진스) 'ETA' Stage Cam @ CHOSUN UNIVERSITY",
-        "image_url": "https://i.ytimg.com/vi/VWLWY2mLL2I/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/VWLWY2mLL2I",
-        "uploadTime": "2024. 6. 19. 수요일 오후 5:00:01"
+        "title": "NewJeans (뉴진스) 'Hype Boy' Stage Cam @ CHUNG-ANG UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/a7JDrjIZOVs/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/a7JDrjIZOVs",
+        "uploadTime": "2024. 6. 19. 수요일 오후 5:00:18"
     },
     {
         "title": "I'm always so excited to meetᯓ🐹 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_BubbleGum",
         "image_url": "https://i.ytimg.com/vi/1bS2bTqiQcE/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/1bS2bTqiQcE",
         "uploadTime": "2024. 6. 16. 일요일 오후 4:30:52"
+    },
+    {
+        "title": "You just get my heart pump, pumping💗 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_BubbleGum",
+        "image_url": "https://i.ytimg.com/vi/8Uz7TnoXw80/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/8Uz7TnoXw80",
+        "uploadTime": "2024. 6. 14. 금요일 오후 7:30:01"
     },
     {
         "title": "We're gonna fly away🫧🪽#NewJeans #뉴진스 #NewJeans_HowSweet#NewJeans_BubbleGum #NewJeans_is_Everywhere",
@@ -162,22 +174,10 @@ const Local_shorts = [
         "uploadTime": "2024. 6. 2. 일요일 오후 3:00:35"
     },
     {
-        "title": "⋰˚⚪︎｡.bubble bubble bubble｡.⚪︎⋰˚ #NewJeans #뉴진스 #NewJeans_BubbleGum #NewJeans_is_Everywhere",
-        "image_url": "https://i.ytimg.com/vi/Le_zIqxQ8ZE/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/Le_zIqxQ8ZE",
-        "uploadTime": "2024. 6. 2. 일요일 오후 3:00:47"
-    },
-    {
         "title": "ৎ୭ 𓂃How sweet it tastes𓂃ৎ୭ #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
         "image_url": "https://i.ytimg.com/vi/TaKddm-7090/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/TaKddm-7090",
         "uploadTime": "2024. 6. 2. 일요일 오후 3:00:13"
-    },
-    {
-        "title": "ৎ୭ 𓂃How sweet it tastes𓂃ৎ୭ #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
-        "image_url": "https://i.ytimg.com/vi/khpt0b0yRZI/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/khpt0b0yRZI",
-        "uploadTime": "2024. 6. 2. 일요일 오후 3:00:24"
     }
 ];
 

@@ -72,6 +72,12 @@ const Local_youtube = [
         "uploadTime": "2024. 6. 19. 수요일 오후 5:00:18"
     },
     {
+        "title": "NewJeans (뉴진스) 'ETA' Stage Cam @ CHOSUN UNIVERSITY",
+        "image_url": "https://i.ytimg.com/vi/VWLWY2mLL2I/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=VWLWY2mLL2I",
+        "uploadTime": "2024. 6. 19. 수요일 오후 5:00:01"
+    },
+    {
         "title": "[Light Jeans] 'How Sweet' & 'Bubble Gum' Music Show Behind EP.1| NewJeans",
         "image_url": "https://i.ytimg.com/vi/45PssTBLYN4/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=45PssTBLYN4",
@@ -100,12 +106,6 @@ const Local_youtube = [
         "image_url": "https://i.ytimg.com/vi/7ue846qIYMY/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=7ue846qIYMY",
         "uploadTime": "2024. 6. 12. 수요일 오후 7:00:01"
-    },
-    {
-        "title": "[Making Jeans] NewJeans (뉴진스) 'How Sweet' MV Behind",
-        "image_url": "https://i.ytimg.com/vi/r0u5URS3VXE/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=r0u5URS3VXE",
-        "uploadTime": "2024. 6. 6. 목요일 오후 7:00:01"
     }
 ];
 

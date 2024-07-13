@@ -6,8 +6,8 @@ const Alert_Overlay = styled.div`
     // 외부 컴포넌트와 겹치므로 overlay position absolute, 외부 컴포넌트보다 z-index 우선순위 up
     position: absolute;
     z-index: 200;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 
     /* pc & mobile x scroll OFF~ (body overflow-x: clip) */
     overflow-x: clip;

@@ -7,6 +7,7 @@ import Body_3_element2 from './Body_3_element2';
 import Body_4_element3 from './Body_4_element3';
 import Body_5_element4 from './Body_5_element4';
 import Body_6_map from './Body_6_map';
+import Body_7_board from './Body_7_board';
 import Footer from './Footer';
 
 const Main = (props) => {
@@ -22,6 +23,7 @@ const Main = (props) => {
             <Body_4_element3 />
             <Body_5_element4 />
             <Body_6_map />
+            <Body_7_board />
             <Footer />
         </div>
     );
