@@ -43,6 +43,8 @@ const Board_div = styled.div`
     transition: opacity 3s;
 `
 const Board_Search_Forum_div = styled.div`
+    width: 100%;
+    height: 5%;
     display: flex;
 
     @media (max-width: 1000px) {
@@ -52,7 +54,7 @@ const Board_Search_Forum_div = styled.div`
 
 const Search_div = styled.div`
     width: 55%;
-    height: 100px;
+    height: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -62,8 +64,8 @@ const Search_div = styled.div`
     }
 `
 const Search_select = styled.select`
-    width: 150px;
-    height: 40px;
+    width: 20%;
+    height: 90%;
     color: white;
     background-color: #181619;
     font-size: 17px;
@@ -75,13 +77,10 @@ const Search_select = styled.select`
         // input focus 시 테두리 지우기
         outline: none;
     }
-    @media (max-width: 1000px) {
-        width: 100px;
-    }
 `
 const Search_input = styled.input`
-    width: 250px;
-    height: 40px;
+    width: 55%;
+    height: 90%;
     color: white;
     background-color: #181619;
     font-size: 17px;
@@ -95,33 +94,31 @@ const Search_input = styled.input`
         // input focus 시 테두리 지우기
         outline: none;
     }
-    @media (max-width: 1000px) {
-        width: 150px;
-    }
 `
 const Search_icon = styled.img`
-    width: 40px;
-    height: 40px;
+    width: 10%;
+    height: 90%;
 
     cursor: pointer;
     @media (max-width: 1000px) {
-        width: 30px;
+        width: 64px;
     }
 `
 const Forum_button_div = styled.div`
     width: 45%;
-    height: 100px;
+    height: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
 
     @media (max-width: 1000px) {
+        margin-top: 2%;
         width: 100%;
     }
 `
 const Forum_button_div_button = styled.button`
-    width: 25%;
-    height: 50%;
+    width: 30%;
+    height: 98%;
     border: none;
     background-color: black;
     border-radius: 15px;
@@ -143,6 +140,7 @@ const Forum_button_div_button = styled.button`
 const Board_list_div = styled.div`
     width: 100%;
     height: 80%;
+    margin-top: 7%;
 `
 const Board_list_item = styled.div`
     width: 100%;
