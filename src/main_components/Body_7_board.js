@@ -36,7 +36,7 @@ const Board_title = styled.p`
 `
 const Board_div = styled.div`
     width: 100%;
-    height: 85%;
+    height: 100%;
 
     // mouse scroll 에 따른 opacity 
     opacity: 0;
@@ -139,12 +139,12 @@ const Forum_button_div_button = styled.button`
 `
 const Board_list_div = styled.div`
     width: 100%;
-    height: 80%;
+    height: 70%;
     margin-top: 7%;
 `
 const Board_list_item = styled.div`
     width: 100%;
-    height: 8%;
+    height: 10%;
     font-size: 17px;
     border-bottom: 1px solid #9061F9;
 
@@ -154,10 +154,13 @@ const Board_list_item = styled.div`
 `
 const Board_list_pagenation_div = styled.div`
     width: 100%;
-    height: 10%;
+    height: 2%;
     font-size: 18px;
+    margin-left: -5%;
 `
 const Board_list_pagenation_ul = styled.ul`
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -265,6 +268,21 @@ const Content_sub_div_div = styled.div`
     align-items: center;
 `
 
+const Loading_div = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+const Loading_img = styled.img`
+    /* 회전 애니메이션 */
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+`
+
 const Body_7_board = () => {
     // useRef [] 배열로 관리하기 !
     const targetRef = useRef([]);
@@ -286,7 +304,17 @@ const Body_7_board = () => {
         })
     },[]);
 
+    // user 리덕스 store 상태 값 가져오기
     const user = useSelector(state => state.user);
+    
+    // 팝업 알림 컴포넌트 ref 셋팅
+    const popupOpenRef = useRef(null);
+    const alertOpenRef = useRef(null);
+
+    // 전체 / 내 글 보기 시 로딩 애니메이션 부여를 위한 ref 셋팅
+    const loadingRef = useRef(null);
+
+    // posts 리스트 상태 값 정의
     const [posts, setPosts] = useState([]);
     // 리스트에서 검색 select, input 상태 값
     const [search, setSearch] = useState({
@@ -294,7 +322,7 @@ const Body_7_board = () => {
         input: ""
     });
     // 글 보기, 쓰기 또는 수정 상태 인지 
-    // 리스트 보기 상태인지 구분 // read, write, put, list
+    // 리스트 보기 상태인지 구분 // read, write, put, list, "loading"
     const [mode, setMode] = useState("list");
     // 글 읽기, 쓰기 또는 수정 상태에서 제목, 내용 상태
     const [text, setText] = useState({
@@ -311,7 +339,8 @@ const Body_7_board = () => {
     const [page, setPage] = useState({
         page: 1,
         total: 0,
-        totalPage: 0
+        totalPage: 0,
+        allormy: "all"
     });
 
     // 글 삭제 시 popup 컴포넌트로 props 전달 상태
@@ -320,22 +349,37 @@ const Body_7_board = () => {
         nanoid: ""
     });
 
-    // 첫 페이지 로드 시 (1page) 게시글 불러오기, 이후 mode 변경 시 마다 post, page read
+    // 특정 페이지 로드 후 게시글 불러오기, 이후 mode 변경 시 마다 post, page read
     useEffect(() => {
-        const getdata = async () => {
-            const nowpage = `${page}`;
-            await axiosCustom.get(`/post/getallposts/${nowpage}`)
-            .then(res => {
-                setPosts(res.data.posts);
-                setPage((current) => {
-                    const newPage = {...current};
-                    newPage.total = res.data.total;
-                    newPage.totalPage = res.data.totalPage;
-                    return newPage;
+        console.log(page.allormy)
+        const getdata = async (allormy) => {
+            if(allormy === "all"){
+                const nowpage = page.page;
+                await axiosCustom.get(`/post/getallposts/${nowpage}`)
+                .then(res => {
+                    setPosts(res.data.posts);
+                    setPage((current) => {
+                        const newPage = {...current};
+                        newPage.total = res.data.total;
+                        newPage.totalPage = res.data.totalPage;
+                        return newPage;
+                    });
                 });
-            });
+            } else { // allormy === "my"
+                const nowpage = page.page;
+                await axiosCustom.post(`/post/getmyposts`,{email: user.email, nowpage: nowpage.toString()})
+                .then(res => {
+                    setPosts(res.data.posts);
+                    setPage((current) => {
+                        const newPage = {...current};
+                        newPage.total = res.data.total;
+                        newPage.totalPage = res.data.totalPage;
+                        return newPage;
+                    });
+                });
+            } 
         };
-        getdata();
+        getdata(page.allormy);
     },[mode])
 
     const pagenationing = () => {
@@ -345,11 +389,7 @@ const Body_7_board = () => {
         }
         return pageArray;
     };
-
-
-    // 팝업 알림 컴포넌트 ref 셋팅
-    const popupOpenRef = useRef(null);
-    const alertOpenRef = useRef(null);
+    console.log(page);
 
     // 검색 select 박스 변화 감지
     const selectChangeHandle = (e) => {
@@ -377,6 +417,41 @@ const Body_7_board = () => {
             searchHandle();
         }
     });
+
+    // 나의 글 모드 첫 진입 (1page) (로그인 요구)
+    const postMyHandle = useCallback(() => {
+        console.log("mymy")
+        if(user.email.length < 1){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            return;
+        }
+
+        setPage((current) => {
+            const newSetPage = {...current};
+            newSetPage.allormy = "my";
+            newSetPage.page = 1;
+            return newSetPage;
+        });
+        setMode("loading");
+        setTimeout(() => {
+            setMode("list");
+        }, 1000);
+    });
+
+    // 전체 글 모드 첫 진입 (1page) 
+    const postAllHandle = useCallback(() => {
+        setPage((current) => {
+            const newSetPage = {...current};
+            newSetPage.allormy = "all";
+            newSetPage.page = 1;
+            return newSetPage;
+        });
+        setMode("loading");
+        setTimeout(() => {
+            setMode("list");
+        }, 1000);
+    });
+
     // 글 화면에서 리스트 화면으로 뒤로 가기
     const backHandle = useCallback(() => {
         setMode("list");
@@ -640,8 +715,8 @@ const Body_7_board = () => {
                             <Search_icon src="/images/search.png" onClick={searchHandle}></Search_icon>
                         </Search_div>
                         <Forum_button_div>
-                            <Forum_button_div_button>전체</Forum_button_div_button>
-                            <Forum_button_div_button>나의 글</Forum_button_div_button>
+                            <Forum_button_div_button onClick={postAllHandle}>전체</Forum_button_div_button>
+                            <Forum_button_div_button onClick={postMyHandle}>나의 글</Forum_button_div_button>
                             <Forum_button_div_button onClick={writeStartHandle}>글쓰기</Forum_button_div_button>
                         </Forum_button_div>
                     </Board_Search_Forum_div>
@@ -667,9 +742,13 @@ const Body_7_board = () => {
                             })}
                             <Board_list_pagenation_span>다음</Board_list_pagenation_span>
                         </Board_list_pagenation_ul>
-
                     </Board_list_pagenation_div>
                 </>    
+                }
+                {mode === "loading" &&
+                 <Loading_div>
+                    <Loading_img src="/images/nowloading.png" style={{animation: "spin 0.33s 3 linear"}} ref={loadingRef} />
+                </Loading_div>
                 }
             </Board_div>
         </Body_container>

@@ -235,7 +235,7 @@ const Main_Header_Sidebar = (props) => {
                         <Hamburger_youtube_guide>
                             <p>New shorts</p>
                             <Hamburger_youtube_guide_img src='/images/shorts.png'/>
-                            <Hamburger_youtube_guide_reload ref={element => youtubeRef.current[1] = element}onClick={handleShortsReload} src='/images/reload.png'/>
+                            <Hamburger_youtube_guide_reload ref={element => youtubeRef.current[1] = element} onClick={handleShortsReload} src='/images/reload.png'/>
                         </Hamburger_youtube_guide>
                             {shorts.map((v,i) => {
                                 return (

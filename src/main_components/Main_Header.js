@@ -177,13 +177,13 @@ const Main_Header = (props) => {
             // token 을 저장하고, 현재 로그인된 email, nickName 을 찾아서 저장함.
             dispatch(setToken({token: token}));
             const getuser = async () => {
-                const res = await axiosCustom.get('http://localhost:3002/getuser');
+                const res = await axiosCustom.get('/getuser');
                 // console.log("getuser res.data.email ", res.data.email);
                 dispatch(setEmail({email: res.data.email}));
             }
             getuser();
             const getNickName = async () => {
-                const res = await axiosCustom.post('http://localhost:3002/users/email', {email: user.email});
+                const res = await axiosCustom.post('/users/email', {email: user.email});
                 // console.log("getNickName res.data.data.name ", res.data.data.name);
                 dispatch(setNickName({nickName: res.data.data.name}));
             }
@@ -196,7 +196,7 @@ const Main_Header = (props) => {
         // 원래 실제 로그아웃 요청하고 문제없을 시 진행하여야 함
         const token = document.cookie.split("=")[1];
         if(token && token.length > 0){
-            axiosCustom.get('http://localhost:3002/logout')
+            axiosCustom.get('/logout')
             .then(res => {
                 dispatch(logout());
                 setIsLogined(false);
