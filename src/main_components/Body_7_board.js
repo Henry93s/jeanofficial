@@ -14,8 +14,6 @@ const Body_container = styled.div`
     height: 1200px;
     margin-top: 600px;
 
-    border: 1px solid white;
-
     @media (max-width: 1000px) {
         width: 100%;
         margin-top: 150px;
@@ -39,19 +37,29 @@ const Board_title = styled.p`
 const Board_div = styled.div`
     width: 100%;
     height: 85%;
-    
-    border: 1px solid red;
 
     // mouse scroll 에 따른 opacity 
     opacity: 0;
     transition: opacity 3s;
 `
+const Board_Search_Forum_div = styled.div`
+    display: flex;
+
+    @media (max-width: 1000px) {
+        flex-direction: column;
+    }
+`
+
 const Search_div = styled.div`
     width: 55%;
     height: 100px;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    
+    @media (max-width: 1000px) {
+        width: 100%;
+    }
 `
 const Search_select = styled.select`
     width: 150px;
@@ -66,6 +74,9 @@ const Search_select = styled.select`
         border-color: #9061F9;
         // input focus 시 테두리 지우기
         outline: none;
+    }
+    @media (max-width: 1000px) {
+        width: 100px;
     }
 `
 const Search_input = styled.input`
@@ -84,12 +95,18 @@ const Search_input = styled.input`
         // input focus 시 테두리 지우기
         outline: none;
     }
+    @media (max-width: 1000px) {
+        width: 150px;
+    }
 `
 const Search_icon = styled.img`
     width: 40px;
     height: 40px;
 
     cursor: pointer;
+    @media (max-width: 1000px) {
+        width: 30px;
+    }
 `
 const Forum_button_div = styled.div`
     width: 45%;
@@ -97,6 +114,10 @@ const Forum_button_div = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+    }
 `
 const Forum_button_div_button = styled.button`
     width: 25%;
@@ -122,19 +143,16 @@ const Forum_button_div_button = styled.button`
 const Board_list_div = styled.div`
     width: 100%;
     height: 80%;
-
-
-    border: 1px solid blue;
 `
 const Board_list_item = styled.div`
     width: 100%;
     height: 8%;
     font-size: 17px;
+    border-bottom: 1px solid #9061F9;
 
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border: 0.5px solid yellow;
 `
 const Board_list_pagenation_div = styled.div`
     width: 100%;
@@ -142,7 +160,6 @@ const Board_list_pagenation_div = styled.div`
     font-size: 18px;
 `
 const Board_list_pagenation_ul = styled.ul`
-    border: 1px solid red;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -164,15 +181,13 @@ const Content_div = styled.div`
     align-items: center;
 ` 
 const Content_div_writer = styled.input`
-    width: 22%;
-    height: 80%;
+    width: 20%;
+    height: 95%;
     background-color: black;
     color: white;
     border-radius: 5px;
     border: 1px solid #2C2C2D;
-    font-size: 18px;
-
-    padding-left: 15px;
+    font-size: 15px;
 
     &:focus {
         border-color: #9061F9;
@@ -181,21 +196,27 @@ const Content_div_writer = styled.input`
     }
 `
 const Content_div_title = styled(Content_div_writer)`
-    width: 35%;
-    height: 80%;
+    width: 30%;
 `
 const Content_div_date = styled(Content_div_writer)`
     width: 25%;
-    height: 80%;
+
+    @media (max-width: 1000px) {
+        display: none;
+    }
 `
 const Content_div_back = styled.div`
-    width: 5%;
+    width: 7%;
     height: 80%;
     background: url('/images/move-left.png') no-repeat;
     background-position: center;
     cursor: pointer;
+
+    @media (max-width: 1000px) {
+        width: 13%;
+    }
 `
-const Content_text = styled.input`
+const Content_text = styled.textarea`
     width: 95%;
     height: 80%;
     margin-left: 1.5%;
@@ -206,12 +227,12 @@ const Content_text = styled.input`
     background-color: black;
     color: white;
     border-radius: 5px;
-    border: 1px solid #2C2C2D;
+    border: 1px solid #9061F9;
 
     padding-left: 15px;
 
     &:focus {
-        border-color: #9061F9;
+        border-color: #A47CFB;
         // input focus 시 테두리 지우기
         outline: none;
     }
@@ -455,26 +476,24 @@ const Body_7_board = () => {
                         <Content_div_title style={{border:"none"}} disabled defaultValue={text.title}/>
                         <Content_div_date style={{border:"none"}} disabled defaultValue={text.updateAt}/>
                     </Content_div>
-                    <Content_text style={{border:"none"}} disabled defaultValue={text.content}/>
+                    <Content_text disabled defaultValue={text.content}/>
                     <Content_sub_div>
                         <Content_sub_div_div>
                             <img src="/images/good.png" style={{width:"50px", height:"50px", cursor:"pointer"}} />
-                            <span>좋아요</span>
                             <span>{text.up}</span>
                         </Content_sub_div_div>
                         <Content_sub_div_div>
                             <img src="/images/bad.png" style={{width:"50px", height:"50px", cursor:"pointer"}} />
-                            <span>싫어요</span>
                             <span>{text.down}</span>
                         </Content_sub_div_div>
 
                         <Content_sub_div_div>
                             <img src="/images/modify.png" onClick={writePutHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
-                            <span>수정하기</span>
+                            <span>수정</span>
                         </Content_sub_div_div>
                         <Content_sub_div_div>
                             <img src="/images/delete.png" style={{width:"50px", height:"50px", cursor:"pointer"}} />
-                            <span>삭제하기</span>
+                            <span>삭제</span>
                         </Content_sub_div_div>
                     </Content_sub_div>
                 </>
@@ -484,10 +503,12 @@ const Body_7_board = () => {
                 <>
                     <Content_div>
                         <Content_div_back onClick={backHandle}></Content_div_back>
-                        <Content_div_writer disabled value={user.email.length >= 1 ? user.nickName : "nonLogin"} />
-                        <Content_div_title onChange={writeChangeHandle} name="title" />
+                        <Content_div_writer style={{border: "none"}} disabled value={user.email.length >= 1 ? user.nickName : "nonLogin"} />
+                        <label for="inputTitle">제목 : </label>
+                        <Content_div_title onChange={writeChangeHandle} id="inputTitle" name="title" />
                     </Content_div>
-                    <Content_text onChange={writeChangeHandle} name="content" />
+                    <label for="inputContent" style={{marginLeft: "1.5%"}}>내용 : </label>
+                    <Content_text onChange={writeChangeHandle} id="inputContent" name="content" />
                     <Content_sub_div>
                         <Content_sub_div_div>
                             <img src="/images/write.png" onClick={postWriteHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
@@ -503,10 +524,12 @@ const Body_7_board = () => {
                         <Content_div_back onClick={backHandle}></Content_div_back>
                         <Content_div_writer disabled value="read_writer"/>
                         {/* react 에서는 기본 input value 설정 시 defaultValue 로 지정해야 함 */}
-                        <Content_div_title onChange={writeChangeHandle} name="title" defaultValue={text.title} />
+                        <label for="inputTitle">제목: </label>
+                        <Content_div_title onChange={writeChangeHandle} id="inputTitle" name="title" defaultValue={text.title} />
                         <Content_div_date disabled value="read_date"/>
                     </Content_div>
-                    <Content_text onChange={writeChangeHandle} name="content" defaultValue={text.content}/>
+                    <label for="inputContent">내용: </label>
+                    <Content_text onChange={writeChangeHandle} id="inputContent" name="content" defaultValue={text.content}/>
                     <Content_sub_div>
                         <Content_sub_div_div>
                             <img src="/images/write.png" style={{width:"50px", height:"50px", cursor:"pointer"}} />
@@ -518,7 +541,7 @@ const Body_7_board = () => {
                 {mode === "list" 
                 &&
                 <>
-                    <div style={{display:"flex"}}>
+                    <Board_Search_Forum_div>
                         <Search_div>
                             <Search_select onChange={selectChangeHandle}>
                                 <option value="작성자">작성자</option>
@@ -530,10 +553,10 @@ const Body_7_board = () => {
                         </Search_div>
                         <Forum_button_div>
                             <Forum_button_div_button>전체</Forum_button_div_button>
-                            <Forum_button_div_button>내 글만 보기</Forum_button_div_button>
+                            <Forum_button_div_button>나의 글</Forum_button_div_button>
                             <Forum_button_div_button onClick={writeStartHandle}>글쓰기</Forum_button_div_button>
                         </Forum_button_div>
-                    </div>
+                    </Board_Search_Forum_div>
                     <Board_list_div>
                         {posts.map((v) => {
                                 return (
