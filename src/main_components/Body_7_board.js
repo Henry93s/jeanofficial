@@ -29,7 +29,7 @@ const Board_title = styled.p`
     font-family: "Noto Sans KR";
 
     // mouse scroll 에 따른 opacity 
-    opacity: 1;
+    opacity: 0;
     transition: opacity 3s;
 
     @media (max-width: 1000px) {
@@ -41,6 +41,10 @@ const Board_div = styled.div`
     height: 85%;
     
     border: 1px solid red;
+
+    // mouse scroll 에 따른 opacity 
+    opacity: 0;
+    transition: opacity 3s;
 `
 const Search_div = styled.div`
     width: 55%;
@@ -232,6 +236,26 @@ const Content_sub_div_div = styled.div`
 `
 
 const Body_7_board = () => {
+    // useRef [] 배열로 관리하기 !
+    const targetRef = useRef([]);
+    // scroll animation 동작 구현
+    useEffect(() => {
+        const osv = new IntersectionObserver((e) => {
+            e.forEach(entry => {
+                if(entry.isIntersecting){
+                    entry.target.style.opacity = 1;
+                } else {
+                    entry.target.style.opacity = 0;
+                }
+            })
+        },{
+            threshold: 0.25
+        });
+        targetRef.current.forEach(v => {
+            osv.observe(v);
+        })
+    },[]);
+
     const user = useSelector(state => state.user);
     const [posts, setPosts] = useState([]);
     // 리스트에서 검색 select, input 상태 값
@@ -419,9 +443,9 @@ const Body_7_board = () => {
             <Popup parameter={"put or delete 시 nanoid"} ref={popupOpenRef} />
             <Alert ref={alertOpenRef} />
         </div>
-        <Body_container>
-            <Board_title>Open Forum</Board_title>
-            <Board_div>
+        <Body_container id="scroll_3">
+            <Board_title ref={element => targetRef.current[0] = element}>Open Forum 📝</Board_title>
+            <Board_div ref={element => targetRef.current[1] = element}>
                 {mode === "read" 
                 &&
                 <>
