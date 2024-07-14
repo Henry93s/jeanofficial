@@ -4,7 +4,7 @@ import Alert from "../util_components/Alert";
 import Popup from "../util_components/Popup";
 import axiosCustom from "../util_components/axiosCustom";
 // redux 에서 user 상태를 가져오기 위한 useSelector
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 const Body_container = styled.div`
@@ -354,7 +354,7 @@ const Body_7_board = () => {
         nanoid: ""
     });
 
-    // 특정 페이지 로드 후 게시글 불러오기, 이후 mode 변경 시 마다 post, page read
+    // 특정 페이지 로드 후 게시글 불러오기, 이후 mode 변경 시 마다 posts, page 정보 read
     useEffect(() => {
         const getdata = async () => {
             // 검색어 모드 (검색어와 검색 타겟(셀렉트 박스)을 대상으로 조회된 글을 가져온다.)
@@ -396,11 +396,19 @@ const Body_7_board = () => {
                         return newPage;
                     });
                 });
-            } 
+            }
+            // 검색 상태 초기화 작업
+            setSearch((current) => {
+                const newSearch = {...current};
+                newSearch.input = "";
+                newSearch.select = "작성자";
+                return newSearch;
+            });
         };
         getdata();
     },[mode])
 
+    // page 상태 값에 따라 하단 페이지네이션 원소 배열 생성
     const pagenationing = () => {
         const pageArray = [];
         for(let i = 1;i <= page.totalPage; i++){
@@ -408,6 +416,21 @@ const Body_7_board = () => {
         }
         return pageArray;
     };
+
+    // 선택한 페이지로 이동 기능
+    const pagenateHandle = (i) => {
+        setPage((current) => {
+            const newPage = {...current};
+            newPage.page = i;
+            return newPage;
+        });
+
+        setMode("loading");
+        setTimeout(() => {
+            setMode("list");
+        }, 500);
+    }
+
     console.log(page);
 
     // 검색 select 박스 변화 감지
@@ -428,11 +451,18 @@ const Body_7_board = () => {
     };
     // 리스트에서 검색 동작
     const searchHandle = useCallback(() => {
+        // 검색어(search.input) 이 없을 때 에러 처리
+        if(search.input.length < 2){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "검색어를 2 글자 이상 입력해주세요.");
+            return;
+        }
+
         setPage((current) => {
             const newPage = {...current};
             newPage.searchMode = true;
             newPage.searchSelect = search.select;
             newPage.searchInput = search.input;
+            newPage.page = 1;
             return newPage;
         });
 
@@ -552,7 +582,10 @@ const Body_7_board = () => {
         .then(res => {
             alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
             if(res.data.code === 200){
-                backHandle();
+                setMode("loading");
+                setTimeout(() => {
+                    setMode("list");
+                }, 500);
             }
             return;
         })
@@ -581,7 +614,10 @@ const Body_7_board = () => {
         .then(res => {
             alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
             if(res.data.code === 200){
-                backHandle();
+                setMode("loading");
+                setTimeout(() => {
+                    setMode("list");
+                }, 500);
             }
             return;
         })
@@ -596,7 +632,10 @@ const Body_7_board = () => {
         .then(res => {
             alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
             if(res.data.code === 200){
-                backHandle();
+                setMode("loading");
+                setTimeout(() => {
+                    setMode("list");
+                }, 500);
             }
             return;
         })
@@ -768,7 +807,7 @@ const Body_7_board = () => {
                             <Board_list_pagenation_span>이전</Board_list_pagenation_span>
                             {pagenationing().map((v) => {
                                 return (
-                                    <Board_list_pagenation_li style={page.page === v ? {fontWeight: "bold"} : {fontWeight: "400"}}>{v}</Board_list_pagenation_li>
+                                    <Board_list_pagenation_li onClick={() => pagenateHandle(v)} style={page.page === v ? {fontWeight: "bold"} : {fontWeight: "400"}}>{v}</Board_list_pagenation_li>
                                 );
                             })}
                             <Board_list_pagenation_span>다음</Board_list_pagenation_span>
