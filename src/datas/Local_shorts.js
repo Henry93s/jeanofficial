@@ -1,5 +1,11 @@
 const Local_shorts = [
     {
+        "title": "오늘만 날인 것처럼🔮 #NewJeans #뉴진스 #NewJeans_Supernatural #NewJeans_RightNow #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/BDrgARhgREY/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/BDrgARhgREY",
+        "uploadTime": "2024. 7. 14. 일요일 오후 4:21:11"
+    },
+    {
         "title": "Back to Hype Boy💫💖 #NewJeans #뉴진스 #NewJeans_HypeBoy #NewJeans_is_Everywhere",
         "image_url": "https://i.ytimg.com/vi/wHkXnfRnrmw/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/wHkXnfRnrmw",
@@ -84,22 +90,10 @@ const Local_shorts = [
         "uploadTime": "2024. 6. 19. 수요일 오후 5:00:06"
     },
     {
-        "title": "NewJeans (뉴진스) 'Hype Boy' Stage Cam @ CHUNG-ANG UNIVERSITY",
-        "image_url": "https://i.ytimg.com/vi/a7JDrjIZOVs/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/a7JDrjIZOVs",
-        "uploadTime": "2024. 6. 19. 수요일 오후 5:00:18"
-    },
-    {
         "title": "I'm always so excited to meetᯓ🐹 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_BubbleGum",
         "image_url": "https://i.ytimg.com/vi/1bS2bTqiQcE/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/1bS2bTqiQcE",
         "uploadTime": "2024. 6. 16. 일요일 오후 4:30:52"
-    },
-    {
-        "title": "You just get my heart pump, pumping💗 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_BubbleGum",
-        "image_url": "https://i.ytimg.com/vi/8Uz7TnoXw80/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/8Uz7TnoXw80",
-        "uploadTime": "2024. 6. 14. 금요일 오후 7:30:01"
     },
     {
         "title": "We're gonna fly away🫧🪽#NewJeans #뉴진스 #NewJeans_HowSweet#NewJeans_BubbleGum #NewJeans_is_Everywhere",
@@ -178,6 +172,12 @@ const Local_shorts = [
         "image_url": "https://i.ytimg.com/vi/TaKddm-7090/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/TaKddm-7090",
         "uploadTime": "2024. 6. 2. 일요일 오후 3:00:13"
+    },
+    {
+        "title": "ৎ୭ 𓂃How sweet it tastes𓂃ৎ୭ #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/khpt0b0yRZI/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/khpt0b0yRZI",
+        "uploadTime": "2024. 6. 2. 일요일 오후 3:00:24"
     }
 ];
 

@@ -234,7 +234,7 @@ const Content_text = styled.textarea`
     margin-left: 1.5%;
     margin-top: 10px;
     overflow-y: scroll;
-    font-size: 25px;
+    font-size: 35px;
 
     background-color: black;
     color: white;
@@ -335,11 +335,16 @@ const Body_7_board = () => {
         up: 0,
         down: 0,
     });
-    // pagenation 상태 저장
+    // pagenation 상태 
+    // (search : 검색 모드 (1순위)), (allormy : 전체 글 또는 나의 글 모드 (2순위))
+    // searchSelect, searchInput : fixed 값. (실시간으로 변경되지 않음.)
     const [page, setPage] = useState({
         page: 1,
         total: 0,
         totalPage: 0,
+        searchMode: false,
+        searchSelect: "",
+        searchInput: "",
         allormy: "all"
     });
 
@@ -351,9 +356,22 @@ const Body_7_board = () => {
 
     // 특정 페이지 로드 후 게시글 불러오기, 이후 mode 변경 시 마다 post, page read
     useEffect(() => {
-        console.log(page.allormy)
-        const getdata = async (allormy) => {
-            if(allormy === "all"){
+        const getdata = async () => {
+            // 검색어 모드 (검색어와 검색 타겟(셀렉트 박스)을 대상으로 조회된 글을 가져온다.)
+            if(page.searchMode){
+                const nowpage = page.page;
+                await axiosCustom.get(`/post/getsearchposts/${nowpage}/${page.searchSelect}/${page.searchInput}`)
+                .then(res => {
+                    setPosts(res.data.posts);
+                    setPage((current) => {
+                        const newPage = {...current};
+                        newPage.total = res.data.total;
+                        newPage.totalPage = res.data.totalPage;
+                        return newPage;
+                    });
+                });
+                // 전체 글 모드 (전체 글을 가져오고 page.search 값이 초기화된다.)
+            } else if (page.allormy === "all") {
                 const nowpage = page.page;
                 await axiosCustom.get(`/post/getallposts/${nowpage}`)
                 .then(res => {
@@ -365,6 +383,7 @@ const Body_7_board = () => {
                         return newPage;
                     });
                 });
+                // 나의 글 모드 (나의 글을 가져오고 page.search 값이 초기화된다.)
             } else { // allormy === "my"
                 const nowpage = page.page;
                 await axiosCustom.post(`/post/getmyposts`,{email: user.email, nowpage: nowpage.toString()})
@@ -379,7 +398,7 @@ const Body_7_board = () => {
                 });
             } 
         };
-        getdata(page.allormy);
+        getdata();
     },[mode])
 
     const pagenationing = () => {
@@ -409,7 +428,18 @@ const Body_7_board = () => {
     };
     // 리스트에서 검색 동작
     const searchHandle = useCallback(() => {
-        console.log("searchHandle")
+        setPage((current) => {
+            const newPage = {...current};
+            newPage.searchMode = true;
+            newPage.searchSelect = search.select;
+            newPage.searchInput = search.input;
+            return newPage;
+        });
+
+        setMode("loading");
+        setTimeout(() => {
+            setMode("list");
+        }, 500);
     });
     // 리스트에서 엔터 시 검색 동작 유도
     const inputEnterHandle = useCallback((e) => {
@@ -420,7 +450,6 @@ const Body_7_board = () => {
 
     // 나의 글 모드 첫 진입 (1page) (로그인 요구)
     const postMyHandle = useCallback(() => {
-        console.log("mymy")
         if(user.email.length < 1){
             alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
@@ -428,6 +457,7 @@ const Body_7_board = () => {
 
         setPage((current) => {
             const newSetPage = {...current};
+            newSetPage.searchMode = false;
             newSetPage.allormy = "my";
             newSetPage.page = 1;
             return newSetPage;
@@ -435,13 +465,14 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 1000);
+        }, 500);
     });
 
     // 전체 글 모드 첫 진입 (1page) 
     const postAllHandle = useCallback(() => {
         setPage((current) => {
             const newSetPage = {...current};
+            newSetPage.searchMode = false;
             newSetPage.allormy = "all";
             newSetPage.page = 1;
             return newSetPage;
@@ -449,7 +480,7 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 1000);
+        }, 500);
     });
 
     // 글 화면에서 리스트 화면으로 뒤로 가기
@@ -691,7 +722,7 @@ const Body_7_board = () => {
                         <Content_div_title onChange={writeChangeHandle} id="inputTitle" name="title" defaultValue={text.title} />
                         <Content_div_date style={{border:"none"}} disabled defaultValue={text.updateAt}/>
                     </Content_div>
-                    <label for="inputContent">내용: </label>
+                    <label for="inputContent" style={{marginLeft: "1.5%"}}>내용: </label>
                     <Content_text onChange={writeChangeHandle} id="inputContent" name="content" defaultValue={text.content}/>
                     <Content_sub_div>
                         <Content_sub_div_div>
@@ -747,7 +778,7 @@ const Body_7_board = () => {
                 }
                 {mode === "loading" &&
                  <Loading_div>
-                    <Loading_img src="/images/nowloading.png" style={{animation: "spin 0.33s 3 linear"}} ref={loadingRef} />
+                    <Loading_img src="/images/nowloading.png" style={{animation: "spin 0.5s 3 linear"}} ref={loadingRef} />
                 </Loading_div>
                 }
             </Board_div>
