@@ -333,8 +333,7 @@ const Body_7_board = () => {
         title: "",
         content: "",
         updateAt: "",
-        up: 0,
-        down: 0,
+        up: 0
     });
     // pagenation 상태 
     // (search : 검색 모드 (1순위)), (allormy : 전체 글 또는 나의 글 모드 (2순위))
@@ -488,8 +487,6 @@ const Body_7_board = () => {
             setMode("list");
         }, 500);
     });
-
-    console.log(page);
 
     // 검색 select 박스 변화 감지
     const selectChangeHandle = useCallback((e) => {
@@ -737,7 +734,6 @@ const Body_7_board = () => {
                     newSetText.content = post.content;
                     newSetText.updateAt = post.updateAt;
                     newSetText.up = post.up;
-                    newSetText.down = post.down;
                     return newSetText;
                 })
             } else { // 읽기 실패
@@ -747,7 +743,26 @@ const Body_7_board = () => {
         })
     });
 
+    // 특정 글 에서 좋아요 버튼 클릭(같은 계정으로 같은 글의 좋아요를 또 클릭하면 좋아요 제거)
+    const postUpHandle = useCallback(() => {
+        if(user.email.length < 1){
+            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요합니다.");
+            return;
+        }
 
+        axiosCustom.post('/post/uppost',{email: user.email, nanoid: text.nanoid})
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
+            setMode("loading");
+                setTimeout(() => {
+                    setMode("list");
+                }, 100);
+            return;
+        })
+    });
+
+
+    // console.log(page);
 
     return (
         <>
@@ -770,12 +785,8 @@ const Body_7_board = () => {
                     <Content_text disabled defaultValue={text.content}/>
                     <Content_sub_div>
                         <Content_sub_div_div>
-                            <img src="/images/good.png" style={{width:"50px", height:"50px", cursor:"pointer"}} />
+                            <img src="/images/good.png" onClick={postUpHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
                             <span>{text.up}</span>
-                        </Content_sub_div_div>
-                        <Content_sub_div_div>
-                            <img src="/images/bad.png" style={{width:"50px", height:"50px", cursor:"pointer"}} />
-                            <span>{text.down}</span>
                         </Content_sub_div_div>
 
                         <Content_sub_div_div>
@@ -853,7 +864,7 @@ const Body_7_board = () => {
                                 return (
                                     <Board_list_item>
                                         <span style={{width:"20%"}}>{v.author.name}</span>
-                                        <span name={v.nanoid} onClick={postReadHandle} style={{width:"40%", textDecoration:"underLine", cursor:"pointer"}}>{v.title}</span>
+                                        <span name={v.nanoid} onClick={postReadHandle} style={{width:"40%", textDecoration:"underLine", cursor:"pointer"}}>{v.up === 0 ? v.title : v.title + " [👍 " + v.up + "]"}</span>
                                         <span style={{width:"30%"}}>{v.updateAt}</span>
                                     </Board_list_item>
                                 );
