@@ -6,6 +6,7 @@ import { useLocation, Link } from "react-router-dom";
 import axiosCustom from "../util_components/axiosCustom";
 import { useDispatch } from 'react-redux';
 import { setNickName, logout } from '../redux/UserSlice';
+import { useSelector } from "react-redux";
 
 const MypagePut_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
@@ -203,6 +204,9 @@ const MypagePut = () => {
     });
     const alertOpenRef = useRef(null);
     const popupOpenRef = useRef(null);
+    // redux 에서 기존 닉네임 가져옴
+    const user = useSelector(state => state.user);
+
     // main 에서 개인정보 수정할 때 보내온 state 를 location 객체에서 불러옴
     const location = useLocation();
     const email = location.state.email;
@@ -310,7 +314,7 @@ const MypagePut = () => {
                         </MypagePut_email_div>
                         <MypagePut_name_div>
                             <MypagePut_name_span>닉네임</MypagePut_name_span>
-                            <MypagePut_name_input placeholder="12자 이내 닉네임 입력" maxLength='12' onChange={handleNameChange}/>
+                            <MypagePut_name_input placeholder="12자 이내 닉네임 입력" maxLength='12' defaultValue={user.nickName} onChange={handleNameChange}/>
                         </MypagePut_name_div>
                         <MypagePut_password_div>
                             <MypagePut_password_span>비밀번호</MypagePut_password_span>

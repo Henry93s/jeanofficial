@@ -345,7 +345,8 @@ const Body_7_board = () => {
         searchMode: false,
         searchSelect: "",
         searchInput: "",
-        allormy: "all"
+        allormy: "all",
+        likeSort: false
     });
 
     // 글 삭제 시 popup 컴포넌트로 props 전달 상태
@@ -360,7 +361,7 @@ const Body_7_board = () => {
             // 검색어 모드 (검색어와 검색 타겟(셀렉트 박스)을 대상으로 조회된 글을 가져온다.)
             if(page.searchMode){
                 const nowpage = page.page;
-                await axiosCustom.get(`/post/getsearchposts/${nowpage}/${page.searchSelect}/${page.searchInput}`)
+                await axiosCustom.get(`/post/getsearchposts/${nowpage}/${page.searchSelect}/${page.searchInput}/${page.likeSort}`)
                 .then(res => {
                     setPosts(res.data.posts);
                     setPage((current) => {
@@ -373,7 +374,7 @@ const Body_7_board = () => {
                 // 전체 글 모드 (전체 글을 가져오고 page.search 값이 초기화된다.)
             } else if (page.allormy === "all") {
                 const nowpage = page.page;
-                await axiosCustom.get(`/post/getallposts/${nowpage}`)
+                await axiosCustom.get(`/post/getallposts/${nowpage}/${page.likeSort}`)
                 .then(res => {
                     setPosts(res.data.posts);
                     setPage((current) => {
@@ -386,7 +387,7 @@ const Body_7_board = () => {
                 // 나의 글 모드 (나의 글을 가져오고 page.search 값이 초기화된다.)
             } else { // allormy === "my"
                 const nowpage = page.page;
-                await axiosCustom.post(`/post/getmyposts`,{email: user.email, nowpage: nowpage.toString()})
+                await axiosCustom.post(`/post/getmyposts`,{email: user.email, nowpage: nowpage.toString(), likesort: page.likeSort.toString()})
                 .then(res => {
                     setPosts(res.data.posts);
                     setPage((current) => {
@@ -567,6 +568,20 @@ const Body_7_board = () => {
             setMode("list");
         }, 500);
     });
+
+    // 현재 가져온 posts 와 page 를 기준으로 좋아요 순으로 정렬만 바꿈
+    const postLikeSortHandle = useCallback(() => {
+        setPage((current) => {
+            const newSetPage = {...current};
+            newSetPage.likeSort = !page.likeSort;
+            return newSetPage;
+        });
+        setMode("loading");
+        setTimeout(() => {
+            setMode("list");
+        }, 500);
+    });
+
 
     // 글 화면에서 리스트 화면으로 뒤로 가기
     const backHandle = useCallback(() => {
@@ -762,7 +777,7 @@ const Body_7_board = () => {
     });
 
 
-    // console.log(page);
+    console.log(page);
 
     return (
         <>
@@ -856,6 +871,7 @@ const Body_7_board = () => {
                         <Forum_button_div>
                             <Forum_button_div_button onClick={postAllHandle}>전체</Forum_button_div_button>
                             <Forum_button_div_button onClick={postMyHandle}>나의 글</Forum_button_div_button>
+                            <Forum_button_div_button style={page.likeSort ? {border: "3px solid #9061F9"} : {border: "none"}} onClick={postLikeSortHandle}>👍</Forum_button_div_button>
                             <Forum_button_div_button onClick={writeStartHandle}>글쓰기</Forum_button_div_button>
                         </Forum_button_div>
                     </Board_Search_Forum_div>
