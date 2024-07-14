@@ -96,12 +96,13 @@ const Search_input = styled.input`
     }
 `
 const Search_icon = styled.img`
-    width: 10%;
-    height: 90%;
+    width: 40px;
+    height: 40px;
 
     cursor: pointer;
     @media (max-width: 1000px) {
         width: 64px;
+        height: 64px;
     }
 `
 const Forum_button_div = styled.div`
@@ -409,16 +410,33 @@ const Body_7_board = () => {
     },[mode])
 
     // page 상태 값에 따라 하단 페이지네이션 원소 배열 생성
-    const pagenationing = () => {
+    // 5 페이지 씩 만 출력하여야 함
+    const pagenationing = useCallback(() => {
         const pageArray = [];
-        for(let i = 1;i <= page.totalPage; i++){
+
+        // 페이지 시작점 계산
+        let remainpage = page.page;
+        let count = 0;
+        while((remainpage - count) % 5 !== 1){
+            count++;
+        }
+        const startpage = page.page - count;
+
+        // 페이지 끝점 계산
+        remainpage = startpage + 4;
+        if(remainpage > page.totalPage){
+            remainpage = page.totalPage;
+        }
+        const lastpage = remainpage;
+
+        for(let i = startpage;i <= lastpage; i++){
             pageArray.push(i);
         }
         return pageArray;
-    };
+    });
 
     // 선택한 페이지로 이동 기능
-    const pagenateHandle = (i) => {
+    const pagenateHandle = useCallback((i) => {
         setPage((current) => {
             const newPage = {...current};
             newPage.page = i;
@@ -429,26 +447,66 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 500);
-    }
+    });
+
+    // 이전 버튼 클릭 시 최대 5 페이지 이동 기능
+    const pagePrevHandle = useCallback(() => {
+        // 이동할 페이지 최대 5 페이지(5 페이지가 안되면 최대한 마지막 페이지로)
+        let i = page.page - 5;
+        if(i < 1){
+            i = 1;
+        }
+
+        setPage((current) => {
+            const newPage = {...current};
+            newPage.page = i;
+            return newPage;
+        });
+
+        setMode("loading");
+        setTimeout(() => {
+            setMode("list");
+        }, 500);
+    });
+
+    // 다음 버튼 클릭 시 최대 5 페이지 이동 기능
+    const pageNextHandle = useCallback(() => {
+        // 이동할 페이지 최대 5 페이지(5 페이지가 안되면 최대한 마지막 페이지로)
+        let i = page.page + 5;
+        if(i > page.totalPage){
+            i = page.totalPage;
+        }
+
+        setPage((current) => {
+            const newPage = {...current};
+            newPage.page = i;
+            return newPage;
+        });
+
+        setMode("loading");
+        setTimeout(() => {
+            setMode("list");
+        }, 500);
+    });
 
     console.log(page);
 
     // 검색 select 박스 변화 감지
-    const selectChangeHandle = (e) => {
+    const selectChangeHandle = useCallback((e) => {
         setSearch((current) => {
             const newSearch = {...current};
             newSearch.select = e.target.value;
             return newSearch;
         });
-    };
+    });
     // 검색 state 실시간 변화
-    const inputChangeHandle = (e) => {
+    const inputChangeHandle = useCallback((e) => {
         setSearch((current) => {
             const newSearch = {...current};
             newSearch.input = e.target.value;
             return newSearch;
         });
-    };
+    });
     // 리스트에서 검색 동작
     const searchHandle = useCallback(() => {
         // 검색어(search.input) 이 없을 때 에러 처리
@@ -804,13 +862,13 @@ const Body_7_board = () => {
                     </Board_list_div>
                     <Board_list_pagenation_div>
                         <Board_list_pagenation_ul>
-                            <Board_list_pagenation_span>이전</Board_list_pagenation_span>
+                            <Board_list_pagenation_span onClick={pagePrevHandle}>이전</Board_list_pagenation_span>
                             {pagenationing().map((v) => {
                                 return (
-                                    <Board_list_pagenation_li onClick={() => pagenateHandle(v)} style={page.page === v ? {fontWeight: "bold"} : {fontWeight: "400"}}>{v}</Board_list_pagenation_li>
+                                    <Board_list_pagenation_li onClick={() => pagenateHandle(v)} style={page.page === v ? {fontWeight: "bold", color: "#9061F9"} : {fontWeight: "400", color: "white"}}>{v}</Board_list_pagenation_li>
                                 );
                             })}
-                            <Board_list_pagenation_span>다음</Board_list_pagenation_span>
+                            <Board_list_pagenation_span onClick={pageNextHandle}>다음</Board_list_pagenation_span>
                         </Board_list_pagenation_ul>
                     </Board_list_pagenation_div>
                 </>    
