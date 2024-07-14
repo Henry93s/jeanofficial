@@ -178,17 +178,17 @@ const Main_Header = (props) => {
             dispatch(setToken({token: token}));
             const getuser = async () => {
                 const res = await axiosCustom.get('/getuser');
-                // console.log("getuser res.data.email ", res.data.email);
                 dispatch(setEmail({email: res.data.email}));
             }
             getuser();
             const getNickName = async () => {
                 const res = await axiosCustom.post('/users/email', {email: user.email});
-                // console.log("getNickName res.data.data.name ", res.data.data.name);
                 dispatch(setNickName({nickName: res.data.data.name}));
             }
             getNickName();
             setIsLogined(true);
+        } else {
+            setIsLogined(false);
         }
     }, [user]);
 

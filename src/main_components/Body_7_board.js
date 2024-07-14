@@ -101,8 +101,8 @@ const Search_icon = styled.img`
 
     cursor: pointer;
     @media (max-width: 1000px) {
-        width: 64px;
-        height: 64px;
+        width: 60px;
+        height: 60px;
     }
 `
 const Forum_button_div = styled.div`
@@ -158,6 +158,7 @@ const Board_list_pagenation_div = styled.div`
     height: 2%;
     font-size: 18px;
     margin-left: -5%;
+    margin-top: 5%;
 `
 const Board_list_pagenation_ul = styled.ul`
     width: 100%;
@@ -446,7 +447,7 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 500);
+        }, 200);
     });
 
     // 이전 버튼 클릭 시 최대 5 페이지 이동 기능
@@ -466,7 +467,7 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 500);
+        }, 200);
     });
 
     // 다음 버튼 클릭 시 최대 5 페이지 이동 기능
@@ -486,7 +487,7 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 500);
+        }, 200);
     });
 
     // 검색 select 박스 변화 감지
@@ -525,7 +526,7 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 500);
+        }, 200);
     });
     // 리스트에서 엔터 시 검색 동작 유도
     const inputEnterHandle = useCallback((e) => {
@@ -551,7 +552,7 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 500);
+        }, 200);
     });
 
     // 전체 글 모드 첫 진입 (1page) 
@@ -566,7 +567,7 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 500);
+        }, 200);
     });
 
     // 현재 가져온 posts 와 page 를 기준으로 좋아요 순으로 정렬만 바꿈
@@ -579,7 +580,7 @@ const Body_7_board = () => {
         setMode("loading");
         setTimeout(() => {
             setMode("list");
-        }, 500);
+        }, 200);
     });
 
 
@@ -655,7 +656,7 @@ const Body_7_board = () => {
                 setMode("loading");
                 setTimeout(() => {
                     setMode("list");
-                }, 500);
+                }, 200);
             }
             return;
         })
@@ -687,7 +688,7 @@ const Body_7_board = () => {
                 setMode("loading");
                 setTimeout(() => {
                     setMode("list");
-                }, 500);
+                }, 200);
             }
             return;
         })
@@ -705,7 +706,7 @@ const Body_7_board = () => {
                 setMode("loading");
                 setTimeout(() => {
                     setMode("list");
-                }, 500);
+                }, 200);
             }
             return;
         })

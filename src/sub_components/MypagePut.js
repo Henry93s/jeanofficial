@@ -287,7 +287,6 @@ const MypagePut = () => {
                     axiosCustom.get('/logout')
                     .then(res => {
                         dispatch(logout());
-                        setIsLogined(false);
                     })
                 }
             }
