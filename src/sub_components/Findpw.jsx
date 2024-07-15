@@ -227,7 +227,10 @@ const Findpw = () => {
             if(res.data && res.data.code === 200){
                 // 비밀번호 변경 페이지로 이동
                 // navigate 할 때 user 상태 넘겨줌(이메일 전달 위함)
-                navigate('/pwchange', {state: FindpwUser});
+                alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", "이메일 인증이 완료되었습니다.");
+                setTimeout(() => {
+                    navigate('/pwchange', {state: FindpwUser});
+                }, 1000); 
             }
             return;
         });

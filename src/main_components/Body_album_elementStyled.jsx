@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Main_flex_div = styled.div`
-    // 주요 element component PC 가운데 정렬 + 너비 80%( / 100vw )
+    // 주요 element component PC 가운데 정렬(margin 0 auto) + 너비 80%( / 100vw )
     width: 80%;
     margin: 0 auto;
 

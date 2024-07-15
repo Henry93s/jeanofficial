@@ -189,7 +189,9 @@ const PasswordChange = () => {
             alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", res.data.message);
             if(res.data && res.data.code === 200){
                 // 로그인 페이지로 이동
-                navigate('/login');
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1000);
             }
             return;
         })

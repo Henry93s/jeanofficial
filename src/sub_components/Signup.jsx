@@ -270,10 +270,12 @@ const Signup = () => {
         const {email, password, name} = addUser;
         axiosCustom.post('/users', {email, password, name})
         .then(res => {
-            if(res.data.code === 200){
-                navigate('/login');
-            }
             alertOpenRef.current.handleOpenAlert("회원가입 알림", res.data.message);
+            if(res.data.code === 200){
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1000);
+            }
             return;
         });
     });

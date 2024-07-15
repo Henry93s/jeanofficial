@@ -1,5 +1,11 @@
 const Local_shorts = [
     {
+        "title": "it was trending when we filmed it... 🤓 #NewJeans #뉴진스 #Film_By_NewJeans #NewJeans_is_Everywhere",
+        "image_url": "https://i.ytimg.com/vi/VKvzm5abMss/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/shorts/VKvzm5abMss",
+        "uploadTime": "2024. 7. 15. 월요일 오후 8:00:33"
+    },
+    {
         "title": "오늘만 날인 것처럼🔮 #NewJeans #뉴진스 #NewJeans_Supernatural #NewJeans_RightNow #NewJeans_is_Everywhere",
         "image_url": "https://i.ytimg.com/vi/BDrgARhgREY/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/BDrgARhgREY",
@@ -172,12 +178,6 @@ const Local_shorts = [
         "image_url": "https://i.ytimg.com/vi/TaKddm-7090/hqdefault.jpg",
         "video_url": "https://www.youtube.com/shorts/TaKddm-7090",
         "uploadTime": "2024. 6. 2. 일요일 오후 3:00:13"
-    },
-    {
-        "title": "ৎ୭ 𓂃How sweet it tastes𓂃ৎ୭ #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_is_Everywhere",
-        "image_url": "https://i.ytimg.com/vi/khpt0b0yRZI/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/shorts/khpt0b0yRZI",
-        "uploadTime": "2024. 6. 2. 일요일 오후 3:00:24"
     }
 ];
 

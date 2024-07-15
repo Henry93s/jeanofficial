@@ -4,6 +4,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
     email: "",
     nickName: "",
+    is_admin: false,
     token: ""
 };
 
@@ -21,10 +22,14 @@ const userSlice = createSlice({
         setToken(state, action){
             state.token = action.payload.token;
         },
+        setIsAdmin(state, action){
+            state.is_admin = action.payload.is_admin;
+        },
         logout(state, action){
             state.email = "";
             state.nickName = "";
             state.token = "";
+            state.is_admin = false
         }
     }
 });
@@ -33,6 +38,7 @@ const userSlice = createSlice({
 export const setEmail = userSlice.actions.setEmail;
 export const setNickName = userSlice.actions.setNickName;
 export const setToken = userSlice.actions.setToken;
+export const setIsAdmin = userSlice.actions.setIsAdmin;
 export const logout = userSlice.actions.logout;
 
 // userSlice(액션 생성자 + 리듀서 함수) reducer export

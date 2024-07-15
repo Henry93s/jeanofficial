@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Main_flex_div = styled.div`
-    // 캐러셀 element component PC 가운데 정렬 + 너비 90%( / 100vw )
+    // 캐러셀 element component PC 가운데 정렬(margin 0 auto) + 너비 90%( / 100vw )
     width: 90%;
     margin: 0 auto;
 

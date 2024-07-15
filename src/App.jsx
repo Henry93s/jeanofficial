@@ -7,11 +7,11 @@ import Findpw from './sub_components/Findpw';
 import PasswordChange from './sub_components/PasswordChange';
 import Signup from './sub_components/Signup';
 import MypagePut from './sub_components/MypagePut';
+import Body_0_admin from './main_components/Body_0_admin';
 import './App.css';
 
 
 function App() {
-  // goto Main goto Main_Header STATE (before using redux, 상태 전달 연습 완료 !)
 
   return (
     <div className="App">
@@ -23,6 +23,7 @@ function App() {
             <Route path="/pwchange" element={<PasswordChange />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/mypage' element={<MypagePut />} />
+            <Route path='/admin' element={<Body_0_admin />} />
             <Route path="*" element={<Notfound />} />
           </Routes>
       </BrowserRouter>

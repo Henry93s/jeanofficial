@@ -3,8 +3,6 @@ import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import { Link, useNavigate } from "react-router-dom";
 import axiosCustom from "../util_components/axiosCustom";
-// redux 상태 관리 사용
-import { useDispatch } from "react-redux";
 
 const Login_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
@@ -156,7 +154,6 @@ const Login = () => {
     });
     const alertOpenRef = useRef(null);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     // 로그인 요청
     // 이메일 형식, 이메일 또는 패스워드 입력 여부 사전 체크 server 진행
@@ -166,10 +163,13 @@ const Login = () => {
         .then(res => {
             // 에러시 알림 팝업 발생함.
             alertOpenRef.current.handleOpenAlert("로그인 알림", res.data.message);
-            if(res.data && res.data.code === 200){
+            // 관리자 로그인 성공 코드 202 추가 (server 와 값 비교 완료)
+            if(res.data && (res.data.code === 200 || res.data.code === 202)){
                 // 메인 페이지로 이동
                 // navigate 는 컴포넌트 리렌더링이 동작함 !
-                navigate('/');
+                setTimeout(() => {
+                    navigate('/');
+                }, 1000);
             }
             return;
         });

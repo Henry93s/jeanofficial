@@ -1,4 +1,4 @@
-import React,{useState, useCallback, useMemo, useEffect} from 'react';
+import React,{useState, useCallback, useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import Main_Header_Sidebar from './Main_Header_Sidebar';
 // scrollLink 로도 Link 를 사용하기 위해서 별칭 as 사용 !
@@ -6,8 +6,9 @@ import {Link as ScrollLink} from 'react-scroll';
 import { useNavigate, Link } from 'react-router-dom';
 // redux 에서 user 상태를 가져오기 위한 useSelector
 import { useSelector, useDispatch } from 'react-redux';
-import { setNickName, setToken, logout, setEmail } from '../redux/UserSlice';
+import { setNickName, setToken, logout, setEmail, setIsAdmin } from '../redux/UserSlice';
 import axiosCustom from '../util_components/axiosCustom';
+import Alert from '../util_components/Alert';
 
 //
 const Container_div = styled.div`
@@ -166,6 +167,7 @@ const Main_Header = (props) => {
     // 페이지 진입 시 로그인 또는 로그아웃 되었는지 체크함(user)
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const alertOpenRef = useRef(null);
     console.log(user)
     const [isLogined, setIsLogined] = useState(false);
     // 로그인 후(navigate 되었을 때) 리렌더링 시 서버에서 보내진 토큰(쿠키 안)에 값이 있을 때, 
@@ -179,6 +181,8 @@ const Main_Header = (props) => {
             const getuser = async () => {
                 const res = await axiosCustom.get('/getuser');
                 dispatch(setEmail({email: res.data.email}));
+                // 관리자 계정인지 확인하는 user 데이터도 리덕스 관리
+                dispatch(setIsAdmin({is_admin: res.data.is_admin}));
             }
             getuser();
             const getNickName = async () => {
@@ -192,19 +196,29 @@ const Main_Header = (props) => {
         }
     }, [user]);
 
+    // 로그인 완료 후 계정 관리자 임이 확인되면 자동으로 계정 관리자 페이지로 이동함.
+    useEffect(() => {
+        if(user.is_admin){
+            alertOpenRef.current.handleOpenAlert("페이지 알림", "자동으로 관리 페이지로 이동합니다.");
+            setTimeout(() => {
+                navigate('/admin');
+            }, 1500);
+            return;
+        }
+    },[user["is_admin"]])
+
     const handleLogout = useCallback(() =>{
         // 원래 실제 로그아웃 요청하고 문제없을 시 진행하여야 함
         const token = document.cookie.split("=")[1];
         if(token && token.length > 0){
             axiosCustom.get('/logout')
             .then(res => {
+                alertOpenRef.current.handleOpenAlert("로그아웃 알림", "로그아웃 되었습니다.");
                 dispatch(logout());
                 setIsLogined(false);
             })
         }
     });
-    //
-
 
     const [clickedMenu, setClickedMenu] = useState({
         Home_div: "false",
@@ -249,8 +263,9 @@ const Main_Header = (props) => {
         navigate('/mypage', {state: {email: user.email} });
     });
 
-    return (
+    return (        
         <>
+            <Alert ref={alertOpenRef} />
             <Main_Header_Sidebar clickBurger={clickBurger} handleHamburgerClick={handleHamburgerClick}/>
             <Container_div>
                     <Hamburger_link>
