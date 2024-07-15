@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Main from './main_components/Main';
 import Notfound from './util_components/Notfound';
@@ -12,7 +12,6 @@ import './App.css';
 
 
 function App() {
-
   return (
     <div className="App">
         <BrowserRouter>

@@ -6,7 +6,7 @@ import {Link as ScrollLink} from 'react-scroll';
 import { useNavigate, Link } from 'react-router-dom';
 // redux 에서 user 상태를 가져오기 위한 useSelector
 import { useSelector, useDispatch } from 'react-redux';
-import { setNickName, setToken, logout, setEmail, setIsAdmin } from '../redux/UserSlice';
+import { logout, setAll } from '../redux/UserSlice';
 import axiosCustom from '../util_components/axiosCustom';
 import Alert from '../util_components/Alert';
 
@@ -176,20 +176,13 @@ const Main_Header = (props) => {
     useEffect(() => {
         const token = document.cookie.split("=")[1];
         if(token && token.length > 0){
-            // token 을 저장하고, 현재 로그인된 email, nickName 을 찾아서 저장함.
-            dispatch(setToken({token: token}));
+            // 서버에서 로그인된 유저 정보를 가져와서 클라이언트 리덕스 상태에 저장함
             const getuser = async () => {
                 const res = await axiosCustom.get('/getuser');
-                dispatch(setEmail({email: res.data.email}));
-                // 관리자 계정인지 확인하는 user 데이터도 리덕스 관리
-                dispatch(setIsAdmin({is_admin: res.data.is_admin}));
+                dispatch(setAll({token: token, email: res.data.email, is_admin: res.data.is_admin
+                ,nickName: res.data.name}));
             }
             getuser();
-            const getNickName = async () => {
-                const res = await axiosCustom.post('/users/email', {email: user.email});
-                dispatch(setNickName({nickName: res.data.data.name}));
-            }
-            getNickName();
             setIsLogined(true);
         } else {
             setIsLogined(false);

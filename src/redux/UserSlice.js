@@ -13,6 +13,12 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers:{
+        setAll(state, action){
+            state.email = action.payload.email;
+            state.nickName = action.payload.nickName;
+            state.token = action.payload.token;
+            state.is_admin = action.payload.is_admin;
+        },
         setEmail(state, action){
             state.email = action.payload.email;
         },
@@ -35,6 +41,7 @@ const userSlice = createSlice({
 });
 
 // 유저 로그인 상태에 따른 액션 생성자 함수 불러오고, export
+export const setAll = userSlice.actions.setAll;
 export const setEmail = userSlice.actions.setEmail;
 export const setNickName = userSlice.actions.setNickName;
 export const setToken = userSlice.actions.setToken;
