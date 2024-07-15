@@ -890,13 +890,13 @@ const Body_7_board = () => {
                     </Board_list_div>
                     <Board_list_pagenation_div>
                         <Board_list_pagenation_ul>
-                            <Board_list_pagenation_span onClick={pagePrevHandle}>이전</Board_list_pagenation_span>
+                            <Board_list_pagenation_span onClick={pagePrevHandle}>{"<<<"}</Board_list_pagenation_span>
                             {pagenationing().map((v) => {
                                 return (
                                     <Board_list_pagenation_li onClick={() => pagenateHandle(v)} style={page.page === v ? {fontWeight: "bold", color: "#9061F9"} : {fontWeight: "400", color: "white"}}>{v}</Board_list_pagenation_li>
                                 );
                             })}
-                            <Board_list_pagenation_span onClick={pageNextHandle}>다음</Board_list_pagenation_span>
+                            <Board_list_pagenation_span onClick={pageNextHandle}>{">>>"}</Board_list_pagenation_span>
                         </Board_list_pagenation_ul>
                     </Board_list_pagenation_div>
                 </>    
