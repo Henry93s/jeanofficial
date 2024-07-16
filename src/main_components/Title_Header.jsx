@@ -13,7 +13,7 @@ const Main = styled.div`
     font-weight: 700;
     margin-top: -200px;
 
-    gap: 17px;
+    gap: 5px;
     margin-bottom: 10px;
 
 

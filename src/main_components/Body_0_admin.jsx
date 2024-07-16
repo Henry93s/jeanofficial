@@ -4,7 +4,7 @@ import Alert from "../util_components/Alert";
 import Popup from "../util_components/Popup";
 import axiosCustom from "../util_components/axiosCustom";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logout, setAll } from "../redux/UserSlice";
 
 const Main_overlay = styled.div`
@@ -196,14 +196,14 @@ const Admin_user_detail_out_button = styled.button`
 const Body_0_admin = () => {
     // admin 체크 상태
     const [isAdmin, setIsAdmin] = useState(false);
-    // user 데이터 상태
+    // 좌측 항목인 user 데이터 상태
     const [users, setUsers] = useState([]);
     // 좌측 회원 관리에서 유저를 클릭했는지에 대한 상태
     const [userclick, setUserclick] = useState({
         email: "",
         is_click: false
     });
-    // user detail 상태
+    // 우측 항목인 user detail 상태
     const [detail, setDetail] = useState({
         email: "",
         nickname: "",
@@ -216,26 +216,21 @@ const Body_0_admin = () => {
     const alertOpenRef = useRef(null);
     // 이벤트 함수에서 리다이렉트 시 navigate
     const navigate = useNavigate();
-    // 리덕스 스토어에서 user 상태 가져옴
-    const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
-    // 관리자는 수동으로 admin 주소를 입력하여 계정 관리자 페이지에 진입 성공할 수 있음
-    // user 상태 확인 시 is_admin 이 true 일 때 users 데이터 상태를 셋팅함
+    // 관리자는 로그인 완료 후 수동으로 /admin 주소를 입력하여 계정 관리자 페이지에 진입 성공할 수 있음
+    // 서버 검증을 통한 user의 is_admin 이 true 일 때 users 목록 데이터 상태를 셋팅함
     useEffect(() => {
         // 서버에서 로그인된 유저 정보를 가져와서 클라이언트 리덕스 상태에 저장함
         const getuser = async () => {
             const res = await axiosCustom.get('/users/getuser');
-            console.log(res);
             // 서버 검증을 통해 로그인된 유저가 있을 때 클라이언트 리덕스 유저 상태에 데이터를 저장함
             if(res.data && res.data.code === 200 && res.data.data.is_admin){
-                console.log("관리자 검증")
                 dispatch(setAll({email: res.data.data.email, nickName: res.data.data.name}));
                 
                 // 전체 user 목록 데이터도 users 상태에 저장 시킴
                 // post 요청으로 직접 url 접근 차단
                 const res2 = await axiosCustom.post('/users/alluserdata');
-                console.log(res2);
                 setUsers(res2.data);
 
                 // 관리자 임을 확인했으므로 관련 상태 업데이트
@@ -274,6 +269,7 @@ const Body_0_admin = () => {
 
     // 좌측 회원 관리에서 유저 클릭 시 상세 회원 정보에 내용을 출력 시키는 이벤트 함수
     const userItemClickHandle = useCallback((email, nickname, is_admin) => {
+        // 좌측에서 유저 클릭 시 해당 아이템 항목은 배경색이 변화하도록 함
         setUserclick((current) => {
             const newClick = {...current};
             newClick.email = email;
@@ -281,6 +277,7 @@ const Body_0_admin = () => {
             return newClick;
         });
 
+        // 유저 클릭 시 해당 유저의 디테일한 정보고 우측에 출력되도록 함
         setDetail((current) => {
             const newDetail = {...current};
             newDetail.email = email;
@@ -290,13 +287,12 @@ const Body_0_admin = () => {
         });
     });
 
-    console.log(detail)
-
     // 선택한 회원 탈퇴 콜백 함수
     const userOutCallback = useCallback((email) => {
         axiosCustom.post('/users/deleteByEmail',{email})
         .then(res => {
             alertOpenRef.current.handleOpenAlert("관리자 알림", res.data.message);
+            // 삭제가 되고 reload 라는 상태를 반전시켜 줌으로써 유저들 목록 데이터를 다시 받아옴
             setReload(!reload);
             return;
         })

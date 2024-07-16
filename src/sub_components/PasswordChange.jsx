@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import { useLocation, useNavigate } from "react-router-dom";
 import axiosCustom from "../util_components/axiosCustom";
-import { useSelector } from "react-redux";
 
 const PasswordChange_Overlay = styled.div`
     // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
@@ -161,7 +160,7 @@ const PasswordChange = () => {
     // 패스워드 찾기 컴포넌트로부터 navigate 될 때 전달 받은 이메일을 받기 위해 location 객체 사용
     const location = useLocation();
     // 직접 url 접근이나 새로고침으로 location state 를 받아오지 못했을 때를 대비해 
-    // email 프로퍼티가 없을 때, 에러가 아닌 undefined 를 발생시키는 optional chaining 을 적용함
+    // email 프로퍼티가 없을 때, 에러가 아닌 undefined 를 반환하는 optional chaining 을 적용함
     const email = location.state?.email;
     // 성공적으로 패스워드 변경이 되었을 때 로그인 페이지로 이동하기 위함
     const navigate = useNavigate();
@@ -173,9 +172,6 @@ const PasswordChange = () => {
     });
     // 알림 컴포넌트 요소 직접 접근을 위한 ref
     const alertOpenRef = useRef(null);
-
-    // 리덕스 user 전역 상태를 확인하여 새로고침이나 직접 url 접근을 통해 페이지에 들어왔는지 검사하기 위함
-    const user = useSelector(state => state.user);
 
     // 비밀번호 변경 페이지에서는 리덕스 user 전역 상태가 아니라 !(로그인 안된 채 페이지가 넘어가는 경우이므로)
     // const email = location.state?.email; location 객체에서 가져온 email 이 undefined 인지 검사

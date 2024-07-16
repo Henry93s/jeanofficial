@@ -210,7 +210,7 @@ const MypagePut = () => {
     // main 에서 개인정보 수정할 때 보내온 user 전역 state 를 location 객체에서 불러옴
     const location = useLocation();
     // 직접 url 접근이나 새로고침으로 location state 를 받아오지 못했을 때를 대비해 
-    // email, nickName 프로퍼티가 없을 때, 에러가 아닌 undefined 를 발생시키는 optional chaining 을 적용함
+    // email, nickName 프로퍼티가 없을 때, 에러가 아닌 undefined 를 반환하는 optional chaining 을 적용함
     const email = location.state?.email;
     const nickName = location.state?.nickName;
 
