@@ -26,7 +26,7 @@ const Map_p = styled.p`
     text-shadow: 2px 2px 2px gray;
     font-weight: 600;
 
-    // mouse scroll 에 따른 opacity 
+    // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     opacity: 0;
     transition: opacity 3s;
 
@@ -43,6 +43,7 @@ const Map_container = styled.div`
     align-items: center;
 
     @media (max-width: 1000px) {
+        // 모바일에서는 세로로 출력
         flex-direction: column;
         gap: 100px;
     }
@@ -56,7 +57,7 @@ const Map_sub_div = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
 
-    // mouse scroll 에 따른 opacity 
+    // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     opacity: 0;
     transition: opacity 3s;
 
@@ -104,7 +105,7 @@ const Map_main_div = styled.div`
     border-radius: 20px;
     z-index: 1;
 
-    // mouse scroll 에 따른 opacity 
+    // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     opacity: 0;
     transition: opacity 3s;
 
@@ -115,6 +116,7 @@ const Map_main_div = styled.div`
 `
 
 const Body_6_map = () =>{
+    // IntersectionObserver 를 생성하여 targetRef 가 관찰될 때(.isIntersecting) 투명도를 n 초동안 높이기 위함
     // useRef [] 배열로 관리하기 !
     const targetRef = useRef([]);
     // scroll animation 동작 구현
@@ -160,7 +162,7 @@ const Body_6_map = () =>{
 
 
     return (
-        /* Link to="scroll_2" 와 연결 */
+        /* Link to(react-scroll) 로 스크롤 이동을 위한 id 설정 */
         <Main_container id="scroll_2">
             <Map_p ref={v => targetRef.current[0] = v}>Fan Meeting <br/>Bunnies Camp! ✨</Map_p>
             <Map_container>           

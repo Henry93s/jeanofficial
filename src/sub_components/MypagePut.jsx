@@ -236,6 +236,7 @@ const MypagePut = () => {
         }
     }, []);
 
+    // 리덕스 리듀서에 액션 객체를 보낼 dispatch 선언
     // 수정된 nickName 을 리덕스 user 전역 상태 정보에 저장하기 위함
     const dispatch = useDispatch();
 

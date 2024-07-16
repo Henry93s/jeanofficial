@@ -41,7 +41,7 @@ export const Flex_div_main = styled.div`
 export const Flex_div_main1_div1 = styled.div`
     width: 100%;
     height: 70%;
-    opacity: 0;
+    opacity: 0; // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     transition: opacity 3s;
 
     @media (max-width: 1000px) {
@@ -52,7 +52,7 @@ export const Flex_div_main1_div1 = styled.div`
 export const Flex_div_main1_div2 = styled.div`
     width: 100%;
     height: 30%;
-    opacity: 0;
+    opacity: 0; // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     transition: opacity 4s;
     @media (max-width: 1000px) {
         height: 50%;
@@ -67,7 +67,7 @@ export const Flex_div_sub_div = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: 0;
+    opacity: 0; // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     transition: opacity 5s;
 
     @media (max-width: 1000px) {

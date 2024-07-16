@@ -26,7 +26,7 @@ const Board_title = styled.p`
     font-weight: 600;
     font-family: "Noto Sans KR";
 
-    // mouse scroll 에 따른 opacity 
+    // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     opacity: 0;
     transition: opacity 3s;
 
@@ -38,7 +38,7 @@ const Board_div = styled.div`
     width: 100%;
     height: 100%;
 
-    // mouse scroll 에 따른 opacity 
+    // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     opacity: 0;
     transition: opacity 3s;
 `
@@ -313,6 +313,7 @@ const Loading_img = styled.img`
 `
 
 const Body_7_board = () => {
+    // IntersectionObserver 를 생성하여 targetRef 가 관찰될 때(.isIntersecting) 투명도를 n 초동안 높이기 위함
     // useRef [] 배열로 관리하기 !
     const targetRef = useRef([]);
     // scroll animation 동작 구현
@@ -479,7 +480,7 @@ const Body_7_board = () => {
 
     // 이전 버튼 클릭 시 최대 5 페이지 이동 기능
     const pagePrevHandle = useCallback(() => {
-        // 이동할 페이지 최대 5 페이지(5 페이지가 안되면 최대한 마지막 페이지로)
+        // 이동할 페이지 최대 5 페이지(5 페이지가 안되면 최대한 첫 페이지로)
         let i = page.page - 5;
         if(i < 1){
             i = 1;
@@ -813,6 +814,7 @@ const Body_7_board = () => {
             <Popup parameter={delprop} ref={popupOpenRef} />
             <Alert ref={alertOpenRef} />
         </div>
+        {/* Link to(react-scroll) 로 스크롤 이동을 위한 id 설정 */}
         <Body_container id="scroll_3">
             <Board_title ref={element => targetRef.current[0] = element}>Open Forum 📝</Board_title>
             <Board_div ref={element => targetRef.current[1] = element}>

@@ -13,7 +13,7 @@ import Footer from './Footer';
 const Main = (props) => {
 
     return (
-        // Link to : home header 버튼
+        // Link to(react-scroll) : home 버튼 클릭 시 스크롤 이동을 위한 id 설정
         <div id="scroll_1">
             <Main_Header />
             <Title_Header />

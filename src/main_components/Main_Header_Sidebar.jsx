@@ -3,8 +3,10 @@ import React,{useState, useCallback, useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import youtubeFetch from '../datas/Header_sideBar_youtube';
 
-// hamberger NEW youtube & 숏츠 (1 x 10 grid x 2 라인)
+// hamberger NEW youtube & 숏츠 (1 x n flex 가 2 라인)
 const Hamburger_div = styled.div.attrs(props => ({
+    // 햄버거 버튼이 클릭 되었을 때는 translateX 를 0% 로 설정하여 슬라이드바 내용이 보이도록 함
+    // (추가) 또는 return 시 컴포넌트에 state 값을 이용해 inline style 로도 변경시킬 수 있다.
     style: {
         transform: props.clickburger === "true" ? "translateX(0%)" : "translateX(-100%)"
         }
@@ -16,7 +18,7 @@ const Hamburger_div = styled.div.attrs(props => ({
     transform: translateX(-100%);
     transition: transform 0.5s ease-in-out;
     font-family: "Gamja Flower";
-    // maximum
+    // 슬라이드바 내용의 우선순위를 높임
     z-index: 102;
 
     @media (max-width: 1000px) {
@@ -58,8 +60,9 @@ const Hamburger_youtube_div = styled.div`
     // y축 보이는 scroll 작업
     overflow-x: hidden;
     overflow-y: auto;
-    // modal scroll setting : 자식 태그 스크롤 할 때, 부모 태그에다가는 스크롤 막기
+    // 자식 태그 스크롤 할 때, 부모 태그의 스크롤 동작을 막기
     overscroll-behavior: contain;
+
     background-color: white;
 
     @media (max-width: 1000px) {
@@ -159,14 +162,18 @@ const Hamburger_youtube_item_p2 = styled(Hamburger_youtube_item_p)`
 `
 
 const Main_Header_Sidebar = (props) => {
+    // Main_header 에서 clickBurger 상태와 해당 상태의 클릭 이벤트를 props 로 받음
+    // 이후 x 버튼을 클릭하면 클릭 이벤트에 따라 clickBurger 의 상태가 false 로 되며 사이드바가 비활성화됨
     const {clickBurger, handleHamburgerClick} = props;
     
-
-    // youtube reload data state
+    // 유튜브 api fetch 한 데이터 상태 정의
     const [youtube, setYoutube] = useState([]);
+    // 숏츠(유튜브 api fetch 에서 params 만 변경됨) 데이터 상태 정의
     const [shorts, setShorts] = useState([]);
     useEffect(() => {
-        // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
+        // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출 가능
+        // (추가) 또는 추가적인 비동기 함수 호출이 없을 경우 promise -> then 형태로 구성도 가능함 !
+        // youtubeFetch 외부 함수를 불러와서 호출하고 데이터 적용
         const fetch_data = async () => {
             const data = await youtubeFetch();
             setYoutube(data.youtube_data);
@@ -177,9 +184,10 @@ const Main_Header_Sidebar = (props) => {
     console.log(youtube);
     console.log(shorts);
 
+    // 리로드 이미지를 회전 시키기 위한 ref 설정
     const youtubeRef = useRef([]);
+    // 유튜브 리로드 버튼을 클릭했을 때 유튜브 상태 업데이트를 위한 이벤트 함수
     const handleYoutubeReload = useCallback(() => {
-        // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
         const fetch_data = async () => {
             const data = await youtubeFetch();
             setYoutube(data.youtube_data);
@@ -192,8 +200,8 @@ const Main_Header_Sidebar = (props) => {
             youtubeRef.current[0].style.animation = "none"
         }, 3000);
     });
+    // 숏츠 리로드 버튼을 클릭했을 때 숏츠 상태 업데이트를 위한 이벤트 함수
     const handleShortsReload = useCallback(() => {
-        // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출
         const fetch_data = async () => {
             const data = await youtubeFetch();
             setShorts(data.shorts_data);

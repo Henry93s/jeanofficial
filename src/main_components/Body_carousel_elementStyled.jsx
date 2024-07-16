@@ -26,7 +26,7 @@ export const Main_flex_div_p = styled.p`
     padding-left: 20px;
     font-size: 48px;
     font-weight: 600;
-    opacity: 0;
+    opacity: 0; // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     transition: opacity 3s;
     text-shadow: 2px 2px 2px gray;
 
@@ -48,7 +48,7 @@ export const Card_Carousel_div = styled.div`
     flex-wrap: nowrap;
     // 스크롤 시 하나씩 넘기기	
 	scroll-snap-type: x mandatory;
-    opacity: 0;
+    opacity: 0; // mouse scroll 에 따른 opacity (스크롤에 관찰되지 않은 상태)
     transition: opacity 3s;
     // 하단 swipe 드래그 공간을 위한 relative
     position: relative;

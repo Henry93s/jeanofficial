@@ -1,7 +1,7 @@
 import React,{useState, useCallback, useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import Main_Header_Sidebar from './Main_Header_Sidebar';
-// scrollLink 로도 Link 를 사용하기 위해서 별칭 as 사용 !
+// Link 는 react-router-dom 에서 사용하고 있으므로, react-scroll 로도 Link 를 사용하기 위해서 별칭 as 사용 !
 import {Link as ScrollLink} from 'react-scroll';
 import { useNavigate, Link } from 'react-router-dom';
 // redux 에서 user 상태를 가져오기 위한 useSelector
@@ -10,7 +10,8 @@ import { logout, setAll } from '../redux/UserSlice';
 import axiosCustom from '../util_components/axiosCustom';
 import Alert from '../util_components/Alert';
 
-//
+// 헤더는 마우스 스크롤이 내려도 계속 상단에 유지시키기 위해 position sticky, top:0px 을 설정함.
+// z-index 는 높은 수치로 설정하나, 펼쳐질 수 있는 사이드바 z-index 보다는 작게 설정함. 
 const Container_div = styled.div`
     // sticky header
     position: sticky;
@@ -28,19 +29,22 @@ const Container_div = styled.div`
     gap: 10px;
 `
 
-// props 로 스타일에 지속적으로 변화가 필요할 때는 styled.attrs 프로퍼티를 이용한다!
-// 그렇지 않을 경우 계속 초기화되나, attrs 적용 시 props 부분만 지속적으로 업데이트가 가능해짐
-/* styled.attrs 문법 참고
+// props 로 스타일에 지속적으로 변화가 필요할 때는 styled.attrs 프로퍼티를 이용할 수 있다.
+// attrs 적용 시 props 부분만 지속적으로 업데이트가 가능해짐
+// (추가) 또는 return 시 컴포넌트에 state 값을 이용해 inline style 로도 변경시킬 수 있다.
+
+/* (추가) styled.attrs 문법 예시
 const Card_Carousel_item = styled.div.attrs(props => ({
     // 좌우 버튼 시 캐러셀 내부 x 스크롤 이동 동작 명령 (css props 받음 -> carouselIndex {index, direction})
     style: {
         transform: `translateX(${props.carouselindex.translateValue}px)`
     },
 }))`
-~ 정의
+~ 에서 나머지 css 작성
 `
 */
 const Home_div = styled.div.attrs(props => ({
+    // 상단 아이콘에서 클릭된 아이콘은 backgroundAni 가 동작하여 버튼 아이콘 배경색이 변화되었다고 돌아오는 효과
     style: {
         animation: props.clicked === "true" ? "backgroundAni 1s ease-in-out" : "none"
     },
@@ -162,22 +166,34 @@ const Hamburger_Button_img = styled.img`
     }
 `
 
-const Main_Header = (props) => {
-    // build 후 서버에서 체크하기 !
-    // 페이지 진입 시 로그인 또는 로그아웃 되었는지 체크함(user)
+const Main_Header = () => {
+    // build 시 서버 루트 디렉토리 build 폴더에도 복사되므로 서버에서 동작 체크하기(모바일도 같이 확인하기 위함)
+    // 메인 페이지 진입 시 유저 로그인 상태 확인 및 로그인 상태 반영을 위해 리덕스 user 전역 상태를 가져옴
     const user = useSelector(state => state.user);
+    // 리덕스 리듀서에 액션 객체를 보낼 dispatch 선언
     const dispatch = useDispatch();
+    // 알림 컴포넌트에 직접 접근하기 위한 ref 정의
     const alertOpenRef = useRef(null);
     console.log(user)
+    // 로그인 상태 값 정의(true or false 일 경우 상단 header 의 아이콘 정렬이 다름)
     const [isLogined, setIsLogined] = useState(false);
+    // 상단 아이콘 버튼들(div) 중 어떤 버튼을 클릭했는지에 대한 상태 정의
+    const [clickedMenu, setClickedMenu] = useState({
+        Home_div: "false",
+        Board_div: "false",
+        Concert_div: "false",
+        Mypage_div: "false"
+    });
+    // 이벤트 함수에서 페이지 이동 시 사용하기 위한 navigate 변수 선언
     const navigate = useNavigate();
+
     // 로그인 후(navigate 되었을 때) 리렌더링 시 서버 검증 후 리덕스 유저 상태에 데이터 저장
     useEffect(() => {
         /* (추가) 세션 스토리지 와 로컬 스토리지 차이
             - 세션 스토리지는 브라우저 세션 동안만 데이터를 저장하여, 브라우저 탭이나 창을 닫으면 자동 삭제됨 
             - 로컬 스토리지는 기본적으로 브라우저 세션과 상관없이 데이터가 유지됨 
             => 상태 state 는 새로고침이나 직접 url 접근 시 초기화되므로, 새로고침 / 직접 url 접근 시 데이터를 
-            유지하려면 세션 또는 로컬 스토리지를 이용한다.
+            유지하려면 세션 또는 로컬 스토리지를 이용할 수 있다.
         */
 
         // 서버에서 로그인된 유저 정보를 가져와서 클라이언트 리덕스 상태에 저장함
@@ -215,21 +231,16 @@ const Main_Header = (props) => {
         })
     });
 
-    const [clickedMenu, setClickedMenu] = useState({
-        Home_div: "false",
-        Board_div: "false",
-        Concert_div: "false",
-        Mypage_div: "false"
-    });
-
-
+    // 상단 아이콘 버튼(div) 클릭 시 발생하는 이벤트 함수 정의
     const handleMenuClick = useCallback((e) => {
+        // 클릭된 아이콘 버튼(div)은 백그라운드 색이 바뀌는 애니매이션 효과가 발생하도록 함
         setClickedMenu((current) => {
             const newClickedMenu = {...current};
             const target = e.target.name + "_div";
             newClickedMenu[target] = "true";
             return newClickedMenu;
         })
+        // 클릭된 아이콘 버튼(div)이 일정 시간 흐르고 나서 다시 원상태로 돌아오도록 함
         setTimeout(() => {
             setClickedMenu((current) => {
                 const newClickedMenu = {...current};
@@ -240,8 +251,10 @@ const Main_Header = (props) => {
         }, 1100);
     });
 
-    // hamberger clicked state (app.js props(before using redux))
+    // 햄버거 버튼 클릭 상태 정의
     const [clickBurger, setClickBurger] = useState("false");
+    // 햄버거 버튼을 클릭했을 때 상태를 true 로 변경 후 사이드바 컴포넌트에 전달 예정
+    // 사이드바 컴포넌트에서 x 버튼을 클릭 시 상태가 false 로 변경되어 사이드바가 비활성화됨
     const handleHamburgerClick = useCallback(() => {
         setClickBurger(() => {
           if(clickBurger === "true"){
@@ -252,9 +265,10 @@ const Main_Header = (props) => {
         });
     });
 
+    // 마이페이지 버튼(div)을 클릭했을 때 이벤트 함수 정의
     const handleMypageNav = useCallback(() => {
-        // 원래 로그인 되어 있는 이메일을 넘겨줘야 함
-        // navigate 할 때 user email, nickname 상태 전달
+        // 로그인 되어 있는 이메일을 넘겨줘야 함
+        // navigate 할 때 user 리덕스 전역 상태에서 email, nickname 값 전달
         navigate('/mypage', {state: {email: user.email, nickName: user.nickName} });
     });
 
@@ -266,7 +280,9 @@ const Main_Header = (props) => {
                     <Hamburger_link>
                         <Hamburger_Button_img src='/images/hamburger.png' alt='hamburger_button' onClick={handleHamburgerClick} title='최신 youtube 소식'/>
                     </Hamburger_link>
-                    {/* div 태그에 Link 컴포넌트를 감싸서 id="" 로 스크롤 이동하기 위함, Link(scroll) 사용 시 Link(Route) 와 중첩되면 안돼서 div 로 함! */}
+                    {/* ScrollLink : div 태그에 Link(router-scroll) 컴포넌트를 감싸서,
+                        감싸진 컴포넌트 중 element id="" 가 to="" 과 같은 위치로 스크롤을 이동하기 위함
+                        (추가) Link(scroll) 사용 시 a, Link(Route) 와 중첩되면 안돼서 div 로 함! */}
                     <ScrollLink to="scroll_1" spy={true} smooth={true}>
                         <Home_div clicked={clickedMenu.Home_div} onClick={handleMenuClick} name="Home" title='홈'>
                             <Home_img src="/images/home.svg" name="Home"/>

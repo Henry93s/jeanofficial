@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {Main_flex_div, Flex_div_main, Flex_div_main1_div1, Flex_div_main1_div2, Flex_div_sub_div,Flex_div_sub_element1,
     Flex_div_sub_element2, Flex_div_sub_element2_a, Flex_div_sub_element2_a_p1, Flex_div_sub_element2_a_p2,
     Flex_div_sub_element2_a_p3, Flex_div_sub_element2_a_p4} from './Body_album_elementStyled';
+// album_style 과 carousel style 은 앱에서 두 번씩 똑같이 사용되므로 외부 컴포넌트 스타일을 불러와서 적용함
 
 const New_Flex_div_main1_div1 = styled(Flex_div_main1_div1)`
     background: url('/images/howsweet_main2.jpeg') no-repeat;
@@ -24,6 +25,7 @@ const New_Flex_div_sub_element1 = styled(Flex_div_sub_element1)`
 `
 
 const Body_4_element3 = () => {
+    // IntersectionObserver 를 생성하여 targetRef 가 관찰될 때(.isIntersecting) 투명도를 n 초동안 높이기 위함
     // useRef [] 배열로 관리하기 !
     const targetRef = useRef([]);
     // scroll animation 동작 구현
@@ -69,7 +71,6 @@ const Body_4_element3 = () => {
                     </Flex_div_sub_element2_a>
                 </Flex_div_sub_element2>
             </Flex_div_sub_div>
-
         </Main_flex_div>
     );
 };
