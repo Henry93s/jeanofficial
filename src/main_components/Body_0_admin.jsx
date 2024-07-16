@@ -5,13 +5,13 @@ import Popup from "../util_components/Popup";
 import axiosCustom from "../util_components/axiosCustom";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../redux/UserSlice";
+import { logout, setAll } from "../redux/UserSlice";
 
 const Main_overlay = styled.div`
-    width: 100%;
+    width: 100vw;
     height: 100vh;
 
-    background-color: white;
+    background-color: #18181A;
 `
 const Main_container = styled.div`
     // 주요 element component PC 가운데 정렬(margin 0 auto) + 너비 80%( / 100vw )
@@ -147,7 +147,7 @@ const Admin_user_detail_item_span = styled.span`
     width: 40%;
     height: 50px;
     font-size: 32px;
-    color: black;
+    color: white;
     font-weight: 500;
 
     @media (max-width: 1000px) {
@@ -220,38 +220,56 @@ const Body_0_admin = () => {
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
+    // 관리자는 수동으로 admin 주소를 입력하여 계정 관리자 페이지에 진입 성공할 수 있음
     // user 상태 확인 시 is_admin 이 true 일 때 users 데이터 상태를 셋팅함
     useEffect(() => {
-        if(user.is_admin){
-            setIsAdmin(true);
-            axiosCustom.get('/users')
-            .then(res => {
-                setUsers(res.data);
-            })
-        } else {
-            setIsAdmin(false);
-            alertOpenRef.current.handleOpenAlert("페이지 알림", "관리자 접근이 필요한 페이지입니다.");
-            setTimeout(() => {
-                navigate('/');
-            }, 1000);
-        }
-        return;
-    },[user, reload])
+        // 서버에서 로그인된 유저 정보를 가져와서 클라이언트 리덕스 상태에 저장함
+        const getuser = async () => {
+            const res = await axiosCustom.get('/users/getuser');
+            console.log(res);
+            // 서버 검증을 통해 로그인된 유저가 있을 때 클라이언트 리덕스 유저 상태에 데이터를 저장함
+            if(res.data && res.data.code === 200 && res.data.data.is_admin){
+                console.log("관리자 검증")
+                dispatch(setAll({email: res.data.data.email, nickName: res.data.data.name}));
+                
+                // 전체 user 목록 데이터도 users 상태에 저장 시킴
+                // post 요청으로 직접 url 접근 차단
+                const res2 = await axiosCustom.post('/users/alluserdata');
+                console.log(res2);
+                setUsers(res2.data);
+
+                // 관리자 임을 확인했으므로 관련 상태 업데이트
+                setIsAdmin(true);
+            } else {
+                // 로그인 되어도 관리자가 아닐 경우 메인 페이지로 이동시킴
+                alertOpenRef.current.handleOpenAlert("페이지 알림", "관리자 승인이 필요한 페이지입니다.");
+                setIsAdmin(false);
+                setTimeout(() => {
+                    navigate('/');
+                }, 1500);
+                return;
+            }
+        };
+        // 해당 페이지에서는 새로고침이나 직접 url 접근 시 데이터를 초기화하지 않아야 하므로
+        // 유저 정보를 불러와 저장시켜야 한다.
+        getuser();
+    },[reload])
 
     // 계정 전용 관리자가 로그아웃 시 메인페이지로 리다이렉트됨.
     const handleLogout = useCallback(() =>{
-        // 원래 실제 로그아웃 요청하고 문제없을 시 진행하여야 함
-        const token = document.cookie.split("=")[1];
-        if(token && token.length > 0){
-            axiosCustom.get('/logout')
-            .then(res => {
+        // 서버 로그아웃 요청 (post 요청으로 직접 url 입력 시 -> not found page)
+        axiosCustom.post('/users/logout')
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("로그아웃 알림", res.data.message);
+            if(res.data && res.data.code === 200){
                 dispatch(logout());
-                alertOpenRef.current.handleOpenAlert("관리자 알림", "계정 관리자를 로그아웃했습니다.");
+                setIsAdmin(false);
                 setTimeout(() => {
                     navigate('/');
-                }, 1000);
-            })
-        }
+                }, 1500);
+            }
+            return;
+        })
     });
 
     // 좌측 회원 관리에서 유저 클릭 시 상세 회원 정보에 내용을 출력 시키는 이벤트 함수
@@ -320,7 +338,6 @@ const Body_0_admin = () => {
                     <Admin_user_detail_div_item>
                         <Admin_user_detail_item_group>
                             <Admin_user_detail_item_span>이메일 : </Admin_user_detail_item_span>
-                            {/* input value 를 더 이상 수정하지 않고 state 에 따라 값을 변경 시킬 때는 value 를 사용한다 ! */}
                             <Admin_user_detail_item_input disabled value={detail.email}/>
                         </Admin_user_detail_item_group>
                         <Admin_user_detail_item_group>

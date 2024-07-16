@@ -1,4 +1,4 @@
-import React,{useState, useRef, useCallback} from "react";
+import React,{useState, useRef, useCallback, useEffect} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,10 +20,7 @@ const Login_Container_div = styled.div`
     height: 700px;
     
     // absolute div 요소 중앙 완전 정렬
-    /* c.f
-        + div 수평 중앙 정렬 -> margin: 0 auto;
-        + text 수평 중앙 정렬 -> text-align: center;
-    */
+    // -> top, left : 50%, transform: translate(-50%, -50%);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -56,6 +53,7 @@ const Login_main_form = styled.form`
     background-color: #1E1E20;
 `
 const Login_span = styled.span`
+    // 원래는 center / center 지만 독립적으로 위치 지정을 하기 위함
     justify-self: flex-start;
     align-self: flex-start;
     margin-left: 10%;
@@ -134,7 +132,7 @@ const Login_underline_signup = styled(Login_underline_span)`
 `
 const Login_underline_findpw = styled(Login_underline_span)`
 `
-// Link 컴포넌트의 경우 a 와 같이 기본 태그가 아니므로 함수형으로 styled 해야 함!!!
+// Link 컴포넌트의 경우 a 와 같이 기본 html 태그가 아니므로 함수형으로 선언해야 함!
 const Login_underline_link = styled(Link)`
     text-decoration: none;
     color: #9061F9;
@@ -148,12 +146,35 @@ const Login_underline_link = styled(Link)`
 `
 
 const Login = () => {
+    // 로그인 input 데이터 상태 정의
     const [loginUser, setLoginUser] = useState({
         email: "",
         password: ""
     });
+    // 알림 컴포넌트 요소 직접 접근을 위한 ref
     const alertOpenRef = useRef(null);
+    // 로그인 성공 후 메인 페이지 이동을 위한 navigate
     const navigate = useNavigate();
+
+    // 로그인 되어 있는 상태일 경우 올 수 없는 페이지라서 
+    // 로그인 후 강제로 접근 했을 때 다시 navigate 시킬 effect
+    useEffect(() => {
+        // 서버에서 로그인된 유저 정보를 가져옴
+        const getuser = async () => {
+            axiosCustom.get('/users/getuser')
+            .then(res => {
+                // 서버 검증을 통해 로그인된 유저면 다시 메인 페이지로 이동 시킴
+                if(res.data && res.data.code === 200){
+                    alertOpenRef.current.handleOpenAlert("로그인 알림", "이미 로그인한 유저입니다.");
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 1000);
+                    return;
+                }
+            })
+        };
+        getuser();
+    }, []);
 
     // 로그인 요청
     // 이메일 형식, 이메일 또는 패스워드 입력 여부 사전 체크 server 진행
@@ -166,7 +187,7 @@ const Login = () => {
             // 관리자 로그인 성공 코드 202 추가 (server 와 값 비교 완료)
             if(res.data && (res.data.code === 200 || res.data.code === 202)){
                 // 메인 페이지로 이동
-                // navigate 는 컴포넌트 리렌더링이 동작함 !
+                // navigate 는 컴포넌트의 함수 안에서도 동작
                 setTimeout(() => {
                     navigate('/');
                 }, 1000);
@@ -175,6 +196,7 @@ const Login = () => {
         });
     });
 
+    // 이메일 input 변동 시 상태 값 변화
     const handleEmailChange = useCallback((e) => {
         setLoginUser((current) => {
             const newLogin = {...current};
@@ -182,6 +204,7 @@ const Login = () => {
             return newLogin; 
         });
     });
+    // 패스워드 input 변동 시 상태 값 변화
     const handlePasswordChange = useCallback((e) => {
         setLoginUser((current) => {
             const newLogin = {...current};

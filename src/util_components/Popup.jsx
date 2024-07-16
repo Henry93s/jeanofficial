@@ -1,6 +1,6 @@
 import React,{forwardRef, useImperativeHandle, useState, useRef} from "react";
 import styled from "styled-components";
-// callback 함수에서 요청할 수도 있음(axiosCustom)
+// callback 함수에서 요청할 수 있기 때문에 import (axiosCustom)
 import axiosCustom from "./axiosCustom";
 import Alert from "./Alert";
 
@@ -21,7 +21,8 @@ const Popup_container_div = styled.div`
     width: 500px;
     height: 250px;
     
-    // 요소 중앙 완전 정렬
+    // absolute div 요소 중앙 완전 정렬
+    // -> top, left : 50%, transform: translate(-50%, -50%);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -38,6 +39,7 @@ const Popup_container_div = styled.div`
     color: white;
     background-color: #1E1E20;
 
+    // 알림 컴포넌트 활성화 상태일 때 style 에 애니메이션 이 추가될 예정으로 keyframes 를 정의함
     @keyframes popup {
         0%{
             opacity: 0;
@@ -53,6 +55,7 @@ const Popup_container_div = styled.div`
     }
 `
 const Popup_span = styled.span`
+    // 원래는 center / center 지만 독립적으로 위치 지정을 하기 위함
     justify-self: flex-start;
     align-self: flex-start;
     margin-left: 5%;
@@ -97,33 +100,40 @@ const Popup_button = styled.button`
     }
 `
 
-// 함수형 컴포넌트에 ref 사용 시 forwardRef 를 사용함
+// 함수형 컴포넌트에 직접 접근하기 위해서는 ref 중에서 forwardRef 를 사용함
 const Popup = forwardRef((props, ref) => {
+    // 외부 컴포넌트에서 ref 를 통해 직접 접근하여 handleOpenPopup 메서드를 호출할 때 팝업 컴포넌트 전체가 활성화하기 위함
     const [isPopup, setIsPopup] = useState(false);
+    // handleOpenPopup 메서드의 파라미터로 들어오는 팝업 컴포넌트 타이틀 상태 값
     const [span, setSpan] = useState("");
+    // handleOpenPopup 메서드의 파라미터로 들어오는 팝업 컴포넌트 내용 상태 값
     const [text, setText] = useState("");
-    // 예 일 때 콜백 함수 실행 상태
+    // handleOpenPopup 메서드의 파라미터로 들어오는 팝업 컴포넌트 콜백 함수 상태 값
     const [isOk, setIsOk] = useState(null);
 
-    // 함수형 컴포넌트 중 외부에서 호출할 메서드는 useImperativeHandle 로 사용함
+    // 함수형 컴포넌트 중 외부에서 호출할 메서드는 useImperativeHandle 로 정의함
+    // 외부에서 ref 를 통해 팝업 컴포넌트 메서드 호출
     useImperativeHandle(ref, () => ({
         handleOpenPopup(span, text, callback) {
             setSpan(span);
             setText(text);
-            // 콜백 함수 정의 추가
+            // 콜백 함수를 상태 값에 반영
             setIsOk(callback);
             setIsPopup(true);
         },
     }));
     
     const handleOkPopup = () => {
+        // "예" 클릭 시 props 로 들어온 parameter 를 인자로 콜백함수를 실행
         isOk(props.parameter);
 
+        // 이후 동작은 콜백함수에서 컨트롤되므로 나머지 상태를 초기화
         setIsPopup(false);
         setSpan("");
         setText("");
     };
 
+    // "아니오" 클릭 시 팝업 컴포넌트 비활성화 처리
     const handleCancelPopup = () => {
         setIsPopup(false);
         setSpan("");

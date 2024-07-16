@@ -1,13 +1,12 @@
-import React,{useCallback, useRef, useState} from "react";
+import React,{useCallback, useEffect, useRef, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import axiosCustom from "../util_components/axiosCustom";
 
 const Findpw_Overlay = styled.div`
-    // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
+    // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
     position: absolute;
-    z-index: 105;
     width: 100vw;
     height: 100vh;
 
@@ -21,7 +20,8 @@ const Findpw_Container_div = styled.div`
     height: 700px;
     
     // absolute div 요소 중앙 완전 정렬
-    /* c.f
+    // -> top, left : 50%, transform: translate(-50%, -50%);
+    /* c.f (추가 정리)
         + div 수평 중앙 정렬 -> margin: 0 auto;
         + text 수평 중앙 정렬 -> text-align: center;
     */
@@ -61,6 +61,7 @@ const Findpw_main_form = styled.form`
     }
 `
 const Findpw_span = styled.span`
+    // 원래는 center / center 지만 독립적으로 위치 지정을 하기 위함
     justify-self: flex-start;
     align-self: flex-start;
     margin-left: 10%;
@@ -171,6 +172,7 @@ const Findpw_underline_span = styled.span`
 `
 const Findpw_underline_signup = styled(Findpw_underline_span)`
 `
+// Link 컴포넌트의 경우 a 와 같이 기본 html 태그가 아니므로 함수형으로 선언해야 함!
 const Findpw_underline_link = styled(Link)`
     text-decoration: none;
     color: #9061F9;
@@ -183,25 +185,53 @@ const Findpw_underline_link = styled(Link)`
 `
 
 const Findpw = () => {
+    // input 상태 정의
     const [FindpwUser, setFindpwUser] = useState({
         email: "",
         secret: ""
     });
+    // 인증 요청 후 직접 element 요소 접근을 위한 ref
     const emailInputRef = useRef(null);
     const verifyBtnRef = useRef(null);
+    // 알림 팝업 컴포넌트 접근을 위한 ref
     const alertOpenRef = useRef(null);
+    // 인증 성공 후 비밀번호 변경 페이지 이동을 위함
     const navigate = useNavigate();
+
+    // 로그인 되어 있는 상태일 경우 올 수 없는 페이지라서
+    // 로그인 후 강제로 접근 했을 때 다시 navigate 시킬 effect
+    useEffect(() => {
+        // 서버에서 로그인된 유저 정보를 가져옴
+        const getuser = async () => {
+            axiosCustom.get('/users/getuser')
+            .then(res => {
+                // 서버 검증을 통해 로그인된 유저면 다시 메인 페이지로 이동 시킴
+                if(res.data && res.data.code === 200){
+                    alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", "이미 로그인한 유저입니다.");
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 1000);
+                    return;
+                }
+            })
+        };
+        getuser();
+    }, []);
 
     // 인증번호 전송 요청 - 이메일 형식, 이메일 가입 여부도 체크해줌.
     const handleVerifyButton = useCallback(() => {
         const {email} = FindpwUser;
         axiosCustom.post('/users/verify/findpw', {email})
         .then(res => {
+            // 전송 완료 후 버튼 비활성화 적용 함수
             controlVerifyButton(res);
+
             alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
             return;
         });
     });
+
+    // 인증번호 검사 요청
     const controlVerifyButton = (res) => {
         if(res.data && res.data.code === 200){
             // 정상적으로 요청했을 때에는 이메일 입력 비활성화 및 인증 요청 버튼 비활성화
@@ -217,9 +247,11 @@ const Findpw = () => {
         }
     };
 
+    // 인증번호 검사 요청
     const handleFormSubmit = useCallback((e) => {
+        // form onsubmit 시 새로고침 방지
         e.preventDefault();
-        // 인증번호 검사 요청
+
         const {email, secret} = FindpwUser;
         axiosCustom.post('/users/verify/confirm', {email, secret})
         .then(res => {
@@ -230,12 +262,13 @@ const Findpw = () => {
                 alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", "이메일 인증이 완료되었습니다.");
                 setTimeout(() => {
                     navigate('/pwchange', {state: FindpwUser});
-                }, 1000); 
+                }, 1500); 
             }
             return;
         });
     });
 
+    // email input 변동 시 실시간 상태 변화
     const handleEmailChange = useCallback((e) => {
         setFindpwUser((current) => {
             const newFindpw = {...current};
@@ -243,6 +276,8 @@ const Findpw = () => {
             return newFindpw; 
         });
     });
+
+    // 코드 시크릿 input 변동 시 실시간 상태 변화
     const handlesecretChange = useCallback((e) => {
         setFindpwUser((current) => {
             const newFindpw = {...current};

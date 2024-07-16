@@ -14,7 +14,16 @@ const youtubeFetch = async () => {
     const youtube = {};
     try{
         const res = await axios.get(`https://www.googleapis.com/youtube/v3/search`,{
-            // 최신 동영상 top 10 동영상 fetch
+            // 최신 동영상 top 40 동영상 fetch
+            /* fetch 와 다른 axios 가장 큰 특징
+                1. 자동 json 데이터 변환
+                    res => res.json() 으로 변환하는 작업을 추가로 할 필요없이 바로 res.data 로 사용
+                2. 인스턴스 를 생성하여 요청, 응답의 전역 설정 지원
+                    axioscustom 인스턴스를 생성하여 요청에 대한 timeout 등의 전역 설정을 함(baseURL 등도 가능)
+                3. 인터셉터(interceptors) 적용
+                    axioscustom 인스턴스에 인터셉터를 적용하여 실제 200번대 코드 외 axios 에서 오류로 
+                    판정하는 경우에도 응답을 직접 컨트롤할 수 있도록 설정함
+            */
             params: {
                 key: API_KEY,
                 channelId: CHANNEL_ID,
@@ -50,10 +59,9 @@ const youtubeFetch = async () => {
             };
             youtube_data.push(videoData);
         })
-        // youtube.youtube_data = youtube_data;
 
         const res2 = await axios.get(`https://www.googleapis.com/youtube/v3/search`,{
-            // 최신 쇼츠 top 10 동영상 fetch
+            // 최신 쇼츠 top 30 동영상 fetch
             params: {
                 key: API_KEY,
                 channelId: CHANNEL_ID,

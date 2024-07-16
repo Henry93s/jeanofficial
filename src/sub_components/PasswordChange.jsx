@@ -1,11 +1,12 @@
-import React,{useRef, useState, useCallback} from "react";
+import React,{useRef, useState, useCallback, useEffect} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import { useLocation, useNavigate } from "react-router-dom";
 import axiosCustom from "../util_components/axiosCustom";
+import { useSelector } from "react-redux";
 
 const PasswordChange_Overlay = styled.div`
-    // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
+    // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
     position: absolute;
     z-index: 105;
     width: 100vw;
@@ -21,10 +22,7 @@ const PasswordChange_Container_div = styled.div`
     height: 700px;
     
     // absolute div 요소 중앙 완전 정렬
-    /* c.f
-        + div 수평 중앙 정렬 -> margin: 0 auto;
-        + text 수평 중앙 정렬 -> text-align: center;
-    */
+    // -> top, left : 50%, transform: translate(-50%, -50%);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -61,6 +59,7 @@ const PasswordChange_main_form = styled.form`
     }
 `
 const PasswordChange_span = styled.span`
+    // 원래는 center / center 지만 독립적으로 위치 지정을 하기 위함
     justify-self: flex-start;
     align-self: flex-start;
     margin-left: 10%;
@@ -159,17 +158,39 @@ const PasswordChange_submit_button = styled.button`
 `
 
 const PasswordChange = () => {
-    // 전달 받은 이메일을 받기 위해 location.state 객체 사용
+    // 패스워드 찾기 컴포넌트로부터 navigate 될 때 전달 받은 이메일을 받기 위해 location 객체 사용
     const location = useLocation();
+    // 직접 url 접근이나 새로고침으로 location state 를 받아오지 못했을 때를 대비해 
+    // email 프로퍼티가 없을 때, 에러가 아닌 undefined 를 발생시키는 optional chaining 을 적용함
+    const email = location.state?.email;
+    // 성공적으로 패스워드 변경이 되었을 때 로그인 페이지로 이동하기 위함
     const navigate = useNavigate();
-    const email = location.state.email;
 
+    // 패스워드 input 값 상태 정의
     const [password, setPassword] = useState({
         password: "",
         passwordConfirm: ""
     });
+    // 알림 컴포넌트 요소 직접 접근을 위한 ref
     const alertOpenRef = useRef(null);
 
+    // 리덕스 user 전역 상태를 확인하여 새로고침이나 직접 url 접근을 통해 페이지에 들어왔는지 검사하기 위함
+    const user = useSelector(state => state.user);
+
+    // 비밀번호 변경 페이지에서는 리덕스 user 전역 상태가 아니라 !(로그인 안된 채 페이지가 넘어가는 경우이므로)
+    // const email = location.state?.email; location 객체에서 가져온 email 이 undefined 인지 검사
+    // 후 useEffect 를 이용하여 민감한 페이지의 직접 url 입력이나, 새로고침 시 페이지 접근을 차단함
+    useEffect(() => {
+        if(email === undefined){
+            alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", "잘못된 경로로 페이지에 접근하였습니다.");
+            setTimeout(() => {
+                navigate('/')
+            }, 1000);
+            return;
+        }
+    }, []);
+
+    // form onsubmit 동작 시 유효성 검사 및 패스워드 수정 요청
     const handleFormSubmit = useCallback((e) => {
         e.preventDefault();
         if(password.password.length < 8){
@@ -197,6 +218,7 @@ const PasswordChange = () => {
         })
     });
 
+    // 실시간 패스워드 상태 값 수정
     const handlePasswordChange = useCallback((e) => {
         setPassword((current) => {
             const newPasswordChange = {...current};
@@ -204,6 +226,7 @@ const PasswordChange = () => {
             return newPasswordChange; 
         });
     });
+    // 실시간 패스워드 확인 상태 값 수정
     const handlePasswordConfirmChange = useCallback((e) => {
         setPassword((current) => {
             const newPasswordChange = {...current};

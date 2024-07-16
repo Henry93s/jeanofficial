@@ -1,12 +1,11 @@
 import React,{useRef, useState, useCallback, useEffect} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
-// axios 요청 중 에러 발생 시에도 Alert 로 컨트롤하기 위함
 import axiosCustom from '../util_components/axiosCustom';
 import { useNavigate } from "react-router-dom";
 
 const Signup_Overlay = styled.div`
-    // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업, z-index : alert 띄우기(alert index: 200)
+    // 메인 페이지와 배경색을 달리 하기 위한 오버레이 div 작업
     position: absolute;
     z-index: 105;
     width: 100vw;
@@ -22,10 +21,7 @@ const Signup_Container_div = styled.div`
     height: 750px;
     
     // absolute div 요소 중앙 완전 정렬
-    /* c.f
-        + div 수평 중앙 정렬 -> margin: 0 auto;
-        + text 수평 중앙 정렬 -> text-align: center;
-    */
+    // -> top, left : 50%, transform: translate(-50%, -50%);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -62,6 +58,7 @@ const Signup_main_form = styled.form`
     }
 `
 const Signup_span = styled.span`
+    // 원래는 center / center 지만 독립적으로 위치 지정을 하기 위함
     justify-self: flex-start;
     align-self: flex-start;
     margin-left: 10%;
@@ -199,6 +196,7 @@ const Signup_submit_button = styled.button`
 `
 
 const Signup = () => {
+    // input 상태 값 정의
     const [addUser, setAddUser] = useState({
         email: "",
         secret: "",
@@ -206,17 +204,40 @@ const Signup = () => {
         password: "",
         passwordConfirm: ""
     });
+    // 알림 컴포넌트 직접 접근을 위함
     const alertOpenRef = useRef(null);
+    // 인증번호가 정상 요청되었을 때 비활성화를 위해 각 element 요소에 직접 접근을 위함
     const verifyBtnRef = useRef(null);
     const emailInputRef = useRef(null);
+    // 회원가입 성공 시 로그인 페이지로 이동하기 위함
     const navigate = useNavigate();
 
-    // axios(custom) 요청 결과에 따라 함수 전체를 강제 종료 시킴.
+    // 로그인 되어 있는 상태일 경우 올 수 없는 페이지라서 
+    // 로그인 후 강제로 접근 했을 때 다시 navigate 시킬 effect
+    useEffect(() => {
+        // 서버에서 로그인된 유저 정보를 가져옴
+        const getuser = async () => {
+            axiosCustom.get('/users/getuser')
+            .then(res => {
+                // 서버 검증을 통해 로그인된 유저면 다시 메인 페이지로 이동 시킴
+                if(res.data && res.data.code === 200){
+                    alertOpenRef.current.handleOpenAlert("회원가입 알림", "이미 로그인한 유저입니다.");
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 1000);
+                    return;
+                }
+            })
+        };
+        getuser();
+    }, []);
+
     // 인증번호 전송 요청 - 이메일 형식, 이메일 가입 여부도 체크해줌.
     const handleEmailVerifyGet = useCallback(() => {
         const {email} = addUser;
         axiosCustom.post('/users/verify', {email})
         .then(res => {
+            // 요청 성공으로 인증 요청 버튼과 이메일 input 비활성화 처리 함수
             controlVerifyButton(res);
             alertOpenRef.current.handleOpenAlert("회원가입 알림", res.data.message);
             return;
@@ -280,6 +301,7 @@ const Signup = () => {
         });
     });
 
+    // 이메일 input 변동 시 상태 값 변화
     const handleEmailChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
@@ -287,7 +309,7 @@ const Signup = () => {
             return newAddUser; 
         });
     });
-
+    // 패스워드 input 변동 시 상태 값 변화
     const handlePasswordChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
@@ -295,6 +317,7 @@ const Signup = () => {
             return newAddUser; 
         });
     });
+    // 패스워드 확인 input 변동 시 상태 값 변화
     const handlePasswordConfirmChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
@@ -302,6 +325,7 @@ const Signup = () => {
             return newAddUser; 
         });
     });
+    // 닉네임 input 변동 시 상태 값 변화
     const handlenameChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};
@@ -309,6 +333,7 @@ const Signup = () => {
             return newAddUser; 
         });
     });
+    // 인증코드 input 변동 시 상태 값 변화
     const handlesecretChange = useCallback((e) => {
         setAddUser((current) => {
             const newAddUser = {...current};

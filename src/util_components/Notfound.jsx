@@ -6,7 +6,7 @@ const Title = styled.h1`
     text-align: center;
     color: #9061F9;
 `
-
+// 지정된 react Route path 가 아닐 경우 notfound 페이지 호출
 const Notfound = () => {
     return (
         <div>

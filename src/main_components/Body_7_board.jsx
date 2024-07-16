@@ -15,7 +15,7 @@ const Body_container = styled.div`
     margin-top: 600px;
 
     @media (max-width: 1000px) {
-        width: 100%;
+        width: 95%;
         margin-top: 150px;
     }
 `
@@ -64,7 +64,7 @@ const Search_div = styled.div`
     }
 `
 const Search_select = styled.select`
-    width: 20%;
+    width: 22%;
     height: 90%;
     color: white;
     background-color: #181619;
@@ -79,8 +79,8 @@ const Search_select = styled.select`
     }
 `
 const Search_input = styled.input`
-    width: 55%;
-    height: 90%;
+    width: 50%;
+    height: 85%;
     color: white;
     background-color: #181619;
     font-size: 17px;
@@ -100,10 +100,6 @@ const Search_icon = styled.img`
     height: 40px;
 
     cursor: pointer;
-    @media (max-width: 1000px) {
-        width: 60px;
-        height: 60px;
-    }
 `
 const Forum_button_div = styled.div`
     width: 45%;
@@ -113,7 +109,7 @@ const Forum_button_div = styled.div`
     align-items: center;
 
     @media (max-width: 1000px) {
-        margin-top: 2%;
+        margin-top: 5%;
         width: 100%;
     }
 `
@@ -152,17 +148,27 @@ const Board_list_item = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
+
+    @media (max-width: 1000px) {
+        font-size: 12px;
+    }
 `
 const Board_list_pagenation_div = styled.div`
     width: 100%;
     height: 2%;
     font-size: 18px;
-    margin-left: -5%;
+    margin: 0 auto;
     margin-top: 5%;
+    
+    @media (max-width: 1000px) {
+        margin-left: 0%;
+    }
 `
 const Board_list_pagenation_ul = styled.ul`
     width: 100%;
     height: 100%;
+    // ul list 그룹의 기본 들여쓰기 제거 (padding-left 0)
+    padding-left: 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -171,7 +177,7 @@ const Board_list_pagenation_span = styled.span`
     cursor: pointer;
     font-weight: bold;
     transition: color 0.5s;
-
+ 
     &:hover {
         color: #9061F9;
     }
@@ -208,6 +214,13 @@ const Content_div_writer = styled.input`
         // input focus 시 테두리 지우기
         outline: none;
     }
+    // mobile(ios) 에서 input 태그가 disabled 인 경우 opacity 가 0.4 로 적용되는 현상 수정
+    opacity: 1;
+    color: white;
+    @media (max-width: 1000px) {
+        -webkit-opacity: 1;
+        -webkit-text-fill-color: white;
+    }
 `
 const Content_div_title = styled(Content_div_writer)`
     width: 30%;
@@ -227,7 +240,7 @@ const Content_div_back = styled.div`
     cursor: pointer;
 
     @media (max-width: 1000px) {
-        width: 13%;
+        width: 13.5%;
     }
 `
 const Content_text = styled.textarea`
@@ -250,6 +263,18 @@ const Content_text = styled.textarea`
         // input focus 시 테두리 지우기
         outline: none;
     }
+
+    // mobile(ios) 에서 input 태그가 disabled 인 경우 opacity 가 0.4 로 적용되는 현상 수정
+    opacity: 1;
+    color: white;
+    @media (max-width: 1000px) {
+        -webkit-opacity: 1;
+        -webkit-text-fill-color: white;
+
+        height: 30%;
+        font-size: 22px;
+        margin-left: 0%;
+    }
 `
 const Content_sub_div = styled.div`
     width: 95%;
@@ -268,6 +293,8 @@ const Content_sub_div_div = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    font-size: 15px;
 `
 
 const Loading_div = styled.div`
@@ -794,9 +821,10 @@ const Body_7_board = () => {
                 <>
                     <Content_div>
                         <Content_div_back onClick={backHandle}></Content_div_back>
-                        <Content_div_writer style={{border:"none"}} disabled defaultValue={text.writer}/>
-                        <Content_div_title style={{border:"none"}} disabled defaultValue={text.title}/>
-                        <Content_div_date style={{border:"none"}} disabled defaultValue={text.updateAt}/>
+                        {/* input value 를 더 이상 수정하지 않고 state 에 따라 값을 고정 시킬 때는 value 를 사용한다 ! */}
+                        <Content_div_writer style={{border:"none"}} disabled value={text.writer}/>
+                        <Content_div_title style={{border:"none"}} disabled value={text.title}/>
+                        <Content_div_date style={{border:"none"}} disabled value={text.updateAt}/>
                     </Content_div>
                     <Content_text disabled defaultValue={text.content}/>
                     <Content_sub_div>
@@ -830,7 +858,7 @@ const Body_7_board = () => {
                     <Content_sub_div>
                         <Content_sub_div_div>
                             <img src="/images/write.png" onClick={postWriteHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
-                            <span style={{marginTop:"5%"}}>작성하기</span>
+                            <span style={{marginTop:"5%"}}>작성</span>
                         </Content_sub_div_div>
                     </Content_sub_div>
                 </>
@@ -840,18 +868,18 @@ const Body_7_board = () => {
                 <>
                     <Content_div>
                         <Content_div_back onClick={backHandle}></Content_div_back>
-                        <Content_div_writer style={{border:"none"}} disabled defaultValue={text.writer}/>
-                        {/* react 에서는 기본 input value 설정 시 defaultValue 로 지정해야 함 */}
+                        <Content_div_writer style={{border:"none"}} disabled value={text.writer}/>
+                        {/* react 에서 수정이 필요한 기본 input value 설정 시 defaultValue 로 지정해야 함 */}
                         <label for="inputTitle">제목: </label>
                         <Content_div_title onChange={writeChangeHandle} id="inputTitle" name="title" defaultValue={text.title} />
-                        <Content_div_date style={{border:"none"}} disabled defaultValue={text.updateAt}/>
+                        <Content_div_date style={{border:"none"}} disabled value={text.updateAt}/>
                     </Content_div>
                     <label for="inputContent" style={{marginLeft: "1.5%"}}>내용: </label>
                     <Content_text onChange={writeChangeHandle} id="inputContent" name="content" defaultValue={text.content}/>
                     <Content_sub_div>
                         <Content_sub_div_div>
                             <img src="/images/write.png" onClick={postPutHandle} style={{width:"50px", height:"50px", cursor:"pointer"}} />
-                            <span style={{marginTop:"5%"}}>수정하기</span>
+                            <span style={{marginTop:"5%"}}>수정</span>
                         </Content_sub_div_div>
                     </Content_sub_div>
                 </>
@@ -902,9 +930,9 @@ const Body_7_board = () => {
                 </>    
                 }
                 {mode === "loading" &&
-                 <Loading_div>
-                    <Loading_img src="/images/nowloading.png" style={{animation: "spin 0.5s 3 linear"}} ref={loadingRef} />
-                </Loading_div>
+                    <Loading_div>
+                        <Loading_img src="/images/nowloading.png" style={{animation: "spin 0.5s 3 linear"}} ref={loadingRef} />
+                    </Loading_div>
                 }
             </Board_div>
         </Body_container>

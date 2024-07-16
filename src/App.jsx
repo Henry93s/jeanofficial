@@ -8,11 +8,11 @@ import PasswordChange from './sub_components/PasswordChange';
 import Signup from './sub_components/Signup';
 import MypagePut from './sub_components/MypagePut';
 import Body_0_admin from './main_components/Body_0_admin';
-import './App.css';
 
 
 function App() {
   return (
+    // App.jsx 에서는 각 컴포넌트 별로 라우터를 지정하여 BrowserRouter 로 감쌈(front 에서 라우팅 진행)
     <div className="App">
         <BrowserRouter>
           <Routes>

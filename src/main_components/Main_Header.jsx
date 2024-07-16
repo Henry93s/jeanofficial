@@ -170,47 +170,49 @@ const Main_Header = (props) => {
     const alertOpenRef = useRef(null);
     console.log(user)
     const [isLogined, setIsLogined] = useState(false);
-    // 로그인 후(navigate 되었을 때) 리렌더링 시 서버에서 보내진 토큰(쿠키 안)에 값이 있을 때, 
-    // 로그인되었으므로 토큰을 저장하고, 현재 로그인된 email, nickName 을 찾아서 저장함.
-    // 이후에도 user 정보가 변화할 때(개인정보수정-닉네임) 다시 email, nickName 을 찾아서 저장함.
+    const navigate = useNavigate();
+    // 로그인 후(navigate 되었을 때) 리렌더링 시 서버 검증 후 리덕스 유저 상태에 데이터 저장
     useEffect(() => {
-        const token = document.cookie.split("=")[1];
-        if(token && token.length > 0){
-            // 서버에서 로그인된 유저 정보를 가져와서 클라이언트 리덕스 상태에 저장함
-            const getuser = async () => {
-                const res = await axiosCustom.get('/getuser');
-                dispatch(setAll({token: token, email: res.data.email, is_admin: res.data.is_admin
-                ,nickName: res.data.name}));
-            }
-            getuser();
-            setIsLogined(true);
-        } else {
-            setIsLogined(false);
-        }
-    }, [user]);
+        /* (추가) 세션 스토리지 와 로컬 스토리지 차이
+            - 세션 스토리지는 브라우저 세션 동안만 데이터를 저장하여, 브라우저 탭이나 창을 닫으면 자동 삭제됨 
+            - 로컬 스토리지는 기본적으로 브라우저 세션과 상관없이 데이터가 유지됨 
+            => 상태 state 는 새로고침이나 직접 url 접근 시 초기화되므로, 새로고침 / 직접 url 접근 시 데이터를 
+            유지하려면 세션 또는 로컬 스토리지를 이용한다.
+        */
 
-    // 로그인 완료 후 계정 관리자 임이 확인되면 자동으로 계정 관리자 페이지로 이동함.
-    useEffect(() => {
-        if(user.is_admin){
-            alertOpenRef.current.handleOpenAlert("페이지 알림", "자동으로 관리 페이지로 이동합니다.");
-            setTimeout(() => {
-                navigate('/admin');
-            }, 1500);
-            return;
-        }
-    },[user["is_admin"]])
+        // 서버에서 로그인된 유저 정보를 가져와서 클라이언트 리덕스 상태에 저장함
+        const getuser = async () => {
+            axiosCustom.get('/users/getuser')
+            .then(res => {
+                // 서버 검증을 통해 로그인된 유저가 있을 때 클라이언트 리덕스 유저 상태에 데이터를 저장함
+                if(res.data && res.data.code === 200){
+                    console.log("로그인 검증")
+                    dispatch(setAll({email: res.data.data.email, nickName: res.data.data.name}));
+                    setIsLogined(true);
+                } else {
+                    setIsLogined(false);
+                }
+            })
+        };
+        // 해당 페이지에서는 새로고침이나 직접 url 접근 시 데이터를 초기화하지 않아야 하므로
+        // 유저 정보를 불러와 저장시켜야 한다.
+        getuser();
+    }, []);
 
     const handleLogout = useCallback(() =>{
-        // 원래 실제 로그아웃 요청하고 문제없을 시 진행하여야 함
-        const token = document.cookie.split("=")[1];
-        if(token && token.length > 0){
-            axiosCustom.get('/logout')
-            .then(res => {
-                alertOpenRef.current.handleOpenAlert("로그아웃 알림", "로그아웃 되었습니다.");
+        // 서버 로그아웃 요청 (post 요청으로 직접 url 입력 시 -> not found page)
+        axiosCustom.post('/users/logout')
+        .then(res => {
+            alertOpenRef.current.handleOpenAlert("로그아웃 알림", res.data.message);
+            if(res.data && res.data.code === 200){
                 dispatch(logout());
                 setIsLogined(false);
-            })
-        }
+                setTimeout(() => {
+                    navigate('/');
+                }, 1000);
+            }
+            return;
+        })
     });
 
     const [clickedMenu, setClickedMenu] = useState({
@@ -219,7 +221,7 @@ const Main_Header = (props) => {
         Concert_div: "false",
         Mypage_div: "false"
     });
-    const navigate = useNavigate();
+
 
     const handleMenuClick = useCallback((e) => {
         setClickedMenu((current) => {
@@ -252,8 +254,8 @@ const Main_Header = (props) => {
 
     const handleMypageNav = useCallback(() => {
         // 원래 로그인 되어 있는 이메일을 넘겨줘야 함
-        // navigate 할 때 user email 넘겨줌(이메일 전달 위함)
-        navigate('/mypage', {state: {email: user.email} });
+        // navigate 할 때 user email, nickname 상태 전달
+        navigate('/mypage', {state: {email: user.email, nickName: user.nickName} });
     });
 
     return (        

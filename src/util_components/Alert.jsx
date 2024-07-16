@@ -18,7 +18,8 @@ const Alert_container_div = styled.div`
     width: 500px;
     height: 250px;
     
-    // 요소 중앙 완전 정렬
+    // absolute div 요소 중앙 완전 정렬
+    // -> top, left : 50%, transform: translate(-50%, -50%);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -35,6 +36,7 @@ const Alert_container_div = styled.div`
     color: white;
     background-color: #1E1E20;
 
+    // 알림 컴포넌트 활성화 상태일 때 style 에 애니메이션 이 추가될 예정으로 keyframes 를 정의함
     @keyframes popup {
         0%{
             opacity: 0;
@@ -50,6 +52,7 @@ const Alert_container_div = styled.div`
     }
 `
 const Alert_span = styled.span`
+    // 원래는 center / center 지만 독립적으로 위치 지정을 하기 위함
     justify-self: flex-start;
     align-self: flex-start;
     margin-left: 10%;
@@ -85,13 +88,17 @@ const Alert_button = styled.button`
     }
 `
 
-// 함수형 컴포넌트에 ref 사용 시 forwardRef 를 사용함
+// 함수형 컴포넌트에 직접 접근하기 위해서는 ref 중에서 forwardRef 를 사용함
 const Alert = forwardRef((props, ref) => {
+    // 외부 컴포넌트에서 ref 를 통해 직접 접근하여 handleOpenAlert 메서드를 호출할 때 알림 컴포넌트 전체가 활성화하기 위함
     const [isAlert, setIsAlert] = useState(false);
+    // handleOpenAlert 메서드의 파라미터로 들어오는 알림 컴포넌트 타이틀 상태 값
     const [span, setSpan] = useState("");
+    // handleOpenAlert 메서드의 파라미터로 들어오는 알림 컴포넌트 내용 상태 값
     const [text, setText] = useState("");
 
-    // 함수형 컴포넌트 중 외부에서 호출할 메서드는 useImperativeHandle 로 사용함
+    // 함수형 컴포넌트 중 외부에서 호출할 메서드는 useImperativeHandle 로 정의함
+    // 외부에서 ref 를 통해 알림 컴포넌트 메서드 호출
     useImperativeHandle(ref, () => ({
         handleOpenAlert(span, text) {
             setSpan(span);
@@ -100,6 +107,7 @@ const Alert = forwardRef((props, ref) => {
         },
     }));
     
+    // 알림 컴포넌트에서 "확인" 버튼을 누를 때 다시 알림 컴포넌트가 비활성화됨
     const handleCloseAlert = () => {
         setIsAlert(false);
         setSpan("");
