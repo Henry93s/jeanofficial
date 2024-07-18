@@ -25,3 +25,6 @@ yarn-error.log*
 # secret
 .env
 /src/datas/config.json
+
+# type compiler
+/dist

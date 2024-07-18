@@ -1,5 +1,11 @@
 const Local_youtube = [
     {
+        "title": "[Light Jeans] The Face Magazine Photoshoot Behind 🔦 | NewJeans",
+        "image_url": "https://i.ytimg.com/vi/7yZz_eZC_vs/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=7yZz_eZC_vs",
+        "uploadTime": "2024. 7. 16. 화요일 오후 7:00:01"
+    },
+    {
         "title": "[Making Jeans] NewJeans (뉴진스) 'Supernatural' Dance Practice Behind",
         "image_url": "https://i.ytimg.com/vi/ZopziBas10I/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=ZopziBas10I",
@@ -82,12 +88,6 @@ const Local_youtube = [
         "image_url": "https://i.ytimg.com/vi/45PssTBLYN4/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=45PssTBLYN4",
         "uploadTime": "2024. 6. 18. 화요일 오후 7:00:01"
-    },
-    {
-        "title": "You just get my heart pump, pumping💗 #NewJeans #뉴진스 #NewJeans_HowSweet #NewJeans_BubbleGum",
-        "image_url": "https://i.ytimg.com/vi/8Uz7TnoXw80/hqdefault.jpg",
-        "video_url": "https://www.youtube.com/watch?v=8Uz7TnoXw80",
-        "uploadTime": "2024. 6. 14. 금요일 오후 7:30:01"
     },
     {
         "title": "NewJeans (뉴진스) 'Bubble Gum' MV Review",

@@ -9,8 +9,8 @@ import Body_5_element4 from './Body_5_element4';
 import Body_6_map from './Body_6_map';
 import Body_7_board from './Body_7_board';
 import Footer from './Footer';
-
-const Main = (props) => {
+ 
+const Main = () => {
 
     return (
         // Link to(react-scroll) : home 버튼 클릭 시 스크롤 이동을 위한 id 설정
