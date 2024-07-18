@@ -215,6 +215,8 @@ const MypagePut = () => {
     const email = location.state?.email;
     const nickName = location.state?.nickName;
 
+    console.log(email, nickName)
+
     // 리덕스 user 전역 상태를 확인하여 새로고침이나 직접 url 접근을 통해 페이지에 들어왔는지 검사하기 위함
     const user = useSelector((state: State) => state.user);
 

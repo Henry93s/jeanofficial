@@ -304,7 +304,7 @@ const Main_Header = () => {
         // 로그인 되어 있는 이메일을 넘겨줘야 함
         // navigate 할 때 user 리덕스 전역 상태에서 email, nickname 값 전달
         navigate('/mypage', {state: {email: user.email, nickName: user.nickName} });
-    },[]);
+    },[user]);
 
     return (        
         <>

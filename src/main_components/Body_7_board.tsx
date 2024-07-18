@@ -431,6 +431,7 @@ const Body_7_board = () => {
                     });
                 });
             }
+
             // 검색 상태 초기화 작업
             setSearch((current) => {
                 const newSearch = {...current};
@@ -559,13 +560,13 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    },[]);
+    },[search]);
     // 리스트에서 엔터 시 검색 동작 유도
     const inputEnterHandle = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
         if(e.key === "Enter"){
             searchHandle();
         }
-    },[]);
+    },[search]);
 
     // 나의 글 모드 첫 진입 (1page) (로그인 요구)
     const postMyHandle = useCallback(() => {
@@ -648,7 +649,7 @@ const Body_7_board = () => {
         }
 
         setMode("put");
-    },[user]);
+    },[user, text]);
 
     // 글쓰기, 글수정 화면에서 text 수정 시 발동
     const writeChangeHandle = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -767,7 +768,7 @@ const Body_7_board = () => {
         });
         popupOpenRef.current?.handleOpenPopup("게시판 알림", "글 삭제를 진행하시겠습니까?", () => postDelCallback);
         return;
-    },[]);
+    },[user, text]);
 
     // 특정 글 읽기 동작
     const postReadHandle = useCallback((e: React.MouseEvent<HTMLSpanElement>) => {
@@ -814,7 +815,7 @@ const Body_7_board = () => {
                 }, 100);
             return;
         })
-    },[]);
+    },[user, text]);
 
 
     console.log(page);
@@ -902,17 +903,17 @@ const Body_7_board = () => {
                 <>
                     <Board_Search_Forum_div>
                         <Search_div>
-                            <Search_select onChange={selectChangeHandle}>
+                            <Search_select onChange={selectChangeHandle} defaultValue={search.select}>
                                 <option value="작성자">작성자</option>
                                 <option value="제목">제목</option>
                                 <option value="내용">내용</option>
                             </Search_select>
-                            <Search_input onKeyDown={inputEnterHandle} onChange={inputChangeHandle}></Search_input>
+                            <Search_input onKeyDown={inputEnterHandle} onChange={inputChangeHandle} defaultValue={search.input}></Search_input>
                             <Search_icon src="/images/search.png" onClick={searchHandle}></Search_icon>
                         </Search_div>
                         <Forum_button_div>
-                            <Forum_button_div_button onClick={postAllHandle}>전체</Forum_button_div_button>
-                            <Forum_button_div_button onClick={postMyHandle}>나의 글</Forum_button_div_button>
+                            <Forum_button_div_button style={page.allormy === "all" ? {border: "3px solid #9061F9"} : {border: "none"}} onClick={postAllHandle}>전체</Forum_button_div_button>
+                            <Forum_button_div_button style={page.allormy === "my" ? {border: "3px solid #9061F9"} : {border: "none"}} onClick={postMyHandle}>나의 글</Forum_button_div_button>
                             <Forum_button_div_button style={page.likeSort ? {border: "3px solid #9061F9"} : {border: "none"}} onClick={postLikeSortHandle}>👍</Forum_button_div_button>
                             <Forum_button_div_button onClick={writeStartHandle}>글쓰기</Forum_button_div_button>
                         </Forum_button_div>

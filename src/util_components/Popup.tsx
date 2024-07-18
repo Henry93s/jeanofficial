@@ -125,7 +125,7 @@ const Popup = forwardRef<PopupRef, PropsType>((props, ref) => {
             setSpan(span);
             setText(text);
             // 콜백 함수를 상태 값에 반영
-            setIsOk(() => callback);
+            setIsOk(callback);
             setIsPopup(true);
         },
     }));
