@@ -52,26 +52,26 @@ const Body_5_element4 = () => {
     // 모든 마우스 이벤트마다 e.preventDefault() 적용(새로고침 방지) 처리
 
     // 캐러셀 사진 아이템을 감싸는 div 에 마우스를 누르고 있을 때 
-    const handleIsMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>{
+    const handleIsMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(true);
         // targetRef.current[1] 강제 타입 선언
         const target = targetRef.current[1] as HTMLElement;
         setStartX(e.pageX - target.offsetLeft);
         setScrollLeft(target.scrollLeft);
-    };
+    },[targetRef,isMouseDown,startX,scrollLeft]);
     // 캐러셀 사진 아이템을 감싸는 div 에서 마우스가 벗어났을 때
-    const handleIsMouseLeave = (e: React.MouseEvent<HTMLDivElement>) =>{
+    const handleIsMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(false);
-    };
+    },[isMouseDown]);
     // 캐러셀 사진 아이템을 감싸는 div 에 누르고 있던 마우스를 땠을 때
-    const handleIsMouseUp = (e: React.MouseEvent<HTMLDivElement>) =>{
+    const handleIsMouseUp = useCallback((e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(false);
-    };
+    },[isMouseDown]);
     // 캐러셀 사진 아이템을 감싸는 div 에 마우스를 누르고 있는 상태에서 마우스를 움직였을 때(즉 드래그)
-    const handleIsMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleIsMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         if(!isMouseDown){
             return;
         } else {
@@ -119,7 +119,7 @@ const Body_5_element4 = () => {
                 });
             }
         }
-    };
+    }, [targetRef,isMouseDown,startX,scrollLeft]);
 
      
     
@@ -128,7 +128,7 @@ const Body_5_element4 = () => {
     // 어떤 사진 아이템 src 가 클릭되었는지에 대한 상태 정의
     const [cardSrc, setCardSrc] = useState('');
     // 캐러셀 사진 전체 화면 모달 창 호출 이벤트 핸들러
-    const handleCardClick = useCallback((value) => {
+    const handleCardClick = useCallback((value: string) => {
         setIsModal(true);
         setCardSrc(value);
     },[]);

@@ -212,7 +212,7 @@ const PasswordChange = () => {
             }
             return;
         })
-    }, []);
+    }, [password]);
 
     // 실시간 패스워드 상태 값 수정
     const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {

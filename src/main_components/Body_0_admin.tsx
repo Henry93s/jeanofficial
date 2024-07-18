@@ -297,7 +297,7 @@ const Body_0_admin = () => {
             setReload(!reload);
             return;
         })
-    },[]);
+    },[reload]);
 
     // 선택한 회원 탈퇴 시키기
     const userOutHandle = useCallback(() => {
@@ -307,7 +307,7 @@ const Body_0_admin = () => {
         }
         popupOpenRef.current?.handleOpenPopup("관리자 알림", "회원 탈퇴를 진행시키겠습니까? 해당 회원의 글도 모두 삭제됩니다.", () => userOutCallback);
         return;
-    },[]);
+    },[detail]);
 
     return (
         <Main_overlay>

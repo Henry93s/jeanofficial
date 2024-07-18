@@ -466,7 +466,7 @@ const Body_7_board = () => {
             pageArray.push(i);
         }
         return pageArray;
-    },[]);
+    },[page]);
 
     // 선택한 페이지로 이동 기능
     const pagenateHandle = useCallback((i: number) => {
@@ -500,7 +500,7 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    },[]);
+    },[page]);
 
     // 다음 버튼 클릭 시 최대 5 페이지 이동 기능
     const pageNextHandle = useCallback(() => {
@@ -520,7 +520,7 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    },[]);
+    },[page]);
 
     // 검색 select 박스 변화 감지
     const selectChangeHandle = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
@@ -568,7 +568,7 @@ const Body_7_board = () => {
     },[]);
 
     // 나의 글 모드 첫 진입 (1page) (로그인 요구)
-    const postMyHandle = () => {
+    const postMyHandle = useCallback(() => {
         if(user.email.length < 1){
             alertOpenRef.current?.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
@@ -585,10 +585,10 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    };
+    },[user]);
 
     // 전체 글 모드 첫 진입 (1page) 
-    const postAllHandle = () => {
+    const postAllHandle = useCallback(() => {
         setPage((current) => {
             const newSetPage = {...current};
             newSetPage.searchMode = false;
@@ -600,10 +600,10 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    };
+    },[]);
 
     // 현재 가져온 posts 와 page 를 기준으로 좋아요 순으로 정렬만 바꿈
-    const postLikeSortHandle = () => {
+    const postLikeSortHandle = useCallback(() => {
         setPage((current) => {
             const newSetPage = {...current};
             newSetPage.likeSort = !page.likeSort;
@@ -613,7 +613,7 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    };
+    },[page]);
 
 
     // 글 화면에서 리스트 화면으로 뒤로 가기
@@ -635,7 +635,7 @@ const Body_7_board = () => {
             newSetText.content = "";
             return newSetText;
         })
-    },[]);
+    },[user]);
     // 글 보기 화면에서 글 수정 화면으로
     const putStartHandle = useCallback(() => {
         if(user.email.length < 1){
@@ -648,7 +648,7 @@ const Body_7_board = () => {
         }
 
         setMode("put");
-    },[]);
+    },[user]);
 
     // 글쓰기, 글수정 화면에서 text 수정 시 발동
     const writeChangeHandle = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -692,7 +692,7 @@ const Body_7_board = () => {
             }
             return;
         })
-    },[]);
+    },[user, text]);
 
     // 글 수정 동작
     const postPutHandle = useCallback(() => {
@@ -724,10 +724,15 @@ const Body_7_board = () => {
             }
             return;
         })
-    },[]);
+    },[user, text]);
+
+    interface postDelCallback_props{
+        email: string,
+        nanoid: string
+    };
 
     // 글 삭제 콜백함수
-    const postDelCallback = useCallback((props) => {
+    const postDelCallback = useCallback((props: postDelCallback_props) => {
         axiosCustom.delete('/post/del',{
             // axios delete 의 경우 두 번째 인자에 data: {} 로 body 데이터를 보낼 수 있다.
             data: {email: props.email, nanoid: props.nanoid}

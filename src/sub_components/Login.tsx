@@ -194,7 +194,7 @@ const Login = () => {
             }
             return;
         });
-    },[]);
+    },[loginUser]);
 
     // 이메일 input 변동 시 상태 값 변화
     const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {

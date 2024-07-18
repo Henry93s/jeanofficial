@@ -52,77 +52,77 @@ const Body_3_element2 = () => {
     // 모든 마우스 이벤트마다 e.preventDefault() 적용(새로고침 방지) 처리
 
     // 캐러셀 사진 아이템을 감싸는 div 에 마우스를 누르고 있을 때 
-    const handleIsMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>{
+    const handleIsMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(true);
-
-        if(targetRef.current[1]){
-            setStartX(e.pageX - targetRef.current[1].offsetLeft);
-            setScrollLeft(targetRef.current[1].scrollLeft);
-        }
-    };
+        // targetRef.current[1] 강제 타입 선언
+        const target = targetRef.current[1] as HTMLElement;
+        setStartX(e.pageX - target.offsetLeft);
+        setScrollLeft(target.scrollLeft);
+    },[targetRef,isMouseDown,startX,scrollLeft]);
     // 캐러셀 사진 아이템을 감싸는 div 에서 마우스가 벗어났을 때
-    const handleIsMouseLeave = (e: React.MouseEvent<HTMLDivElement>) =>{
+    const handleIsMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(false);
-    };
+    },[isMouseDown]);
     // 캐러셀 사진 아이템을 감싸는 div 에 누르고 있던 마우스를 땠을 때
-    const handleIsMouseUp = (e: React.MouseEvent<HTMLDivElement>) =>{
+    const handleIsMouseUp = useCallback((e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(false);
-    };
+    },[isMouseDown]);
     // 캐러셀 사진 아이템을 감싸는 div 에 마우스를 누르고 있는 상태에서 마우스를 움직였을 때(즉 드래그)
-    const handleIsMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleIsMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         if(!isMouseDown){
             return;
         } else {
             e.preventDefault();
-            if(targetRef.current[1]){
-                    const x = e.pageX - targetRef.current[1].offsetLeft;
-                    const walk = x - startX;
-                // console.log(scrollLeft - walk);
-                if(scrollLeft - walk > 0){ // 우측에서 좌측으로 쓸어넘긴 경우 -> next
-                    setCarouselIndex((current) => {
-                        const newCarouselIndex = {...current};
-                        newCarouselIndex.index = carouselIndex.index + 1;
-                        newCarouselIndex.direction = "right";
-                        // const move 로 실제 translate value 를 계산
-                        // gap(20px) + width(flex-basis (550px)) = 570 px
-                        // 570 / n 으로 드래그에 따른 translateX 값 조절
-                        const move = newCarouselIndex.translateValue - (570 / 4.5);
-                        // 드래그 다음 제한 설정 추가
-                        if(Math.abs(move) > 570 * (supernatural.length - 1)){
-                            newCarouselIndex.translateValue = (570 * (supernatural.length - 1)) * (-1);
-                        } else {
-                            newCarouselIndex.translateValue = move;
-                        }
-                        // console.log("pc drag " + newCarouselIndex.translateValue)
-                        return newCarouselIndex;
-                    });
-                } else { // 좌측에서 우측으로 쓸어넘긴 경우 -> prev
-                    setCarouselIndex((current) => {
-                        const newCarouselIndex = {...current};
-                        newCarouselIndex.index = carouselIndex.index - 1;
-                        newCarouselIndex.direction = "left";
-                        // const move 로 실제 translate value 를 계산
-                        // gap(20px) + width(flex-basis (550px)) = 570 px
-                        // 570 / n 으로 드래그에 따른 translateX 값 조절
-                        const move = newCarouselIndex.translateValue + (570 / 4.5);
-                        // 드래그 이전 제한 설정 추가
-                        if(move > 0){
-                            newCarouselIndex.translateValue = 0;
-                        } else {
-                            newCarouselIndex.translateValue = move;
-                        }
-                        // console.log("pc drag " + newCarouselIndex.translateValue)
-                        return newCarouselIndex;
-                    });
-                }
-            }  
+            // targetRef.current[1] 강제 타입 선언
+            const target = targetRef.current[1] as HTMLElement;
+            const x = e.pageX - target.offsetLeft;
+            const walk = x - startX;
+            // console.log(scrollLeft - walk);
+            if(scrollLeft - walk > 0){ // 우측에서 좌측으로 쓸어넘긴 경우 -> next
+                setCarouselIndex((current) => {
+                    const newCarouselIndex = {...current};
+                    newCarouselIndex.index = carouselIndex.index + 1;
+                    newCarouselIndex.direction = "right";
+                    // const move 로 실제 translate value 를 계산
+                    // gap(20px) + width(flex-basis (550px)) = 570 px
+                    // 570 / n 으로 드래그에 따른 translateX 값 조절
+                    const move = newCarouselIndex.translateValue - (570 / 4.5);
+                    // 드래그 다음 제한 설정 추가
+                    if(Math.abs(move) > 570 * (supernatural.length - 1)){
+                        newCarouselIndex.translateValue = (570 * (supernatural.length - 1)) * (-1);
+                    } else {
+                        newCarouselIndex.translateValue = move;
+                    }
+                    // console.log("pc drag " + newCarouselIndex.translateValue)
+                    return newCarouselIndex;
+                });
+            } else { // 좌측에서 우측으로 쓸어넘긴 경우 -> prev
+                setCarouselIndex((current) => {
+                    const newCarouselIndex = {...current};
+                    newCarouselIndex.index = carouselIndex.index - 1;
+                    newCarouselIndex.direction = "left";
+                    // const move 로 실제 translate value 를 계산
+                    // gap(20px) + width(flex-basis (550px)) = 570 px
+                    // 570 / n 으로 드래그에 따른 translateX 값 조절
+                    const move = newCarouselIndex.translateValue + (570 / 4.5);
+                    // 드래그 이전 제한 설정 추가
+                    if(move > 0){
+                        newCarouselIndex.translateValue = 0;
+                    } else {
+                        newCarouselIndex.translateValue = move;
+                    }
+                    // console.log("pc drag " + newCarouselIndex.translateValue)
+                    return newCarouselIndex;
+                });
+            }
         }
-    };
-    
+    }, [targetRef,isMouseDown,startX,scrollLeft]);
+
      
+    
     // 사진 아이템이 클릭됐는지 상태 정의하여 모달 창을 불러올 것인지 판단하는 상태 정의
     const [isModal, setIsModal] = useState(false);
     // 어떤 사진 아이템 src 가 클릭되었는지에 대한 상태 정의

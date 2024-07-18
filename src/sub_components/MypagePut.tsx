@@ -282,7 +282,7 @@ const MypagePut = () => {
             }
             return;
         });
-    },[]);
+    },[putUser]);
 
     // 패스워드 input 변동 시 상태 값 변화
     const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {

@@ -295,9 +295,9 @@ const Main_Header = () => {
     const [clickBurger, setClickBurger] = useState<boolean>(false);
     // 햄버거 버튼을 클릭했을 때 상태를 true 로 변경 후 사이드바 컴포넌트에 전달 예정
     // 사이드바 컴포넌트에서 x 버튼을 클릭 시 상태가 false 로 변경되어 사이드바가 비활성화됨
-    const handleHamburgerClick = () => {
+    const handleHamburgerClick = useCallback(() => {
         setClickBurger(!clickBurger);
-    };
+    }, [clickBurger]);
 
     // 마이페이지 버튼(div)을 클릭했을 때 이벤트 함수 정의
     const handleMypageNav = useCallback(() => {

@@ -242,7 +242,7 @@ const Signup = () => {
             alertOpenRef.current?.handleOpenAlert("회원가입 알림", res.data.message);
             return;
         });
-    },[]);
+    },[addUser]);
     const controlVerifyButton = useCallback((res: any) => {
         if(res.data && res.data.code === 200){
             if(verifyBtnRef.current && emailInputRef.current){
@@ -270,7 +270,7 @@ const Signup = () => {
             alertOpenRef.current?.handleOpenAlert("회원가입 알림", res.data.message);
             return;
         });
-    }, []);
+    }, [addUser]);
 
     // 회원가입 요청 - 이메일 인증 요청 유무, 이메일 인증 유무, 닉네임 중복 체크
     const handleFormSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
@@ -303,7 +303,7 @@ const Signup = () => {
             }
             return;
         });
-    }, []);
+    }, [addUser]);
 
     // 이메일 input 변동 시 상태 값 변화
     const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {

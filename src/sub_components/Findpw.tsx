@@ -230,7 +230,7 @@ const Findpw = () => {
             alertOpenRef.current?.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
             return;
         });
-    },[]);
+    },[FindpwUser]);
 
     // 인증번호 검사 요청
     const controlVerifyButton = useCallback((res: any) => {
@@ -272,7 +272,7 @@ const Findpw = () => {
             }
             return;
         });
-    },[]);
+    },[FindpwUser]);
 
     // email input 변동 시 실시간 상태 변화
     const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
