@@ -3,12 +3,17 @@ import React,{useState, useCallback, useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import youtubeFetch from '../datas/Header_sideBar_youtube';
 
+// Hamburger_div 의 props 타입 정의
+interface Hamburger_div_Props {
+    clickBurger: boolean;
+};
+
 // hamberger NEW youtube & 숏츠 (1 x n flex 가 2 라인)
-const Hamburger_div = styled.div.attrs(props => ({
+const Hamburger_div = styled.div.attrs<Hamburger_div_Props>(props => ({
     // 햄버거 버튼이 클릭 되었을 때는 translateX 를 0% 로 설정하여 슬라이드바 내용이 보이도록 함
     // (추가) 또는 return 시 컴포넌트에 state 값을 이용해 inline style 로도 변경시킬 수 있다.
     style: {
-        transform: props.clickburger === "true" ? "translateX(0%)" : "translateX(-100%)"
+        transform: props.clickBurger ? "translateX(0%)" : "translateX(-100%)"
         }
 }))`
     position: fixed;
@@ -161,15 +166,29 @@ const Hamburger_youtube_item_a2 = styled(Hamburger_youtube_item_a)`
 const Hamburger_youtube_item_p2 = styled(Hamburger_youtube_item_p)`
 `
 
-const Main_Header_Sidebar = (props) => {
-    // Main_header 에서 clickBurger 상태와 해당 상태의 클릭 이벤트를 props 로 받음
+// Main_Header_Sidebar 의 props 타입 정의
+interface Main_Header_Sidebar_Props {
+    clickBurger: boolean;
+    handleHamburgerClick: () => void;
+};
+
+const Main_Header_Sidebar = (props: Main_Header_Sidebar_Props) => {
+    // Main_header 에서 clickBurger 상태를 props 로 받음
     // 이후 x 버튼을 클릭하면 클릭 이벤트에 따라 clickBurger 의 상태가 false 로 되며 사이드바가 비활성화됨
     const {clickBurger, handleHamburgerClick} = props;
-    
+
+    // youtube, shorts 의 타입 정의 VideoData[]
+    interface VideoData {
+        title: string;
+        image_url: string;
+        video_url: string;
+        uploadTime: string;
+    };
+
     // 유튜브 api fetch 한 데이터 상태 정의
-    const [youtube, setYoutube] = useState([]);
+    const [youtube, setYoutube] = useState<VideoData[]>([]);
     // 숏츠(유튜브 api fetch 에서 params 만 변경됨) 데이터 상태 정의
-    const [shorts, setShorts] = useState([]);
+    const [shorts, setShorts] = useState<VideoData[]>([]);
     useEffect(() => {
         // 훅에서 비동기 함수 사용할 때 함수 정의 후 비동기 함수 호출 가능
         // (추가) 또는 추가적인 비동기 함수 호출이 없을 경우 promise -> then 형태로 구성도 가능함 !
@@ -185,7 +204,7 @@ const Main_Header_Sidebar = (props) => {
     console.log(shorts);
 
     // 리로드 이미지를 회전 시키기 위한 ref 설정
-    const youtubeRef = useRef([]);
+    const youtubeRef = useRef<HTMLImageElement []| null []>([]);
     // 유튜브 리로드 버튼을 클릭했을 때 유튜브 상태 업데이트를 위한 이벤트 함수
     const handleYoutubeReload = useCallback(() => {
         const fetch_data = async () => {
@@ -193,13 +212,14 @@ const Main_Header_Sidebar = (props) => {
             setYoutube(data.youtube_data);
         };
         fetch_data();
-
+        // youtubeRef.current[0] 강제 타입 선언
+        const target = youtubeRef.current[0] as HTMLElement;
         // 3바퀴
-        youtubeRef.current[0].style.animation = "spin 1s 3 linear";
+        target.style.animation = "spin 1s 3 linear";
         setTimeout(() => {
-            youtubeRef.current[0].style.animation = "none"
+            target.style.animation = "none"
         }, 3000);
-    });
+    },[]);
     // 숏츠 리로드 버튼을 클릭했을 때 숏츠 상태 업데이트를 위한 이벤트 함수
     const handleShortsReload = useCallback(() => {
         const fetch_data = async () => {
@@ -208,15 +228,17 @@ const Main_Header_Sidebar = (props) => {
         };
         fetch_data();
 
+        // youtubeRef.current[1] 강제 타입 선언
+        const target = youtubeRef.current[1] as HTMLElement;
         // 3바퀴
-        youtubeRef.current[1].style.animation = "spin 1s 3 linear";
+        target.style.animation = "spin 1s 3 linear";
         setTimeout(() => {
-            youtubeRef.current[1].style.animation = "none"
+            target.style.animation = "none"
         }, 3000);
-    })
+    },[])
 
     return (
-        <Hamburger_div clickburger={clickBurger}>
+        <Hamburger_div clickBurger={clickBurger}>
                 <Hamburger_head>
                     <Hamburger_head_img src='/images/close.png' onClick={handleHamburgerClick}/>
                 </Hamburger_head>

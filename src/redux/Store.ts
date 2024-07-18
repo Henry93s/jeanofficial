@@ -7,4 +7,5 @@ const store = configureStore({
     reducer: {user: userSlice.reducer},
 });
 
+export type State = ReturnType<typeof store.getState>;
 export default store;

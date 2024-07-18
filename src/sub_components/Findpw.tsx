@@ -1,4 +1,4 @@
-import React,{useCallback, useEffect, useRef, useState} from "react";
+import React,{ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
@@ -191,10 +191,10 @@ const Findpw = () => {
         secret: ""
     });
     // 인증 요청 후 직접 element 요소 접근을 위한 ref
-    const emailInputRef = useRef(null);
-    const verifyBtnRef = useRef(null);
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const verifyBtnRef = useRef<HTMLButtonElement>(null);
     // 알림 팝업 컴포넌트 접근을 위한 ref
-    const alertOpenRef = useRef(null);
+    const alertOpenRef = useRef<{ handleOpenAlert: (title: string, message: string) => void }>(null);
     // 인증 성공 후 비밀번호 변경 페이지 이동을 위함
     const navigate = useNavigate();
 
@@ -207,7 +207,8 @@ const Findpw = () => {
             .then(res => {
                 // 서버 검증을 통해 로그인된 유저면 다시 메인 페이지로 이동 시킴
                 if(res.data && res.data.code === 200){
-                    alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", "이미 로그인한 유저입니다.");
+                    // alertOpenRef.current 가 null 이면 handleOpenAlert 호출하지 않음
+                    alertOpenRef.current?.handleOpenAlert("비밀번호 찾기 알림", "이미 로그인한 유저입니다.");
                     setTimeout(() => {
                         navigate('/');
                     }, 1000);
@@ -225,66 +226,71 @@ const Findpw = () => {
         .then(res => {
             // 전송 완료 후 버튼 비활성화 적용 함수
             controlVerifyButton(res);
-
-            alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
+            // alertOpenRef.current 가 null 이면 handleOpenAlert 호출하지 않음
+            alertOpenRef.current?.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
             return;
         });
-    });
+    },[]);
 
     // 인증번호 검사 요청
-    const controlVerifyButton = (res) => {
+    const controlVerifyButton = useCallback((res: any) => {
         if(res.data && res.data.code === 200){
-            // 정상적으로 요청했을 때에는 이메일 입력 비활성화 및 인증 요청 버튼 비활성화
-            verifyBtnRef.current.style.backgroundColor = "#1E1E20";
-            verifyBtnRef.current.style.cursor = "default";
-            verifyBtnRef.current.disabled = true;
-            emailInputRef.current.disabled = true;
+            if(verifyBtnRef.current && emailInputRef.current){
+                // 정상적으로 요청했을 때에는 이메일 입력 비활성화 및 인증 요청 버튼 비활성화
+                verifyBtnRef.current.style.backgroundColor = "#1E1E20";
+                verifyBtnRef.current.style.cursor = "default";
+                verifyBtnRef.current.disabled = true;
+                emailInputRef.current.disabled = true;
+            }
         } else {
-            verifyBtnRef.current.style.backgroundColor = "#9061F9";
-            verifyBtnRef.current.style.cursor = "pointer";
-            verifyBtnRef.current.removeAttribute('disabled');
-            emailInputRef.current.removeAttribute('disabled');
+            if(verifyBtnRef.current && emailInputRef.current){
+                verifyBtnRef.current.style.backgroundColor = "#9061F9";
+                verifyBtnRef.current.style.cursor = "pointer";
+                verifyBtnRef.current.removeAttribute('disabled');
+                emailInputRef.current.removeAttribute('disabled');
+            }
         }
-    };
+    },[]);
 
     // 인증번호 검사 요청
-    const handleFormSubmit = useCallback((e) => {
+    const handleFormSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
         // form onsubmit 시 새로고침 방지
         e.preventDefault();
 
         const {email, secret} = FindpwUser;
         axiosCustom.post('/users/verify/confirm', {email, secret})
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
+            // alertOpenRef.current 가 null 이면 handleOpenAlert 호출하지 않음
+            alertOpenRef.current?.handleOpenAlert("비밀번호 찾기 알림", res.data.message);
             if(res.data && res.data.code === 200){
                 // 비밀번호 변경 페이지로 이동
                 // navigate 할 때 user 상태 넘겨줌(이메일 전달 위함)
-                alertOpenRef.current.handleOpenAlert("비밀번호 찾기 알림", "이메일 인증이 완료되었습니다.");
+                alertOpenRef.current?.handleOpenAlert("비밀번호 찾기 알림", "이메일 인증이 완료되었습니다.");
                 setTimeout(() => {
                     navigate('/pwchange', {state: FindpwUser});
                 }, 1500); 
             }
             return;
         });
-    });
+    },[]);
 
     // email input 변동 시 실시간 상태 변화
-    const handleEmailChange = useCallback((e) => {
+    const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setFindpwUser((current) => {
             const newFindpw = {...current};
             newFindpw.email = e.target.value;
             return newFindpw; 
         });
-    });
+    },[]);
 
     // 코드 시크릿 input 변동 시 실시간 상태 변화
-    const handlesecretChange = useCallback((e) => {
+    const handlesecretChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setFindpwUser((current) => {
             const newFindpw = {...current};
             newFindpw.secret = e.target.value;
             return newFindpw; 
         });
-    });
+    },[]);
 
     return (
         <>

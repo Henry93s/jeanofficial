@@ -8,10 +8,26 @@ import Local_shorts from './Local_shorts';
 const API_KEY = config.YOUTUBE_API_KEY;
 const CHANNEL_ID = config.CHANNEL_ID;
 
+
+interface VideoData {
+    title: string;
+    image_url: string;
+    video_url: string;
+    uploadTime: string;
+}
+interface YouTubeData {
+    youtube_data: VideoData[];
+    shorts_data: VideoData[];
+}
+
 const youtubeFetch = async () => {
-    const youtube_data = [];
-    const shorts_data = [];
-    const youtube = {};
+    const youtube_data: VideoData[] = [];
+    const shorts_data: VideoData[] = [];
+    const youtube: YouTubeData = {
+        youtube_data: [],
+        shorts_data: []
+    };
+    
     try{
         const res = await axios.get(`https://www.googleapis.com/youtube/v3/search`,{
             // 최신 동영상 top 40 동영상 fetch
@@ -35,7 +51,7 @@ const youtubeFetch = async () => {
             }
         });
         console.log("api 1")
-        res.data.items.forEach(v => {
+        res.data.items.forEach((v) => {
             const videoId = v.id.videoId;
             const videoTitle = v.snippet.title;
             const thumbnailUrl = v.snippet.thumbnails.high.url;

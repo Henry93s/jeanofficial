@@ -1,4 +1,4 @@
-import React,{forwardRef, useImperativeHandle, useState} from "react";
+import React,{Ref, RefObject, forwardRef, useImperativeHandle, useState} from "react";
 import styled from "styled-components";
 
 const Alert_Overlay = styled.div`
@@ -88,19 +88,23 @@ const Alert_button = styled.button`
     }
 `
 
+interface AlertRef {
+    handleOpenAlert: (title: string, message: string) => void;
+}
+
 // 함수형 컴포넌트에 직접 접근하기 위해서는 ref 중에서 forwardRef 를 사용함
-const Alert = forwardRef((props, ref) => {
+const Alert = forwardRef<AlertRef>((props, ref) => {
     // 외부 컴포넌트에서 ref 를 통해 직접 접근하여 handleOpenAlert 메서드를 호출할 때 알림 컴포넌트 전체가 활성화하기 위함
-    const [isAlert, setIsAlert] = useState(false);
+    const [isAlert, setIsAlert] = useState<boolean>(false);
     // handleOpenAlert 메서드의 파라미터로 들어오는 알림 컴포넌트 타이틀 상태 값
-    const [span, setSpan] = useState("");
+    const [span, setSpan] = useState<string>("");
     // handleOpenAlert 메서드의 파라미터로 들어오는 알림 컴포넌트 내용 상태 값
-    const [text, setText] = useState("");
+    const [text, setText] = useState<string>("");
 
     // 함수형 컴포넌트 중 외부에서 호출할 메서드는 useImperativeHandle 로 정의함
     // 외부에서 ref 를 통해 알림 컴포넌트 메서드 호출
     useImperativeHandle(ref, () => ({
-        handleOpenAlert(span, text) {
+        handleOpenAlert(span: string, text: string) {
             setSpan(span);
             setText(text);
             setIsAlert(true);

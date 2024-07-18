@@ -21,7 +21,7 @@ const userSlice = createSlice({
         setNickName(state, action){
             state.nickName = action.payload.nickName;
         },
-        logout(state, action){
+        logout(state){
             state.email = "";
             state.nickName = "";
         }

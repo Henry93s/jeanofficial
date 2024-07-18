@@ -60,8 +60,19 @@ export const Card_Carousel_div = styled.div`
         overflow-x: auto;
     }
 `
-export const Card_Carousel_item = styled.div.attrs(props => ({
+
+// Card_Carousel_item 의 props 타입 정의
+interface Card_Carousel_item_Props {
+    carouselindex: {
+        index: number,
+        direction: string,
+        translateValue: number
+    }
+}
+
+export const Card_Carousel_item = styled.div.attrs<Card_Carousel_item_Props>(props => ({
     // 좌우 버튼 시 캐러셀 내부 x 스크롤 이동 동작 명령 (css props 받음 -> carouselIndex {index, direction})
+    
     style: {transform: `translateX(${props.carouselindex.translateValue}px)`},
 }))`
     width: 40%;
@@ -164,10 +175,15 @@ export const Carousel_Swipe_Guide_p = styled.p`
     font-size: bold;
 `
 
+// Modal_Overlay의 props 타입 정의
+interface ModalOverlayProps {
+    ismodal: boolean;
+}
+
 // 모달 오버레이
-export const Modal_Overlay = styled.div.attrs(props => ({
+export const Modal_Overlay = styled.div.attrs<ModalOverlayProps>(props => ({
     style: {
-        display: props.ismodal === "true" ? "block" : "none"
+        display: props.ismodal ? "block" : "none"
     }
 }))`
     position: fixed;

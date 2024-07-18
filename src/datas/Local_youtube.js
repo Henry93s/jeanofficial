@@ -1,5 +1,11 @@
 const Local_youtube = [
     {
+        "title": "[Making Jeans] NewJeans (뉴진스) 'Supernatural' & 'Right Now' Recording Behind",
+        "image_url": "https://i.ytimg.com/vi/7xOZolSZyGo/hqdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=7xOZolSZyGo",
+        "uploadTime": "2024. 7. 18. 목요일 오후 7:00:01"
+    },
+    {
         "title": "[Light Jeans] The Face Magazine Photoshoot Behind 🔦 | NewJeans",
         "image_url": "https://i.ytimg.com/vi/7yZz_eZC_vs/hqdefault.jpg",
         "video_url": "https://www.youtube.com/watch?v=7yZz_eZC_vs",

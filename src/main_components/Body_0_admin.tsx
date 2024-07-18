@@ -212,8 +212,9 @@ const Body_0_admin = () => {
     // 강제 reload 상태 유도
     const [reload, setReload] = useState(false);
     // 팝업, 알림 컴포넌트 조작 ref
-    const popupOpenRef = useRef(null);
-    const alertOpenRef = useRef(null);
+    const alertOpenRef = useRef<{ handleOpenAlert: (title: string, message: string) => void }>(null);
+    const popupOpenRef = useRef<{ handleOpenPopup: (span: string, text: string, callback: () => void) => void }>(null);
+
     // 이벤트 함수에서 리다이렉트 시 navigate
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -237,7 +238,7 @@ const Body_0_admin = () => {
                 setIsAdmin(true);
             } else {
                 // 로그인 되어도 관리자가 아닐 경우 메인 페이지로 이동시킴
-                alertOpenRef.current.handleOpenAlert("페이지 알림", "관리자 승인이 필요한 페이지입니다.");
+                alertOpenRef.current?.handleOpenAlert("페이지 알림", "관리자 승인이 필요한 페이지입니다.");
                 setIsAdmin(false);
                 setTimeout(() => {
                     navigate('/');
@@ -255,7 +256,7 @@ const Body_0_admin = () => {
         // 서버 로그아웃 요청 (post 요청으로 직접 url 입력 시 -> not found page)
         axiosCustom.post('/users/logout')
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("로그아웃 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("로그아웃 알림", res.data.message);
             if(res.data && res.data.code === 200){
                 dispatch(logout());
                 setIsAdmin(false);
@@ -265,10 +266,10 @@ const Body_0_admin = () => {
             }
             return;
         })
-    });
+    },[]);
 
     // 좌측 회원 관리에서 유저 클릭 시 상세 회원 정보에 내용을 출력 시키는 이벤트 함수
-    const userItemClickHandle = useCallback((email, nickname, is_admin) => {
+    const userItemClickHandle = useCallback((email: string, nickname: string, is_admin: boolean) => {
         // 좌측에서 유저 클릭 시 해당 아이템 항목은 배경색이 변화하도록 함
         setUserclick((current) => {
             const newClick = {...current};
@@ -285,28 +286,28 @@ const Body_0_admin = () => {
             newDetail.is_admin = is_admin;
             return newDetail;
         });
-    });
+    },[]);
 
     // 선택한 회원 탈퇴 콜백 함수
-    const userOutCallback = useCallback((email) => {
+    const userOutCallback = useCallback((email: string) => {
         axiosCustom.post('/users/deleteByEmail',{email})
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("관리자 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("관리자 알림", res.data.message);
             // 삭제가 되고 reload 라는 상태를 반전시켜 줌으로써 유저들 목록 데이터를 다시 받아옴
             setReload(!reload);
             return;
         })
-    });
+    },[]);
 
     // 선택한 회원 탈퇴 시키기
     const userOutHandle = useCallback(() => {
         if(detail.is_admin){
-            alertOpenRef.current.handleOpenAlert("관리자 알림", "계정 관리자는 탈퇴시킬 수 없습니다.");
+            alertOpenRef.current?.handleOpenAlert("관리자 알림", "계정 관리자는 탈퇴시킬 수 없습니다.");
             return;
         }
-        popupOpenRef.current.handleOpenPopup("관리자 알림", "회원 탈퇴를 진행시키겠습니까? 해당 회원의 글도 모두 삭제됩니다.", () => userOutCallback);
+        popupOpenRef.current?.handleOpenPopup("관리자 알림", "회원 탈퇴를 진행시키겠습니까? 해당 회원의 글도 모두 삭제됩니다.", () => userOutCallback);
         return;
-    });
+    },[]);
 
     return (
         <Main_overlay>
@@ -317,7 +318,7 @@ const Body_0_admin = () => {
                 <Admin_logout_button onClick={handleLogout}>Logout</Admin_logout_button>
                 <Admin_user_div>
                     <Admin_user_div_title>회원 관리</Admin_user_div_title>
-                    {users.map((v) => {
+                    {users.map((v: any) => {
                                 return (
                                     <Admin_user_item onClick={() => userItemClickHandle(v.email, v.name, v.is_admin)} 
                                         style={userclick.email === v.email && { color: "white", backgroundColor: "#9061F9"} 
@@ -342,7 +343,7 @@ const Body_0_admin = () => {
                         </Admin_user_detail_item_group>
                         <Admin_user_detail_item_group>
                             <Admin_user_detail_item_span>관리자 여부 : </Admin_user_detail_item_span>
-                            <Admin_user_detail_item_input disabled value={detail.is_admin}/>
+                            <Admin_user_detail_item_input disabled value={detail.is_admin.toString()}/>
                         </Admin_user_detail_item_group>
                         <Admin_user_detail_item_group>
                             <Admin_user_detail_out_button onClick={userOutHandle}>추방하기</Admin_user_detail_out_button>

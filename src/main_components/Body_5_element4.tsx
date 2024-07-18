@@ -16,8 +16,32 @@ const Body_5_element4 = () => {
     // 사진 데이터 state
     const [howsweet, setHowsweet] = useState(Body_4_howsweet);
     
+    // IntersectionObserver 를 생성하여 targetRef 가 관찰될 때(.isIntersecting) 투명도를 n 초동안 높이기 위함
+    // useRef [] 배열로 관리하기 !
+    const targetRef = useRef<HTMLDivElement []| null []>([]);
+    // scroll animation 동작 구현
+    useEffect(() => {
+        const osv = new IntersectionObserver((e) => {
+            e.forEach(entry => {
+                // entry.target 강제 타입 선언
+                const target = entry.target as HTMLElement;
+                if(entry.isIntersecting){
+                    target.style.opacity = "1";
+                } else {
+                    target.style.opacity = "0";
+                }
+            })
+        },{
+            threshold: 0.25
+        });
+
+        targetRef.current.forEach(v => {
+            osv.observe(v);
+        })
+    },[]);
+
     // 캐러셀 드래그 states, 캐러셀 items Ref
-    const cardRef = useRef([]);
+    const cardRef = useRef<HTMLDivElement []| null []>([]);
     // 마우스 클릭 state
     const [isMouseDown, setIsMouseDown] = useState(false);
     // 첫 마우스 위치 state
@@ -28,29 +52,33 @@ const Body_5_element4 = () => {
     // 모든 마우스 이벤트마다 e.preventDefault() 적용(새로고침 방지) 처리
 
     // 캐러셀 사진 아이템을 감싸는 div 에 마우스를 누르고 있을 때 
-    const handleIsMouseDown = useCallback((e) =>{
+    const handleIsMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(true);
-        setStartX(e.pageX - targetRef.current[1].offsetLeft);
-        setScrollLeft(targetRef.current[1].scrollLeft);
-    });
+        // targetRef.current[1] 강제 타입 선언
+        const target = targetRef.current[1] as HTMLElement;
+        setStartX(e.pageX - target.offsetLeft);
+        setScrollLeft(target.scrollLeft);
+    };
     // 캐러셀 사진 아이템을 감싸는 div 에서 마우스가 벗어났을 때
-    const handleIsMouseLeave = useCallback((e) =>{
+    const handleIsMouseLeave = (e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(false);
-    });
+    };
     // 캐러셀 사진 아이템을 감싸는 div 에 누르고 있던 마우스를 땠을 때
-    const handleIsMouseUp = useCallback((e) =>{
+    const handleIsMouseUp = (e: React.MouseEvent<HTMLDivElement>) =>{
         e.preventDefault();
         setIsMouseDown(false);
-    });
+    };
     // 캐러셀 사진 아이템을 감싸는 div 에 마우스를 누르고 있는 상태에서 마우스를 움직였을 때(즉 드래그)
-    const handleIsMouseMove = useCallback((e) => {
+    const handleIsMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if(!isMouseDown){
             return;
         } else {
             e.preventDefault();
-            const x = e.pageX - targetRef.current[1].offsetLeft;
+            // targetRef.current[1] 강제 타입 선언
+            const target = targetRef.current[1] as HTMLElement;
+            const x = e.pageX - target.offsetLeft;
             const walk = x - startX;
             // console.log(scrollLeft - walk);
             if(scrollLeft - walk > 0){ // 우측에서 좌측으로 쓸어넘긴 경우 -> next
@@ -91,47 +119,30 @@ const Body_5_element4 = () => {
                 });
             }
         }
-    })
-    // IntersectionObserver 를 생성하여 targetRef 가 관찰될 때(.isIntersecting) 투명도를 n 초동안 높이기 위함
-    // useRef [] 배열로 관리하기 ! (element scroll animation)
-    const targetRef = useRef([]);
-    // scroll animation 동작 구현
-    useEffect(() => {
-        const osv = new IntersectionObserver((e) => {
-            e.forEach(entry => {
-                if(entry.isIntersecting){
-                    entry.target.style.opacity = 1;
-                } else {
-                    entry.target.style.opacity = 0;
-                }
-            })
-        },{
-            threshold: 0.3
-        });
-        targetRef.current.forEach(v => {
-            osv.observe(v);
-        })
-    },[]);
+    };
+
      
     
     // 사진 아이템이 클릭됐는지 상태 정의하여 모달 창을 불러올 것인지 판단하는 상태 정의
-    const [isModal, setIsModal] = useState("false");
+    const [isModal, setIsModal] = useState(false);
     // 어떤 사진 아이템 src 가 클릭되었는지에 대한 상태 정의
     const [cardSrc, setCardSrc] = useState('');
     // 캐러셀 사진 전체 화면 모달 창 호출 이벤트 핸들러
     const handleCardClick = useCallback((value) => {
-        setIsModal("true");
+        setIsModal(true);
         setCardSrc(value);
-    });
+    },[]);
     // 모달을 클릭하면 모달 창 비활성화 시킴
     const handleModalClick = useCallback(() => {
-        setIsModal("false");
-    });
+        setIsModal(false);
+    },[]);
 
     // 좌우 버튼 시 캐러셀 내부 x 스크롤 이동 동작 명령 (css props - move(translate value 값) 전달)
-    const handleCarouselClick = useCallback((e) => {
-        // prev
-        if(e.target.name === "leftClick"){
+    const handleCarouselClick = useCallback((e: React.MouseEvent<HTMLImageElement>) => {
+        // prev 클릭 시의 동작
+        // e.target 강제 타입 선언
+        const target = e.target as HTMLImageElement;
+        if(target.id === "leftClick"){
             setCarouselIndex((current) => {
                 const newCarouselIndex = {...current};
                 newCarouselIndex.index = carouselIndex.index - 1;
@@ -166,7 +177,7 @@ const Body_5_element4 = () => {
                 return newCarouselIndex;
             });
         }
-    });
+    },[]);
 
     return (
         <>
@@ -175,8 +186,8 @@ const Body_5_element4 = () => {
             </Modal_Overlay>
             <Main_flex_div>
                 <Main_flex_div_p ref={element => targetRef.current[0] = element}>How sweet 🍭<br/>Photo</Main_flex_div_p>
-                <Card_Carousel_left><img src="/images/left.png" alt="left" onClick={handleCarouselClick} name="leftClick"/></Card_Carousel_left>
-                <Card_Carousel_right><img src="/images/right.png" alt="right" onClick={handleCarouselClick} name="rightClick"/></Card_Carousel_right>
+                <Card_Carousel_left><img src="/images/left.png" alt="left" onClick={handleCarouselClick} id="leftClick"/></Card_Carousel_left>
+                <Card_Carousel_right><img src="/images/right.png" alt="right" onClick={handleCarouselClick} id="rightClick"/></Card_Carousel_right>
                 <Card_Carousel_div ref={element => targetRef.current[1] = element}
                         onMouseDown={handleIsMouseDown}
                         onMouseLeave={handleIsMouseLeave}

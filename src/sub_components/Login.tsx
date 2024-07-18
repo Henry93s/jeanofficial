@@ -1,4 +1,4 @@
-import React,{useState, useRef, useCallback, useEffect} from "react";
+import React,{useState, useRef, useCallback, useEffect, ChangeEvent, FormEvent} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import { Link, useNavigate } from "react-router-dom";
@@ -152,7 +152,7 @@ const Login = () => {
         password: ""
     });
     // 알림 컴포넌트 요소 직접 접근을 위한 ref
-    const alertOpenRef = useRef(null);
+    const alertOpenRef = useRef<{ handleOpenAlert: (title: string, message: string) => void }>(null);
     // 로그인 성공 후 메인 페이지 이동을 위한 navigate
     const navigate = useNavigate();
 
@@ -165,7 +165,7 @@ const Login = () => {
             .then(res => {
                 // 서버 검증을 통해 로그인된 유저면 다시 메인 페이지로 이동 시킴
                 if(res.data && res.data.code === 200){
-                    alertOpenRef.current.handleOpenAlert("로그인 알림", "이미 로그인한 유저입니다.");
+                    alertOpenRef.current?.handleOpenAlert("로그인 알림", "이미 로그인한 유저입니다.");
                     setTimeout(() => {
                         navigate('/');
                     }, 1000);
@@ -178,12 +178,12 @@ const Login = () => {
 
     // 로그인 요청
     // 이메일 형식, 이메일 또는 패스워드 입력 여부 사전 체크 server 진행
-    const handleFormSubmit = useCallback((e) => {
+    const handleFormSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         axiosCustom.post('/login/auth',{email: loginUser.email, password: loginUser.password})
         .then(res => {
             // 에러시 알림 팝업 발생함.
-            alertOpenRef.current.handleOpenAlert("로그인 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("로그인 알림", res.data.message);
             // 관리자 로그인 성공 코드 202 추가 (server 와 값 비교 완료)
             if(res.data && (res.data.code === 200 || res.data.code === 202)){
                 // 메인 페이지로 이동
@@ -194,24 +194,24 @@ const Login = () => {
             }
             return;
         });
-    });
+    },[]);
 
     // 이메일 input 변동 시 상태 값 변화
-    const handleEmailChange = useCallback((e) => {
+    const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setLoginUser((current) => {
             const newLogin = {...current};
             newLogin.email = e.target.value;
             return newLogin; 
         });
-    });
+    },[]);
     // 패스워드 input 변동 시 상태 값 변화
-    const handlePasswordChange = useCallback((e) => {
+    const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setLoginUser((current) => {
             const newLogin = {...current};
             newLogin.password = e.target.value;
             return newLogin; 
         });
-    });
+    },[]);
 
     return (
         <>

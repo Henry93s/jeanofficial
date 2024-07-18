@@ -100,32 +100,41 @@ const Popup_button = styled.button`
     }
 `
 
+interface PopupRef {
+    handleOpenPopup: (span: string, text: string, callback: () => void) => void;
+}
+interface PropsType {
+    parameter: any;
+}
+
 // 함수형 컴포넌트에 직접 접근하기 위해서는 ref 중에서 forwardRef 를 사용함
-const Popup = forwardRef((props, ref) => {
+const Popup = forwardRef<PopupRef, PropsType>((props, ref) => {
     // 외부 컴포넌트에서 ref 를 통해 직접 접근하여 handleOpenPopup 메서드를 호출할 때 팝업 컴포넌트 전체가 활성화하기 위함
-    const [isPopup, setIsPopup] = useState(false);
+    const [isPopup, setIsPopup] = useState<boolean>(false);
     // handleOpenPopup 메서드의 파라미터로 들어오는 팝업 컴포넌트 타이틀 상태 값
-    const [span, setSpan] = useState("");
+    const [span, setSpan] = useState<string>("");
     // handleOpenPopup 메서드의 파라미터로 들어오는 팝업 컴포넌트 내용 상태 값
-    const [text, setText] = useState("");
+    const [text, setText] = useState<string>("");
     // handleOpenPopup 메서드의 파라미터로 들어오는 팝업 컴포넌트 콜백 함수 상태 값
-    const [isOk, setIsOk] = useState(null);
+    const [isOk, setIsOk] = useState<((parameter: any) => void) | null>(null);
 
     // 함수형 컴포넌트 중 외부에서 호출할 메서드는 useImperativeHandle 로 정의함
     // 외부에서 ref 를 통해 팝업 컴포넌트 메서드 호출
     useImperativeHandle(ref, () => ({
-        handleOpenPopup(span, text, callback) {
+        handleOpenPopup(span: string, text: string, callback: (parameter: any) => void) {
             setSpan(span);
             setText(text);
             // 콜백 함수를 상태 값에 반영
-            setIsOk(callback);
+            setIsOk(() => callback);
             setIsPopup(true);
         },
     }));
     
-    const handleOkPopup = () => {
+    const handleOkPopup: React.MouseEventHandler<HTMLButtonElement> = () => {
         // "예" 클릭 시 props 로 들어온 parameter 를 인자로 콜백함수를 실행
-        isOk(props.parameter);
+        if(isOk){
+            isOk(props.parameter);
+        }
 
         // 이후 동작은 콜백함수에서 컨트롤되므로 나머지 상태를 초기화
         setIsPopup(false);
@@ -134,7 +143,7 @@ const Popup = forwardRef((props, ref) => {
     };
 
     // "아니오" 클릭 시 팝업 컴포넌트 비활성화 처리
-    const handleCancelPopup = () => {
+    const handleCancelPopup: React.MouseEventHandler<HTMLButtonElement> = () => {
         setIsPopup(false);
         setSpan("");
         setText("");

@@ -1,10 +1,11 @@
-import React,{useState, useRef, useEffect, useCallback} from "react";
+import React,{useState, useRef, useEffect, useCallback, ChangeEvent} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import Popup from "../util_components/Popup";
 import axiosCustom from "../util_components/axiosCustom";
 // redux 에서 user 상태를 가져오기 위한 useSelector
 import { useSelector } from 'react-redux';
+import { State } from "../redux/Store";
 
 
 const Body_container = styled.div`
@@ -315,31 +316,34 @@ const Loading_img = styled.img`
 const Body_7_board = () => {
     // IntersectionObserver 를 생성하여 targetRef 가 관찰될 때(.isIntersecting) 투명도를 n 초동안 높이기 위함
     // useRef [] 배열로 관리하기 !
-    const targetRef = useRef([]);
+    const targetRef = useRef<HTMLDivElement []| null [] | HTMLParagraphElement []>([]);
     // scroll animation 동작 구현
     useEffect(() => {
         const osv = new IntersectionObserver((e) => {
             e.forEach(entry => {
+                // entry.target 강제 타입 선언
+                const target = entry.target as HTMLElement;
                 if(entry.isIntersecting){
-                    entry.target.style.opacity = 1;
+                    target.style.opacity = "1";
                 } else {
-                    entry.target.style.opacity = 0;
+                    target.style.opacity = "0";
                 }
             })
         },{
             threshold: 0.25
         });
+
         targetRef.current.forEach(v => {
             osv.observe(v);
         })
     },[]);
 
     // user 리덕스 store 상태 값 가져오기
-    const user = useSelector(state => state.user);
+    const user = useSelector((state: State) => state.user);
     
-    // 팝업 알림 컴포넌트 ref 셋팅
-    const popupOpenRef = useRef(null);
-    const alertOpenRef = useRef(null);
+    // 알림, 팝업 컴포넌트 호출을 위한 ref
+    const alertOpenRef = useRef<{ handleOpenAlert: (title: string, message: string) => void }>(null);
+    const popupOpenRef = useRef<{ handleOpenPopup: (span: string, text: string, callback: () => void) => void }>(null);
 
     // 전체 / 내 글 보기 시 로딩 애니메이션 부여를 위한 ref 셋팅
     const loadingRef = useRef(null);
@@ -441,7 +445,7 @@ const Body_7_board = () => {
     // page 상태 값에 따라 하단 페이지네이션 원소 배열 생성
     // 5 페이지 씩 만 출력하여야 함
     const pagenationing = useCallback(() => {
-        const pageArray = [];
+        const pageArray: number[] = [];
 
         // 페이지 시작점 계산
         let remainpage = page.page;
@@ -462,10 +466,10 @@ const Body_7_board = () => {
             pageArray.push(i);
         }
         return pageArray;
-    });
+    },[]);
 
     // 선택한 페이지로 이동 기능
-    const pagenateHandle = useCallback((i) => {
+    const pagenateHandle = useCallback((i: number) => {
         setPage((current) => {
             const newPage = {...current};
             newPage.page = i;
@@ -476,7 +480,7 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    });
+    },[]);
 
     // 이전 버튼 클릭 시 최대 5 페이지 이동 기능
     const pagePrevHandle = useCallback(() => {
@@ -496,7 +500,7 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    });
+    },[]);
 
     // 다음 버튼 클릭 시 최대 5 페이지 이동 기능
     const pageNextHandle = useCallback(() => {
@@ -516,29 +520,29 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    });
+    },[]);
 
     // 검색 select 박스 변화 감지
-    const selectChangeHandle = useCallback((e) => {
+    const selectChangeHandle = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
         setSearch((current) => {
             const newSearch = {...current};
             newSearch.select = e.target.value;
             return newSearch;
         });
-    });
+    },[]);
     // 검색 state 실시간 변화
-    const inputChangeHandle = useCallback((e) => {
+    const inputChangeHandle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setSearch((current) => {
             const newSearch = {...current};
             newSearch.input = e.target.value;
             return newSearch;
         });
-    });
+    },[]);
     // 리스트에서 검색 동작
     const searchHandle = useCallback(() => {
         // 검색어(search.input) 이 없을 때 에러 처리
         if(search.input.length < 2){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "검색어를 2 글자 이상 입력해주세요.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "검색어를 2 글자 이상 입력해주세요.");
             return;
         }
 
@@ -555,18 +559,18 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    });
+    },[]);
     // 리스트에서 엔터 시 검색 동작 유도
-    const inputEnterHandle = useCallback((e) => {
+    const inputEnterHandle = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
         if(e.key === "Enter"){
             searchHandle();
         }
-    });
+    },[]);
 
     // 나의 글 모드 첫 진입 (1page) (로그인 요구)
-    const postMyHandle = useCallback(() => {
+    const postMyHandle = () => {
         if(user.email.length < 1){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
         }
 
@@ -581,10 +585,10 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    });
+    };
 
     // 전체 글 모드 첫 진입 (1page) 
-    const postAllHandle = useCallback(() => {
+    const postAllHandle = () => {
         setPage((current) => {
             const newSetPage = {...current};
             newSetPage.searchMode = false;
@@ -596,10 +600,10 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    });
+    };
 
     // 현재 가져온 posts 와 page 를 기준으로 좋아요 순으로 정렬만 바꿈
-    const postLikeSortHandle = useCallback(() => {
+    const postLikeSortHandle = () => {
         setPage((current) => {
             const newSetPage = {...current};
             newSetPage.likeSort = !page.likeSort;
@@ -609,17 +613,17 @@ const Body_7_board = () => {
         setTimeout(() => {
             setMode("list");
         }, 200);
-    });
+    };
 
 
     // 글 화면에서 리스트 화면으로 뒤로 가기
     const backHandle = useCallback(() => {
         setMode("list");
-    });
+    },[]);
     // 리스트 화면에서 글쓰기 화면으로
     const writeStartHandle = useCallback(() => {
         if(user.email.length < 1){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
         }
 
@@ -631,23 +635,23 @@ const Body_7_board = () => {
             newSetText.content = "";
             return newSetText;
         })
-    });
+    },[]);
     // 글 보기 화면에서 글 수정 화면으로
     const putStartHandle = useCallback(() => {
         if(user.email.length < 1){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
         }
         if(user.email !== text.email){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
             return;
         }
 
         setMode("put");
-    });
+    },[]);
 
     // 글쓰기, 글수정 화면에서 text 수정 시 발동
-    const writeChangeHandle = useCallback((e) => {
+    const writeChangeHandle = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if(e.target.name === "title"){
             setText((current) => {
                 const newSetText = {...current};
@@ -661,25 +665,25 @@ const Body_7_board = () => {
                 return newSetText;
             });
         }
-    });
+    },[]);
 
     // 글쓰기 동작
     const postWriteHandle = useCallback(() => {
         if(user.email.length < 1){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
         }
         if(text.title.length > 20){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 제목은 20자 이내로 작성해주세요.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "글 제목은 20자 이내로 작성해주세요.");
             return;
         }
         if(text.title.length < 3 || text.content.length < 3){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 제목 또는 내용은 3자 이상 작성해주세요.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "글 제목 또는 내용은 3자 이상 작성해주세요.");
             return;
         }
         axiosCustom.post('/post/write',{email: user.email, title: text.title, content: text.content})
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", res.data.message);
             if(res.data.code === 200){
                 setMode("loading");
                 setTimeout(() => {
@@ -688,30 +692,30 @@ const Body_7_board = () => {
             }
             return;
         })
-    });
+    },[]);
 
     // 글 수정 동작
     const postPutHandle = useCallback(() => {
         if(user.email.length < 1){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
         }
         if(user.email !== text.email){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
             return;
         }
         if(text.title.length > 20){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 제목은 20자 이내로 작성해주세요.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "글 제목은 20자 이내로 작성해주세요.");
             return;
         }
         if(text.title.length < 3 || text.content.length < 3){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 제목 또는 내용은 3자 이상 작성해주세요.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "글 제목 또는 내용은 3자 이상 작성해주세요.");
             return;
         }
         axiosCustom.post('/post/put',{email: user.email, title: text.title, content: text.content
             , nanoid: text.nanoid})
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", res.data.message);
             if(res.data.code === 200){
                 setMode("loading");
                 setTimeout(() => {
@@ -720,7 +724,7 @@ const Body_7_board = () => {
             }
             return;
         })
-    });
+    },[]);
 
     // 글 삭제 콜백함수
     const postDelCallback = useCallback((props) => {
@@ -729,7 +733,7 @@ const Body_7_board = () => {
             data: {email: props.email, nanoid: props.nanoid}
         })
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", res.data.message);
             if(res.data.code === 200){
                 setMode("loading");
                 setTimeout(() => {
@@ -738,16 +742,16 @@ const Body_7_board = () => {
             }
             return;
         })
-    });
+    },[]);
 
     // 글 삭제 동작
     const postDelHandle = useCallback(() => {
         if(user.email.length < 1){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "로그인이 필요한 페이지입니다.");
             return;
         }
         if(user.email !== text.email){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "글 작성자가 아닙니다.");
             return;
         }
         setDelprop((current) => {
@@ -756,13 +760,15 @@ const Body_7_board = () => {
             newDelprop.nanoid = text.nanoid;
             return newDelprop; 
         });
-        popupOpenRef.current.handleOpenPopup("게시판 알림", "글 삭제를 진행하시겠습니까?", () => postDelCallback);
+        popupOpenRef.current?.handleOpenPopup("게시판 알림", "글 삭제를 진행하시겠습니까?", () => postDelCallback);
         return;
-    });
+    },[]);
 
     // 특정 글 읽기 동작
-    const postReadHandle = useCallback((e) => {
-        const nanoid = e.target.getAttribute("name");
+    const postReadHandle = useCallback((e: React.MouseEvent<HTMLSpanElement>) => {
+        // e.target 에 타입 부여
+        const target = e.target as HTMLSpanElement;
+        const nanoid = target.getAttribute("id");
         axiosCustom.get(`/post/read/${nanoid}`)
         .then(res => {
             // 읽기 성공
@@ -781,29 +787,29 @@ const Body_7_board = () => {
                     return newSetText;
                 })
             } else { // 읽기 실패
-                alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
+                alertOpenRef.current?.handleOpenAlert("게시판 알림", res.data.message);
             }
             return;
         })
-    });
+    },[]);
 
     // 특정 글 에서 좋아요 버튼 클릭(같은 계정으로 같은 글의 좋아요를 또 클릭하면 좋아요 제거)
     const postUpHandle = useCallback(() => {
         if(user.email.length < 1){
-            alertOpenRef.current.handleOpenAlert("게시판 알림", "로그인이 필요합니다.");
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", "로그인이 필요합니다.");
             return;
         }
 
         axiosCustom.post('/post/uppost',{email: user.email, nanoid: text.nanoid})
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("게시판 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("게시판 알림", res.data.message);
             setMode("loading");
                 setTimeout(() => {
                     setMode("list");
                 }, 100);
             return;
         })
-    });
+    },[]);
 
 
     console.log(page);
@@ -852,10 +858,10 @@ const Body_7_board = () => {
                     <Content_div>
                         <Content_div_back onClick={backHandle}></Content_div_back>
                         <Content_div_writer style={{border: "none"}} disabled value={user.email.length >= 1 ? user.nickName : "nonLogin"} />
-                        <label for="inputTitle">제목 : </label>
+                        <label htmlFor="inputTitle">제목 : </label>
                         <Content_div_title onChange={writeChangeHandle} id="inputTitle" name="title" />
                     </Content_div>
-                    <label for="inputContent" style={{marginLeft: "1.5%"}}>내용 : </label>
+                    <label htmlFor="inputContent" style={{marginLeft: "1.5%"}}>내용 : </label>
                     <Content_text onChange={writeChangeHandle} id="inputContent" name="content" />
                     <Content_sub_div>
                         <Content_sub_div_div>
@@ -872,11 +878,11 @@ const Body_7_board = () => {
                         <Content_div_back onClick={backHandle}></Content_div_back>
                         <Content_div_writer style={{border:"none"}} disabled value={text.writer}/>
                         {/* react 에서 수정이 필요한 기본 input value 설정 시 defaultValue 로 지정해야 함 */}
-                        <label for="inputTitle">제목: </label>
+                        <label htmlFor="inputTitle">제목: </label>
                         <Content_div_title onChange={writeChangeHandle} id="inputTitle" name="title" defaultValue={text.title} />
                         <Content_div_date style={{border:"none"}} disabled value={text.updateAt}/>
                     </Content_div>
-                    <label for="inputContent" style={{marginLeft: "1.5%"}}>내용: </label>
+                    <label htmlFor="inputContent" style={{marginLeft: "1.5%"}}>내용: </label>
                     <Content_text onChange={writeChangeHandle} id="inputContent" name="content" defaultValue={text.content}/>
                     <Content_sub_div>
                         <Content_sub_div_div>
@@ -907,11 +913,11 @@ const Body_7_board = () => {
                         </Forum_button_div>
                     </Board_Search_Forum_div>
                     <Board_list_div>
-                        {posts.map((v) => {
+                        {posts.map((v: any) => {
                                 return (
                                     <Board_list_item>
                                         <span style={{width:"20%"}}>{v.author.name}</span>
-                                        <span name={v.nanoid} onClick={postReadHandle} style={{width:"40%", textDecoration:"underLine", cursor:"pointer"}}>{v.up === 0 ? v.title : v.title + " [👍 " + v.up + "]"}</span>
+                                        <span id={v.nanoid} onClick={postReadHandle} style={{width:"40%", textDecoration:"underLine", cursor:"pointer"}}>{v.up === 0 ? v.title : v.title + " [👍 " + v.up + "]"}</span>
                                         <span style={{width:"30%"}}>{v.updateAt}</span>
                                     </Board_list_item>
                                 );

@@ -1,4 +1,4 @@
-import React,{useRef, useState, useCallback, useEffect} from "react";
+import React,{useRef, useState, useCallback, useEffect, FormEvent, ChangeEvent} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -171,14 +171,14 @@ const PasswordChange = () => {
         passwordConfirm: ""
     });
     // 알림 컴포넌트 요소 직접 접근을 위한 ref
-    const alertOpenRef = useRef(null);
+    const alertOpenRef = useRef<{ handleOpenAlert: (title: string, message: string) => void }>(null);
 
     // 비밀번호 변경 페이지에서는 리덕스 user 전역 상태가 아니라 !(로그인 안된 채 페이지가 넘어가는 경우이므로)
     // const email = location.state?.email; location 객체에서 가져온 email 이 undefined 인지 검사
     // 후 useEffect 를 이용하여 민감한 페이지의 직접 url 입력이나, 새로고침 시 페이지 접근을 차단함
     useEffect(() => {
         if(email === undefined){
-            alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", "잘못된 경로로 페이지에 접근하였습니다.");
+            alertOpenRef.current?.handleOpenAlert("비밀번호 변경 알림", "잘못된 경로로 페이지에 접근하였습니다.");
             setTimeout(() => {
                 navigate('/')
             }, 1000);
@@ -187,23 +187,23 @@ const PasswordChange = () => {
     }, []);
 
     // form onsubmit 동작 시 유효성 검사 및 패스워드 수정 요청
-    const handleFormSubmit = useCallback((e) => {
+    const handleFormSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if(password.password.length < 8){
-            alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", "패스워드는 8자 이상으로 입력해주세요.");
+            alertOpenRef.current?.handleOpenAlert("비밀번호 변경 알림", "패스워드는 8자 이상으로 입력해주세요.");
             return;
         }
         else if(!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&`~$^()_+])[A-Za-z\d@!%*#?&`~$^()_+]{8,}$/.test(password.password)){
-            alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", "비밀번호는 영문 + 숫자 + 특수문자의 조합으로 설정해 주세요.");
+            alertOpenRef.current?.handleOpenAlert("비밀번호 변경 알림", "비밀번호는 영문 + 숫자 + 특수문자의 조합으로 설정해 주세요.");
             return;
         }
         if(password.password !== password.passwordConfirm) {
-            alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", "비밀번호 확인이 일치하지 않습니다.");
+            alertOpenRef.current?.handleOpenAlert("비밀번호 변경 알림", "비밀번호 확인이 일치하지 않습니다.");
             return;
         }
         axiosCustom.put('/users',{email, password: password.password})
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("비밀번호 변경 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("비밀번호 변경 알림", res.data.message);
             if(res.data && res.data.code === 200){
                 // 로그인 페이지로 이동
                 setTimeout(() => {
@@ -212,24 +212,24 @@ const PasswordChange = () => {
             }
             return;
         })
-    });
+    }, []);
 
     // 실시간 패스워드 상태 값 수정
-    const handlePasswordChange = useCallback((e) => {
+    const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setPassword((current) => {
             const newPasswordChange = {...current};
             newPasswordChange.password = e.target.value;
             return newPasswordChange; 
         });
-    });
+    },[]);
     // 실시간 패스워드 확인 상태 값 수정
-    const handlePasswordConfirmChange = useCallback((e) => {
+    const handlePasswordConfirmChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setPassword((current) => {
             const newPasswordChange = {...current};
             newPasswordChange.passwordConfirm = e.target.value;
             return newPasswordChange; 
         });
-    });
+    },[]);
 
     return (
         <>

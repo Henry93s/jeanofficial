@@ -1,4 +1,4 @@
-import React,{useRef, useState, useCallback, useEffect} from "react";
+import React, {RefObject, useRef, useState, useCallback, useEffect, FormEvent, ChangeEvent} from "react";
 import styled from "styled-components";
 import Alert from "../util_components/Alert";
 import axiosCustom from '../util_components/axiosCustom';
@@ -205,10 +205,10 @@ const Signup = () => {
         passwordConfirm: ""
     });
     // 알림 컴포넌트 직접 접근을 위함
-    const alertOpenRef = useRef(null);
+    const alertOpenRef = useRef<{ handleOpenAlert: (title: string, message: string) => void }>(null);
     // 인증번호가 정상 요청되었을 때 비활성화를 위해 각 element 요소에 직접 접근을 위함
-    const verifyBtnRef = useRef(null);
-    const emailInputRef = useRef(null);
+    const verifyBtnRef = useRef<HTMLButtonElement>(null);
+    const emailInputRef = useRef<HTMLInputElement>(null);
     // 회원가입 성공 시 로그인 페이지로 이동하기 위함
     const navigate = useNavigate();
 
@@ -221,7 +221,7 @@ const Signup = () => {
             .then(res => {
                 // 서버 검증을 통해 로그인된 유저면 다시 메인 페이지로 이동 시킴
                 if(res.data && res.data.code === 200){
-                    alertOpenRef.current.handleOpenAlert("회원가입 알림", "이미 로그인한 유저입니다.");
+                    alertOpenRef.current?.handleOpenAlert("회원가입 알림", "이미 로그인한 유저입니다.");
                     setTimeout(() => {
                         navigate('/');
                     }, 1000);
@@ -239,59 +239,63 @@ const Signup = () => {
         .then(res => {
             // 요청 성공으로 인증 요청 버튼과 이메일 input 비활성화 처리 함수
             controlVerifyButton(res);
-            alertOpenRef.current.handleOpenAlert("회원가입 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("회원가입 알림", res.data.message);
             return;
         });
-    });
-    const controlVerifyButton = (res) => {
+    },[]);
+    const controlVerifyButton = useCallback((res: any) => {
         if(res.data && res.data.code === 200){
-            // 정상적으로 요청했을 때에는 이메일 비활성화 및 인증번호 받기 버튼 비활성화
-            verifyBtnRef.current.style.backgroundColor = "#1E1E20";
-            verifyBtnRef.current.style.cursor = "default";
-            verifyBtnRef.current.disabled = true;
-            emailInputRef.current.disabled = true;
+            if(verifyBtnRef.current && emailInputRef.current){
+                // 정상적으로 요청했을 때에는 이메일 비활성화 및 인증번호 받기 버튼 비활성화
+                verifyBtnRef.current.style.backgroundColor = "#1E1E20";
+                verifyBtnRef.current.style.cursor = "default";
+                verifyBtnRef.current.disabled = true;
+                emailInputRef.current.disabled = true;
+            }
         } else {
-            verifyBtnRef.current.style.backgroundColor = "#9061F9";
-            verifyBtnRef.current.style.cursor = "pointer";
-            verifyBtnRef.current.removeAttribute('disabled');
-            emailInputRef.current.removeAttribute('disabled');
+            if(verifyBtnRef.current && emailInputRef.current){
+                verifyBtnRef.current.style.backgroundColor = "#9061F9";
+                verifyBtnRef.current.style.cursor = "pointer";
+                verifyBtnRef.current.removeAttribute('disabled');
+                emailInputRef.current.removeAttribute('disabled');
+            }
         }
-    };
+    }, []);
 
     // 인증번호가 맞는지 서버 확인 요청
     const handleEmailVerifyPost = useCallback(() => {
         const {email, secret} = addUser;
         axiosCustom.post('/users/verify/confirm', {email, secret})
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("회원가입 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("회원가입 알림", res.data.message);
             return;
         });
-    });
+    }, []);
 
     // 회원가입 요청 - 이메일 인증 요청 유무, 이메일 인증 유무, 닉네임 중복 체크
-    const handleFormSubmit = useCallback((e) => {
+    const handleFormSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if(addUser.password.length < 8){
-            alertOpenRef.current.handleOpenAlert("회원가입 알림", "패스워드는 8자 이상으로 입력해주세요.");
+            alertOpenRef.current?.handleOpenAlert("회원가입 알림", "패스워드는 8자 이상으로 입력해주세요.");
             return;
         }
         else if(!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&`~$^()_+])[A-Za-z\d@!%*#?&`~$^()_+]{8,}$/.test(addUser.password)){
-            alertOpenRef.current.handleOpenAlert("회원가입 알림", "비밀번호는 영문 + 숫자 + 특수문자의 조합으로 설정해 주세요.");
+            alertOpenRef.current?.handleOpenAlert("회원가입 알림", "비밀번호는 영문 + 숫자 + 특수문자의 조합으로 설정해 주세요.");
             return;
         }
         if(addUser.password !== addUser.passwordConfirm) {
-            alertOpenRef.current.handleOpenAlert("회원가입 알림", "비밀번호 확인이 일치하지 않습니다.");
+            alertOpenRef.current?.handleOpenAlert("회원가입 알림", "비밀번호 확인이 일치하지 않습니다.");
             return;
         }
         if(addUser.name.length < 2) {
-            alertOpenRef.current.handleOpenAlert("회원가입 알림", "닉네임을 2자리 이상 입력해주세요.");
+            alertOpenRef.current?.handleOpenAlert("회원가입 알림", "닉네임을 2자리 이상 입력해주세요.");
             return;
         }
         // email, password, name 으로 db 추가 요청
         const {email, password, name} = addUser;
         axiosCustom.post('/users', {email, password, name})
         .then(res => {
-            alertOpenRef.current.handleOpenAlert("회원가입 알림", res.data.message);
+            alertOpenRef.current?.handleOpenAlert("회원가입 알림", res.data.message);
             if(res.data.code === 200){
                 setTimeout(() => {
                     navigate('/login');
@@ -299,52 +303,52 @@ const Signup = () => {
             }
             return;
         });
-    });
+    }, []);
 
     // 이메일 input 변동 시 상태 값 변화
-    const handleEmailChange = useCallback((e) => {
+    const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.email = e.target.value;
             return newAddUser; 
         });
-    });
+    }, []);
     // 패스워드 input 변동 시 상태 값 변화
-    const handlePasswordChange = useCallback((e) => {
+    const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.password = e.target.value;
             return newAddUser; 
         });
-    });
+    }, []);
     // 패스워드 확인 input 변동 시 상태 값 변화
-    const handlePasswordConfirmChange = useCallback((e) => {
+    const handlePasswordConfirmChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.passwordConfirm = e.target.value;
             return newAddUser; 
         });
-    });
+    }, []);
     // 닉네임 input 변동 시 상태 값 변화
-    const handlenameChange = useCallback((e) => {
+    const handlenameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.name = e.target.value;
             return newAddUser; 
         });
-    });
+    }, []);
     // 인증코드 input 변동 시 상태 값 변화
-    const handlesecretChange = useCallback((e) => {
+    const handlesecretChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setAddUser((current) => {
             const newAddUser = {...current};
             newAddUser.secret = e.target.value;
             return newAddUser; 
         });
-    });
+    }, []);
 
     return (
         <>
-            <Alert ref={alertOpenRef} />
+            <Alert ref={alertOpenRef}/>
             <Signup_Overlay>
                 <Signup_Container_div>
                     <Signup_main_form onSubmit={handleFormSubmit}>
@@ -361,7 +365,7 @@ const Signup = () => {
                         </Signup_secret_div>
                         <Signup_name_div>
                             <Signup_name_span>닉네임</Signup_name_span>
-                            <Signup_name_input placeholder="12자 이내 닉네임 입력" maxLength='12' onChange={handlenameChange}/>
+                            <Signup_name_input placeholder="12자 이내 닉네임 입력" maxLength={12} onChange={handlenameChange}/>
                         </Signup_name_div>
                         <Signup_password_div>
                             <Signup_password_span>비밀번호</Signup_password_span>

@@ -118,20 +118,23 @@ const Map_main_div = styled.div`
 const Body_6_map = () =>{
     // IntersectionObserver 를 생성하여 targetRef 가 관찰될 때(.isIntersecting) 투명도를 n 초동안 높이기 위함
     // useRef [] 배열로 관리하기 !
-    const targetRef = useRef([]);
+    const targetRef = useRef<HTMLDivElement []| null []>([]);
     // scroll animation 동작 구현
     useEffect(() => {
         const osv = new IntersectionObserver((e) => {
             e.forEach(entry => {
+                // entry.target 강제 타입 선언
+                const target = entry.target as HTMLElement;
                 if(entry.isIntersecting){
-                    entry.target.style.opacity = 1;
+                    target.style.opacity = "1";
                 } else {
-                    entry.target.style.opacity = 0;
+                    target.style.opacity = "0";
                 }
             })
         },{
             threshold: 0.25
         });
+
         targetRef.current.forEach(v => {
             osv.observe(v);
         })

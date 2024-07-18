@@ -26,5 +26,7 @@ yarn-error.log*
 .env
 /src/datas/config.json
 
-# type compiler
+# type
 /dist
+/config
+/scripts
