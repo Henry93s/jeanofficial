@@ -818,7 +818,7 @@ const Body_7_board = () => {
     },[user, text]);
 
 
-    console.log(page);
+    // console.log(page);
 
     return (
         <>
