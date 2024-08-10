@@ -5,7 +5,7 @@ import Local_shorts from './Local_shorts';
 // Youtube api
 // 하루 무료 api 할당량이 끝나면 local datas 에서 가져옴(* Local_youtube.js)
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
-const CHANNEL_ID = process.env.CHANNEL_ID;
+const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
 
 
 interface VideoData {
